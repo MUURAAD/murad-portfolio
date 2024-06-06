@@ -5,27 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Me - Murad</title>
     <link rel="stylesheet" href="css/styles.css">
-    <style>
-        // Include JavaScript for form validation and interactivity
-        function validateForm(event) {
-            event.preventDefault();
-            const name = document.getElementById("name").value;
-            const email = document.getElementById("email").value;
-            const message = document.getElementById("message").value;
-
-            if (name && email && message) {
-                alert("Message sent successfully!");
-                document.getElementById("contactForm").reset();
-            } else {
-                alert("Please fill out all fields.");
-            }
-        }
-
-        document.addEventListener("DOMContentLoaded", () => {
-            const form = document.getElementById("contactForm");
-            form.addEventListener("submit", validateForm);
-        });
-    </style>
 </head>
 <body>
     <header>
@@ -46,7 +25,7 @@
     <main>
         <section>
             <h2>Get in Touch</h2>
-            <form id="contactForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+            <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" id="contactForm">
                 <label for="name">Name:</label>
                 <input type="text" id="name" name="name" required>
                 
@@ -63,5 +42,38 @@
     <footer>
         <p>© 2024 Murad's Portfolio. Made with love in Dhaka.</p>
     </footer>
+
+    <script>
+        // JavaScript code for form validation and interactivity
+        function validateForm(event) {
+            event.preventDefault();
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const message = document.getElementById("message").value;
+
+            if (name === "" || email === "" || message === "") {
+                alert("All fields are required.");
+                return false;
+            }
+
+            if (!validateEmail(email)) {
+                alert("Please enter a valid email address.");
+                return false;
+            }
+
+            alert("Form submitted successfully!");
+            document.getElementById("contactForm").submit();
+        }
+
+        function validateEmail(email) {
+            const re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+            return re.test(String(email).toLowerCase());
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const form = document.getElementById("contactForm");
+            form.addEventListener("submit", validateForm);
+        });
+    </script>
 </body>
 </html>

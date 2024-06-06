@@ -5,7 +5,81 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Page - Murad</title>
     <link rel="stylesheet" href="css/styles.css">
-    <style>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Me</a></li>
+                <li><a href="storytelling.html">Storytelling Blog</a></li>
+                <li><a href="athletic.html">Athletic Blog</a></li>
+                <li><a href="contact.html">Contact Me</a></li>
+                <li><a href="admin.html">Admin</a></li>
+            </ul>
+        </nav>
+        <div class="intro">
+            <h1>Admin Page</h1>
+        </div>
+    </header>
+    <main>
+        <section id="login-section">
+            <h2>Login</h2>
+            <form id="loginForm">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+                
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                
+                <button type="submit">Login</button>
+            </form>
+        </section>
+        <section id="admin-section" style="display: none;">
+            <h2>Add a New Blog Post</h2>
+            <form>
+                <label for="blogTitle">Title:</label>
+                <input type="text" id="blogTitle" name="blogTitle" required>
+                
+                <label for="blogContent">Content:</label>
+                <textarea id="blogContent" name="blogContent" rows="5" required></textarea>
+                
+                <label for="blogCategory">Category:</label>
+                <select id="blogCategory" name="blogCategory">
+                    <option value="storytelling">Storytelling</option>
+                    <option value="athletic">Athletic</option>
+                </select>
+                
+                <button type="button" id="addButton">Add Blog Post</button>
+            </form>
+        </section>
+    </main>
+    <footer>
+        <p>© 2024 Murad's Portfolio. Made with love in Dhaka.</p>
+    </footer>
+
+    <script>
+        // Dummy login validation
+        const validUsername = "admin";
+        const validPassword = "password123";
+
+        function showAdminSection() {
+            document.getElementById("login-section").style.display = "none";
+            document.getElementById("admin-section").style.display = "block";
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            if (username === validUsername && password === validPassword) {
+                showAdminSection();
+            } else {
+                alert("Invalid username or password");
+            }
+        }
+
         function addBlogPost() {
             const blogTitle = document.getElementById("blogTitle").value;
             const blogContent = document.getElementById("blogContent").value;
@@ -32,49 +106,12 @@
         }
         
         document.addEventListener("DOMContentLoaded", () => {
+            const loginForm = document.getElementById("loginForm");
+            loginForm.addEventListener("submit", handleLogin);
+
             const addButton = document.getElementById("addButton");
             addButton.addEventListener("click", addBlogPost);
         });
-    </style>
-</head>
-<body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About Me</a></li>
-                <li><a href="storytelling.html">Storytelling Blog</a></li>
-                <li><a href="athletic.html">Athletic Blog</a></li>
-                <li><a href="contact.html">Contact Me</a></li>
-                <li><a href="admin.html">Admin</a></li>
-            </ul>
-        </nav>
-        <div class="intro">
-            <h1>Admin Page</h1>
-        </div>
-    </header>
-    <main>
-        <section>
-            <h2>Add a New Blog Post</h2>
-            <form>
-                <label for="blogTitle">Title:</label>
-                <input type="text" id="blogTitle" name="blogTitle" required>
-                
-                <label for="blogContent">Content:</label>
-                <textarea id="blogContent" name="blogContent" rows="5" required></textarea>
-                
-                <label for="blogCategory">Category:</label>
-                <select id="blogCategory" name="blogCategory">
-                    <option value="storytelling">Storytelling</option>
-                    <option value="athletic">Athletic</option>
-                </select>
-                
-                <button type="button" id="addButton">Add Blog Post</button>
-            </form>
-        </section>
-    </main>
-    <footer>
-        <p>© 2024 Murad's Portfolio. Made with love in Dhaka.</p>
-    </footer>
+    </script>
 </body>
 </html>

@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Athletic Blog - Murad</title>
     <link rel="stylesheet" href="css/styles.css">
-    <style>
-        // Include your JavaScript code here, similar to the one in index.html
-    </style>
 </head>
 <body>
     <header>
@@ -26,10 +23,34 @@
         </div>
     </header>
     <main>
-        <!-- Blog content goes here -->
+        <section id="blog-container">
+            <!-- Blog posts will be dynamically loaded here -->
+        </section>
     </main>
     <footer>
         <p>© 2024 Murad's Portfolio. Made with love in Dhaka.</p>
     </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            fetch('blogposts.json')
+                .then(response => response.json())
+                .then(blogPosts => {
+                    const athleticPosts = blogPosts.filter(post => post.category === 'athletic');
+                    const blogContainer = document.getElementById('blog-container');
+                    athleticPosts.forEach(post => {
+                        const postElement = document.createElement('div');
+                        postElement.classList.add('blog-post');
+                        postElement.innerHTML = `
+                            <h3>${post.title}</h3>
+                            <p>${post.content}</p>
+                            <p><em>${post.date}</em></p>
+                        `;
+                        blogContainer.appendChild(postElement);
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
 </body>
 </html>

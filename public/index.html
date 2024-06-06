@@ -4,27 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Murad's Portfolio</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <style>
-        /* Include specific JavaScript code for interactivity */
-        function toggleModal() {
-            const modal = document.querySelector(".modal");
-            modal.classList.toggle("show-modal");
-        }
-        function windowOnClick(event) {
-            const modal = document.querySelector(".modal");
-            if (event.target === modal) {
-                toggleModal();
-            }
-        }
-        document.addEventListener("DOMContentLoaded", () => {
-            const trigger = document.querySelector(".trigger");
-            const closeButton = document.querySelector(".close-button");
-            trigger.addEventListener("click", toggleModal);
-            closeButton.addEventListener("click", toggleModal);
-            window.addEventListener("click", windowOnClick);
-        });
-    </style>
+    <link rel="stylesheet" href="public/css/styles.css">
 </head>
 <body>
     <header>
@@ -39,43 +19,44 @@
             </ul>
         </nav>
         <div class="intro">
-            <img src="images/placeholder.png" alt="Murad Cartoon" class="cartoon-img">
             <h1>Hi, my name is Murad.</h1>
-            <p>Electrical Engineer and Triathlete</p>
+            <p>Welcome to my portfolio. I'm an electrical engineer and triathlete.</p>
         </div>
     </header>
     <main>
-        <section class="work-together">
-            <h2>Let's work together.</h2>
-            <p>I'm an independent electrical engineer and triathlete from Dhaka, Bangladesh. From designing complex electrical systems to competing in triathlons, I thrive on challenges and innovation.</p>
-            <a href="about.html" class="btn">About my approach</a>
+        <section>
+            <h2>About Me</h2>
+            <p>Information about Murad's engineering career and athletic achievements.</p>
         </section>
-        <section class="open-source">
-            <h2>Open Source.</h2>
-            <p>I occasionally release open-source projects to help the community. Below are some of my popular releases.</p>
-            <div class="projects">
-                <div class="project">
-                    <h3>PowerGrid Optimizer</h3>
-                    <p>An open-source tool for optimizing electrical grid layouts.</p>
-                    <button class="btn trigger">Get PowerGrid Optimizer</button>
-                </div>
-                <div class="project">
-                    <h3>Triathlete Tracker</h3>
-                    <p>A minimal JavaScript library to track triathlon training metrics.</p>
-                    <button class="btn trigger">Get Triathlete Tracker</button>
-                </div>
-            </div>
+        <section>
+            <h2>Recent Blog Posts</h2>
+            <div id="blog-posts"></div>
         </section>
     </main>
     <footer>
         <p>© 2024 Murad's Portfolio. Made with love in Dhaka.</p>
     </footer>
-    <div class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h2>Project Details</h2>
-            <p>Here you can add more details about the project.</p>
-        </div>
-    </div>
+
+    <script>
+        // JavaScript to load recent blog posts
+        document.addEventListener("DOMContentLoaded", () => {
+            const blogPostsContainer = document.getElementById('blog-posts');
+            fetch('blogposts.json')
+                .then(response => response.json())
+                .then(blogPosts => {
+                    blogPosts.slice(-3).reverse().forEach(post => {
+                        const postElement = document.createElement('div');
+                        postElement.classList.add('blog-post');
+                        postElement.innerHTML = `
+                            <h3>${post.title}</h3>
+                            <p>${post.content}</p>
+                            <p><em>${post.date}</em></p>
+                        `;
+                        blogPostsContainer.appendChild(postElement);
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
 </body>
 </html>

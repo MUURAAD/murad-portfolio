@@ -90,6 +90,17 @@ footer {
     background: #f8f9fa;
 }
 
+.blog-post {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 5px;
+}
+
+.blog-post h3 {
+    margin: 0;
+}
+
 .modal {
     display: none;
     position: fixed;
