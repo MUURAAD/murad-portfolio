@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page - Murad</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        function addBlogPost() {
+            const blogTitle = document.getElementById("blogTitle").value;
+            const blogContent = document.getElementById("blogContent").value;
+            const blogCategory = document.getElementById("blogCategory").value;
+            
+            const blogPost = {
+                title: blogTitle,
+                content: blogContent,
+                category: blogCategory,
+                date: new Date().toLocaleDateString()
+            };
+            
+            let blogPosts = localStorage.getItem("blogPosts");
+            if (blogPosts) {
+                blogPosts = JSON.parse(blogPosts);
+            } else {
+                blogPosts = [];
+            }
+            
+            blogPosts.push(blogPost);
+            localStorage.setItem("blogPosts", JSON.stringify(blogPosts));
+            
+            alert("Blog post added successfully!");
+        }
+        
+        document.addEventListener("DOMContentLoaded", () => {
+            const addButton = document.getElementById("addButton");
+            addButton.addEventListener("click", addBlogPost);
+        });
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Me</a></li>
+                <li><a href="storytelling.html">Storytelling Blog</a></li>
+                <li><a href="athletic.html">Athletic Blog</a></li>
+                <li><a href="contact.html">Contact Me</a></li>
+                <li><a href="admin.html">Admin</a></li>
+            </ul>
+        </nav>
+        <div class="intro">
+            <h1>Admin Page</h1>
+        </div>
+    </header>
+    <main>
+        <section>
+            <h2>Add a New Blog Post</h2>
+            <form>
+                <label for="blogTitle">Title:</label>
+                <input type="text" id="blogTitle" name="blogTitle" required>
+                
+                <label for="blogContent">Content:</label>
+                <textarea id="blogContent" name="blogContent" rows="5" required></textarea>
+                
+                <label for="blogCategory">Category:</label>
+                <select id="blogCategory" name="blogCategory">
+                    <option value="storytelling">Storytelling</option>
+                    <option value="athletic">Athletic</option>
+                </select>
+                
+                <button type="button" id="addButton">Add Blog Post</button>
+            </form>
+        </section>
+    </main>
+    <footer>
+        <p>© 2024 Murad's Portfolio. Made with love in Dhaka.</p>
+    </footer>
+</body>
+</html>

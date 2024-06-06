@@ -5,6 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Murad's Portfolio</title>
     <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* Include specific JavaScript code for interactivity */
+        function toggleModal() {
+            const modal = document.querySelector(".modal");
+            modal.classList.toggle("show-modal");
+        }
+        function windowOnClick(event) {
+            const modal = document.querySelector(".modal");
+            if (event.target === modal) {
+                toggleModal();
+            }
+        }
+        document.addEventListener("DOMContentLoaded", () => {
+            const trigger = document.querySelector(".trigger");
+            const closeButton = document.querySelector(".close-button");
+            trigger.addEventListener("click", toggleModal);
+            closeButton.addEventListener("click", toggleModal);
+            window.addEventListener("click", windowOnClick);
+        });
+    </style>
 </head>
 <body>
     <header>
@@ -14,9 +34,12 @@
                 <li><a href="about.html">About Me</a></li>
                 <li><a href="storytelling.html">Storytelling Blog</a></li>
                 <li><a href="athletic.html">Athletic Blog</a></li>
+                <li><a href="contact.html">Contact Me</a></li>
+                <li><a href="admin.html">Admin</a></li>
             </ul>
         </nav>
         <div class="intro">
+            <img src="images/placeholder.png" alt="Murad Cartoon" class="cartoon-img">
             <h1>Hi, my name is Murad.</h1>
             <p>Electrical Engineer and Triathlete</p>
         </div>
@@ -34,12 +57,12 @@
                 <div class="project">
                     <h3>PowerGrid Optimizer</h3>
                     <p>An open-source tool for optimizing electrical grid layouts.</p>
-                    <a href="#" class="btn">Get PowerGrid Optimizer</a>
+                    <button class="btn trigger">Get PowerGrid Optimizer</button>
                 </div>
                 <div class="project">
                     <h3>Triathlete Tracker</h3>
                     <p>A minimal JavaScript library to track triathlon training metrics.</p>
-                    <a href="#" class="btn">Get Triathlete Tracker</a>
+                    <button class="btn trigger">Get Triathlete Tracker</button>
                 </div>
             </div>
         </section>
@@ -47,6 +70,12 @@
     <footer>
         <p>© 2024 Murad's Portfolio. Made with love in Dhaka.</p>
     </footer>
-    <script src="js/scripts.js"></script>
+    <div class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Project Details</h2>
+            <p>Here you can add more details about the project.</p>
+        </div>
+    </div>
 </body>
 </html>
