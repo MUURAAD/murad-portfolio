@@ -1,0 +1,281 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full Blog Post - Murad</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBnDhuKL60HNcX40JI9zQ6YIZDr1hbMZHc",
+            authDomain: "trihardmurad.firebaseapp.com",
+            projectId: "trihardmurad",
+            storageBucket: "trihardmurad.appspot.com",
+            messagingSenderId: "146538214416",
+            appId: "1:146538214416:web:0d7ad5834eb432c385c695",
+            measurementId: "G-GQNJV0VQQQ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const postId = urlParams.get('id');
+            const postRef = doc(db, "storytellingPosts", postId);
+            const postSnap = await getDoc(postRef);
+
+            if (postSnap.exists()) {
+                const post = postSnap.data();
+                document.getElementById('full-post').innerHTML = `
+                    <h2>${post.title}</h2>
+                    <img src="${post.imageUrl}" alt="${post.title}">
+                    <p>${post.content}</p>
+                `;
+            } else {
+                document.getElementById('full-post').innerHTML = '<p>No such post!</p>';
+            }
+
+            // Load other posts
+            const blogPostsRef = collection(db, "storytellingPosts");
+            const blogPostsSnap = await getDocs(blogPostsRef);
+            const blogPosts = blogPostsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+            const otherPostsContainer = document.getElementById('other-posts');
+            otherPostsContainer.innerHTML = '';
+            blogPosts.forEach(post => {
+                if (post.id !== postId) {
+                    const postElement = document.createElement('div');
+                    postElement.classList.add('blog-post-small');
+                    postElement.innerHTML = `
+                        <img src="${post.imageUrl}" alt="${post.title}">
+                        <div class="blog-content-small">
+                            <h3>${post.title}</h3>
+                            <p>${post.content.substring(0, 50)}...</p>
+                        </div>
+                    `;
+                    postElement.addEventListener('click', () => {
+                        window.location.href = `storytelling-fullblog.html?id=${post.id}`;
+                    });
+                    otherPostsContainer.appendChild(postElement);
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="images/logo.png" alt="Logo">
+            <span>Murad's Blog</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="projects.html">projects</a></li>
+                <li><a href="storytelling.html">Storytelling Blog</a></li>
+                <li><a href="athletic.html">Athletic Blog</a></li>
+                <li><a href="achievements.html">Achievements</a></li>
+            </ul>
+        </nav>
+        <div class="admin-icon">
+            <a href="admin.html"><img src="images/admin-icon.png" alt="Admin"></a>
+        </div>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </header>
+    <main>
+        <section id="full-post" class="full-post-container"></section>
+        <section id="other-posts" class="other-posts-container">
+            <h2>Other Posts</h2>
+            <div id="other-posts" class="blog-posts-grid"></div>
+        </section>
+    </main>
+    <footer>
+        <p>© 2024 Murad's Portfolio. Made with love in Dhaka.</p>
+    </footer>
+    <script>
+        const hamburger = document.querySelector('.hamburger');
+        const navUl = document.querySelector('nav ul');
+        const adminIcon = document.querySelector('.admin-icon');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('close');
+            navUl.classList.toggle('show');
+            adminIcon.classList.toggle('hide');
+        });
+    </script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full Blog Post - Murad</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBnDhuKL60HNcX40JI9zQ6YIZDr1hbMZHc",
+            authDomain: "trihardmurad.firebaseapp.com",
+            projectId: "trihardmurad",
+            storageBucket: "trihardmurad.appspot.com",
+            messagingSenderId: "146538214416",
+            appId: "1:146538214416:web:0d7ad5834eb432c385c695",
+            measurementId: "G-GQNJV0VQQQ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const postId = urlParams.get('id');
+            const postRef = doc(db, "storytellingPosts", postId);
+            const postSnap = await getDoc(postRef);
+
+            if (postSnap.exists()) {
+                const post = postSnap.data();
+                document.getElementById('full-post').innerHTML = `
+                    <h2>${post.title}</h2>
+                    <p class="tag-date"><span class="tag">#${post.tag}</span> | <span class="date">${new Date(post.date).toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}</span></p>
+                    <img src="${post.imageUrl}" alt="${post.title}" class="full-image">
+                    <p class="image-caption"><i>${post.imageCaption}</i></p>
+                    <p>${post.content}</p>
+                `;
+            } else {
+                document.getElementById('full-post').innerHTML = '<p>No such post!</p>';
+            }
+
+            // Load other posts
+            const blogPostsRef = collection(db, "storytellingPosts");
+            const blogPostsSnap = await getDocs(blogPostsRef);
+            const blogPosts = blogPostsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+            const otherPostsContainer = document.getElementById('other-posts');
+            otherPostsContainer.innerHTML = '';
+            blogPosts.forEach(post => {
+                if (post.id !== postId) {
+                    const postElement = document.createElement('div');
+                    postElement.classList.add('blog-card');
+                    postElement.innerHTML = `
+                        <img src="${post.imageUrl}" alt="${post.title}">
+                        <div class="blog-content">
+                            <div class="content-left">
+                                <span class="tag">#${post.tag}</span>
+                                <p class="date">${new Date(post.date).toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}</p>
+                            </div>
+                            <div class="content-right">
+                                <img src="images/share-icon.png" alt="Share" class="share-icon">
+                            </div>
+                        </div>
+                        <div class="blog-text">
+                            <h3>${post.title}</h3>
+                            <p>${post.content.substring(0, 100)}...</p>
+                        </div>
+                    `;
+                    postElement.addEventListener('click', () => {
+                        window.location.href = `storytelling-fullblog.html?id=${post.id}`;
+                    });
+                    otherPostsContainer.appendChild(postElement);
+                }
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <a href="index.html"><img src="images/logo.png" alt="Logo"></a>
+            <span>Murad's Blog</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="storytelling.html">Storytelling Blog</a></li>
+                <li><a href="athletic.html">Athletic Blog</a></li>
+                <li><a href="achievements.html">Achievements</a></li>
+            </ul>
+        </nav>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </header>
+    <main>
+        <section id="full-post" class="full-post-container"></section>
+        <section id="other-posts" class="other-posts-container">
+            <h2 class="relevant-posts-heading">Relevant Posts</h2>
+            <div id="other-posts" class="blog-posts-grid"></div>
+        </section>
+    </main>
+    <footer>
+        <div class="footer-left">
+            <p>Connect with me:</p>
+            <a href="mailto:gamerzgold0@gmail.com"><img src="images/mail-icon.png" alt="Mail"></a>
+            <a href="https://www.facebook.com"><img src="images/facebook-icon.png" alt="Facebook"></a>
+            <a href="https://www.linkedin.com"><img src="images/linkedin-icon.png" alt="LinkedIn"></a>
+            <a href="https://www.youtube.com"><img src="images/youtube-icon.png" alt="YouTube"></a>
+            <a href="https://www.strava.com"><img src="images/strava-icon.png" alt="Strava"></a>
+            <p>Address: Dhaka, Bangladesh</p>
+        </div>
+        <div class="footer-right">
+            <form action="https://formspree.io/YOUR_FORM_ID" method="POST">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" rows="5" required></textarea>
+                <button type="submit">Send Message</button>
+            </form>
+        </div>
+        <div class="footer-bottom">
+            <p><i>Don't copy guys! All rights Reserved @2024</i></p>
+        </div>
+    </footer>
+    <button id="back-to-top" class="back-to-top">↑</button>
+
+    <script>
+        const hamburger = document.querySelector('.hamburger');
+        const navUl = document.querySelector('nav ul');
+        const adminIcon = document.querySelector('.admin-icon');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('close');
+            navUl.classList.toggle('show');
+            if (adminIcon) {
+                adminIcon.classList.toggle('hide');
+            }
+        });
+
+        const backToTopButton = document.getElementById('back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopButton.classList.add('show');
+            } else {
+                backToTopButton.classList.remove('show');
+            }
+        });
+
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+
+</html>

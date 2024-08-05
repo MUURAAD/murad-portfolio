@@ -1,0 +1,306 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Achievements - Murad</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBnDhuKL60HNcX40JI9zQ6YIZDr1hbMZHc",
+            authDomain: "trihardmurad.firebaseapp.com",
+            projectId: "trihardmurad",
+            storageBucket: "trihardmurad.appspot.com",
+            messagingSenderId: "146538214416",
+            appId: "1:146538214416:web:0d7ad5834eb432c385c695",
+            measurementId: "G-GQNJV0VQQQ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            const blogPostsRef = collection(db, "achievementsPosts");
+            const blogPostsSnap = await getDocs(blogPostsRef);
+            const blogPosts = blogPostsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+            const blogPostsContainer = document.getElementById('blog-posts');
+            blogPosts.forEach(post => {
+                const postElement = document.createElement('div');
+                postElement.classList.add('blog-card');
+                postElement.innerHTML = `
+                    <img src="${post.imageUrl}" alt="${post.title}">
+                    <div class="blog-content">
+                        <span class="tag">#${post.tag}</span>
+                        <p class="date">${new Date(post.date).toDateString()}</p>
+                        <h3>${post.title}</h3>
+                        <p>${post.content.substring(0, 100)}...</p>
+                    </div>
+                `;
+                postElement.addEventListener('click', () => {
+                    window.location.href = `achievements-fullpost.html?id=${post.id}`;
+                });
+                blogPostsContainer.appendChild(postElement);
+            });
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="images/logo.png" alt="Logo">
+            <span>Murad's Blog</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="projects.html">projects</a></li>
+                <li><a href="storytelling.html">Storytelling Blog</a></li>
+                <li><a href="athletic.html">Athletic Blog</a></li>
+                <li><a href="achievements.html">Achievements</a></li>
+            </ul>
+        </nav>
+        <div class="admin-icon">
+            <a href="admin.html"><img src="images/admin-icon.png" alt="Admin"></a>
+        </div>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </header>
+    <h2 class="centered-heading">Your Achievements Are Here</h2>
+    <main>
+        <section id="blog-container">
+            <div id="blog-posts" class="blog-posts-grid"></div>
+        </section>
+    </main>
+    <footer>
+        <p>© 2024 Murad's Portfolio. Made with love in Dhaka.</p>
+    </footer>
+    <script>
+        const hamburger = document.querySelector('.hamburger');
+        const navUl = document.querySelector('nav ul');
+        const adminIcon = document.querySelector('.admin-icon');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('close');
+            navUl.classList.toggle('show');
+            adminIcon.classList.toggle('hide');
+        });
+    </script>
+</body>
+</html> -->
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Achievements - Murad</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBnDhuKL60HNcX40JI9zQ6YIZDr1hbMZHc",
+            authDomain: "trihardmurad.firebaseapp.com",
+            projectId: "trihardmurad",
+            storageBucket: "trihardmurad.appspot.com",
+            messagingSenderId: "146538214416",
+            appId: "1:146538214416:web:0d7ad5834eb432c385c695",
+            measurementId: "G-GQNJV0VQQQ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            const blogPostsRef = collection(db, "achievementsPosts");
+            const blogPostsSnap = await getDocs(blogPostsRef);
+            const blogPosts = blogPostsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+            const blogPostsContainer = document.getElementById('blog-posts');
+            blogPostsContainer.innerHTML = '';
+            blogPosts.forEach(post => {
+                const postElement = document.createElement('div');
+                postElement.classList.add('blog-card');
+                postElement.innerHTML = `
+                    <img src="${post.imageUrl}" alt="${post.title}">
+                    <div class="blog-content">
+                        <div class="content-left">
+                            <span class="tag">#${post.tag}</span>
+                            <p class="date">${new Date(post.date).toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}</p>
+                        </div>
+                       
+                    </div>
+                    <div class="blog-text">
+                        <h3>${post.title}</h3>
+                        <p>${post.content.substring(0, 100)}...</p>
+                    </div>
+                `;
+                postElement.addEventListener('click', () => {
+                    window.location.href = `achievements-fullpost.html?id=${post.id}`;
+                });
+                blogPostsContainer.appendChild(postElement);
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <a href="index.html"><img src="images/logo.png" alt="Logo"></a>
+            <span>Murad's Blog</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="storytelling.html">Storytelling Blog</a></li>
+                <li><a href="athletic.html">Athletic Blog</a></li>
+                <li><a href="achievements.html">Achievements</a></li>
+            </ul>
+        </nav>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </header>
+    <div class="secondary-nav">
+        <div class="search-box">
+            <input type="text" id="search-input" placeholder="Search...">
+            <button id="search-button">Search</button>
+        </div>
+        <div class="filter-dropdown">
+            <button class="filter-button">Filter</button>
+            <div class="filter-dropdown-content">
+                <label><input type="checkbox" value="Academic"> Academic</label>
+                <label><input type="checkbox" value="Athletic"> Athletic</label>
+                <label><input type="checkbox" value="Well-being"> Well-being</label>
+                <label><input type="checkbox" value="Others"> Others</label>
+            </div>
+        </div>
+    </div>
+    <main>
+        <section id="page-intro">
+            <h2>Murad's Achievements</h2>
+        </section>
+        <section id="blog-container">
+            <div id="blog-posts" class="blog-posts-grid"></div>
+        </section>
+    </main>
+    <footer>
+        <div class="footer-left">
+            <p>Connect with me:</p>
+            <a href="mailto:gamerzgold0@gmail.com"><img src="images/mail-icon.png" alt="Mail"></a>
+            <a href="https://www.facebook.com"><img src="images/facebook-icon.png" alt="Facebook"></a>
+            <a href="https://www.linkedin.com"><img src="images/linkedin-icon.png" alt="LinkedIn"></a>
+            <a href="https://www.youtube.com"><img src="images/youtube-icon.png" alt="YouTube"></a>
+            <a href="https://www.strava.com"><img src="images/strava-icon.png" alt="Strava"></a>
+            <p>Address: Dhaka, Bangladesh</p>
+        </div>
+        <div class="footer-right">
+            <form action="https://formspree.io/YOUR_FORM_ID" method="POST">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" rows="5" required></textarea>
+                <button type="submit">Send Message</button>
+            </form>
+        </div>
+        <div class="footer-bottom">
+            <p><i>Don't copy guys! All rights Reserved @2024</i></p>
+        </div>
+    </footer>
+    <button id="back-to-top" class="back-to-top">↑</button>
+
+    <script>
+        const hamburger = document.querySelector('.hamburger');
+        const navUl = document.querySelector('nav ul');
+        const adminIcon = document.querySelector('.admin-icon');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('close');
+            navUl.classList.toggle('show');
+            if (adminIcon) {
+                adminIcon.classList.toggle('hide');
+            }
+        });
+
+        const searchButton = document.getElementById('search-button');
+        const searchInput = document.getElementById('search-input');
+        searchButton.addEventListener('click', () => {
+            const searchText = searchInput.value.toLowerCase();
+            const blogPosts = document.querySelectorAll('.blog-card');
+            blogPosts.forEach(post => {
+                const postText = post.innerText.toLowerCase();
+                if (postText.includes(searchText)) {
+                    post.style.display = 'block';
+                } else {
+                    post.style.display = 'none';
+                }
+            });
+        });
+
+        const filterButton = document.querySelector('.filter-button');
+        const filterContent = document.querySelector('.filter-dropdown-content');
+        filterButton.addEventListener('click', () => {
+            filterContent.classList.toggle('show');
+        });
+
+        const filterCheckboxes = document.querySelectorAll('.filter-dropdown-content input[type="checkbox"]');
+        filterCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                const checkedValues = Array.from(filterCheckboxes)
+                    .filter(cb => cb.checked)
+                    .map(cb => cb.value.toLowerCase());
+                const blogPosts = document.querySelectorAll('.blog-card');
+                blogPosts.forEach(post => {
+                    const postTag = post.querySelector('.tag').innerText.toLowerCase();
+                    if (checkedValues.length === 0 || checkedValues.includes(postTag)) {
+                        post.style.display = 'block';
+                    } else {
+                        post.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        window.addEventListener('scroll', () => {
+            const secondaryNav = document.querySelector('.secondary-nav');
+            if (window.scrollY > 300) {
+                secondaryNav.classList.add('hide');
+            } else {
+                secondaryNav.classList.remove('hide');
+            }
+
+            const backToTopButton = document.getElementById('back-to-top');
+            if (window.scrollY > 300) {
+                backToTopButton.classList.add('show');
+            } else {
+                backToTopButton.classList.remove('show');
+            }
+        });
+
+        document.getElementById('back-to-top').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+
+</html>

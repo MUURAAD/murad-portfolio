@@ -1,3 +1,869 @@
+<!-- 
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Murad's Portfolio</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <img src="images/logo.png" alt="Logo">
+            <span>Murad's Blog</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html#home">Home</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="storytelling.html">Storytelling Blog</a></li>
+                <li><a href="athletic.html">Athletic Blog</a></li>
+                <li><a href="achievements.html">Achievements</a></li>
+            </ul>
+        </nav>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </header>
+    <div id="captioned-gallery">
+        <figure class="slider">
+            <figure>
+                <img src="images/slider7.jpg" alt="Hobbiton, New Zealand">
+                <figcaption>Hobbiton, New Zealand</figcaption>
+            </figure>
+            <figure>
+                <img src="images/slider6.jpg" alt="Wanaka, New Zealand">
+                <figcaption>Wanaka, New Zealand</figcaption>
+            </figure>
+            <figure>
+                <img src="images/slider5.jpg" alt="Utah, United States">
+                <figcaption>Utah, United States</figcaption>
+            </figure>
+            <figure>
+                <img src="images/slider4.jpg" alt="Bryce Canyon, Utah, United States">
+                <figcaption>Bryce Canyon, Utah, United States</figcaption>
+            </figure>
+            <figure>
+                <img src="images/slide1.jpg" alt="Hobbiton, New Zealand">
+                <figcaption>Hobbiton, New Zealand</figcaption>
+            </figure>
+        </figure>
+    </div>
+    <div class="profile-container">
+        <div class="profile-picture">
+            <img src="images/profile.jpg" alt="Profile Picture">
+        </div>
+        <h3>Welcome to Murad's Portfolio</h3>
+    </div>
+    <div class="life-update-container">
+        <h3>Life Update</h3>
+        <p class="life-update-text">
+            Here you can add a paragraph with your life updates. This text will be justified and the background will be
+            colorful to make it stand out. Make sure to add meaningful and engaging content to keep your visitors
+            interested.
+        </p>
+    </div>
+    <div class="cv-link-container">
+        <h2><a href="https://drive.google.com/link-to-your-cv" target="_blank">Click here to view my CV</a></h2>
+    </div>
+    <main>
+        <section id="home">
+            <h2>Storytelling by Murad</h2>
+            <div class="blog-container" id="storytelling-posts">
+               
+            </div>
+            <div class="view-more" id="view-more-storytelling">
+                <button id="view-more-storytelling-button">View More</button>
+            </div>
+        </section>
+
+        <section id="projects">
+            <h2>Projects by Murad</h2>
+            <div class="blog-container" id="projects-posts">
+               
+            </div>
+            <div class="view-more" id="view-more-projects">
+                <button id="view-more-projects-button">View More</button>
+            </div>
+        </section>
+
+        <section id="athletic">
+            <h2>Athletic by Murad</h2>
+            <div class="blog-container" id="athletic-posts">
+                
+            </div>
+            <div class="view-more" id="view-more-athletic">
+                <button id="view-more-athletic-button">View More</button>
+            </div>
+        </section>
+
+        <section id="achievements">
+            <h2>Achievements by Murad</h2>
+            <div class="blog-container" id="achievements-posts">
+                
+            </div>
+            <div class="view-more" id="view-more-achievements">
+                <button id="view-more-achievements-button">View More</button>
+            </div>
+        </section>
+
+        <section id="contact">
+            <h2>Get in Touch</h2>
+            <form id="contactForm">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" rows="5" required></textarea>
+                <button type="submit">Send Message</button>
+            </form>
+        </section>
+    </main>
+    <footer>
+        <p>© 2024 Murad's Portfolio. Made with love in Dhaka.</p>
+        <section id="admin">
+            <li><a href="admin.html">Admin</a></li>
+        </section>
+    </footer>
+    <button id="back-to-top" class="back-to-top">↑</button>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBnDhuKL60HNcX40JI9zQ6YIZDr1hbMZHc",
+            authDomain: "trihardmurad.firebaseapp.com",
+            projectId: "trihardmurad",
+            storageBucket: "trihardmurad.appspot.com",
+            messagingSenderId: "146538214416",
+            appId: "1:146538214416:web:0d7ad5834eb432c385c695",
+            measurementId: "G-GQNJV0VQQQ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let storytellingPosts = [];
+        let projectsPosts = [];
+        let athleticPosts = [];
+        let achievementsPosts = [];
+        let displayedStorytellingPosts = 0;
+        let displayedProjectsPosts = 0;
+        let displayedAthleticPosts = 0;
+        let displayedAchievementsPosts = 0;
+
+        const loadPosts = async () => {
+            const storytellingQuerySnapshot = await getDocs(collection(db, 'storytellingPosts'));
+            storytellingPosts = storytellingQuerySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            displayStorytellingPosts();
+
+            const projectsQuerySnapshot = await getDocs(collection(db, 'projectsPosts'));
+            projectsPosts = projectsQuerySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            displayProjectsPosts();
+
+            const athleticQuerySnapshot = await getDocs(collection(db, 'athleticPosts'));
+            athleticPosts = athleticQuerySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            displayAthleticPosts();
+
+            const achievementsQuerySnapshot = await getDocs(collection(db, 'achievementsPosts'));
+            achievementsPosts = achievementsQuerySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            displayAchievementsPosts();
+        };
+
+        const createPostElement = (post, page) => {
+            const postElement = document.createElement('div');
+            postElement.classList.add('blog-card');
+            postElement.innerHTML = `
+                <img src="${post.imageUrl}" alt="${post.title}">
+                <div class="blog-content">
+                    <span class="tag">#${post.tag}</span>
+                    <p class="date">${new Date(post.date).toDateString()}</p>
+                    <h3>${post.title}</h3>
+                    <p>${post.content.substring(0, 100)}...</p>
+                </div>
+            `;
+            postElement.addEventListener('click', () => {
+                window.location.href = `${page}-fullpost.html?id=${post.id}`;
+            });
+            return postElement;
+        };
+
+        const displayPosts = (posts, containerId, displayedPostsCount, viewMoreButtonId, page) => {
+            const container = document.getElementById(containerId);
+            const postsToShow = posts.slice(displayedPostsCount, displayedPostsCount + 3); // Show 3 posts at a time
+            postsToShow.forEach(post => container.appendChild(createPostElement(post, page)));
+            displayedPostsCount += 3;
+            if (displayedPostsCount >= posts.length) {
+                document.getElementById(viewMoreButtonId).style.display = 'none';
+            }
+            return displayedPostsCount;
+        };
+
+        const displayStorytellingPosts = () => {
+            displayedStorytellingPosts = displayPosts(storytellingPosts, 'storytelling-posts', displayedStorytellingPosts, 'view-more-storytelling', 'storytelling');
+        };
+
+        const displayProjectsPosts = () => {
+            displayedProjectsPosts = displayPosts(projectsPosts, 'projects-posts', displayedProjectsPosts, 'view-more-projects', 'projects');
+        };
+
+        const displayAthleticPosts = () => {
+            displayedAthleticPosts = displayPosts(athleticPosts, 'athletic-posts', displayedAthleticPosts, 'view-more-athletic', 'athletic');
+        };
+
+        const displayAchievementsPosts = () => {
+            displayedAchievementsPosts = displayPosts(achievementsPosts, 'achievements-posts', displayedAchievementsPosts, 'view-more-achievements', 'achievements');
+        };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadPosts();
+            document.getElementById('view-more-storytelling-button').addEventListener('click', displayStorytellingPosts);
+            document.getElementById('view-more-projects-button').addEventListener('click', displayProjectsPosts);
+            document.getElementById('view-more-athletic-button').addEventListener('click', displayAthleticPosts);
+            document.getElementById('view-more-achievements-button').addEventListener('click', displayAchievementsPosts);
+        });
+
+        // Navbar functionality
+        const hamburger = document.querySelector('.hamburger');
+        const navUl = document.querySelector('nav ul');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('close');
+            navUl.classList.toggle('show');
+        });
+
+        window.addEventListener('scroll', () => {
+            const backToTopButton = document.getElementById('back-to-top');
+            if (window.scrollY > 300) {
+                backToTopButton.classList.add('show');
+            } else {
+                backToTopButton.classList.remove('show');
+            }
+        });
+
+        document.getElementById('back-to-top').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Image slider functionality
+        let slideIndex = 0;
+        const slides = document.querySelectorAll('.slider figure');
+
+        const showSlides = () => {
+            slides.forEach((slide, index) => {
+                slide.style.display = index === slideIndex ? 'block' : 'none';
+            });
+            slideIndex = (slideIndex + 1) % slides.length;
+            setTimeout(showSlides, 3000);
+        };
+
+        showSlides();
+    </script>
+</body>
+
+</html>
+ -->
+
+
+
+
+
+
+
+
+ <!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Murad's Portfolio</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <img src="images/logo.png" alt="Logo">
+            <span>Murad's Blog</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html#home">Home</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="storytelling.html">Storytelling Blog</a></li>
+                <li><a href="athletic.html">Athletic Blog</a></li>
+                <li><a href="achievements.html">Achievements</a></li>
+            </ul>
+        </nav>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </header>
+    <div id="captioned-gallery">
+        <figure class="slider">
+            <figure>
+                <img src="images/slider7.jpg" alt="Hobbiton, New Zealand">
+                <figcaption>Hobbiton, New Zealand</figcaption>
+            </figure>
+            <figure>
+                <img src="images/slider6.jpg" alt="Wanaka, New Zealand">
+                <figcaption>Wanaka, New Zealand</figcaption>
+            </figure>
+            <figure>
+                <img src="images/slider5.jpg" alt="Utah, United States">
+                <figcaption>Utah, United States</figcaption>
+            </figure>
+            <figure>
+                <img src="images/slider4.jpg" alt="Bryce Canyon, Utah, United States">
+                <figcaption>Bryce Canyon, Utah, United States</figcaption>
+            </figure>
+            <figure>
+                <img src="images/slide1.jpg" alt="Hobbiton, New Zealand">
+                <figcaption>Hobbiton, New Zealand</figcaption>
+            </figure>
+        </figure>
+    </div>
+    <div class="profile-container">
+        <div class="profile-picture">
+            <img src="images/profile.jpg" alt="Profile Picture">
+        </div>
+        <h3>Welcome to Murad's Portfolio</h3>
+    </div>
+    <div class="life-update-container">
+        <h3>Life Update</h3>
+        <p class="life-update-text">
+            Here you can add a paragraph with your life updates. This text will be justified and the background will be
+            colorful to make it stand out. Make sure to add meaningful and engaging content to keep your visitors
+            interested.
+        </p>
+    </div>
+    <div class="cv-link-container">
+        <h2><a href="https://drive.google.com/link-to-your-cv" target="_blank">Click here to view my CV</a></h2>
+    </div>
+    <main>
+        <section id="home">
+            <h2>Storytelling by Murad</h2>
+            <div class="blog-container" id="storytelling-posts">
+              
+            </div>
+            <div class="view-more" id="view-more-storytelling">
+                <button id="view-more-storytelling-button">View More</button>
+            </div>
+        </section>
+
+        <section id="projects">
+            <h2>Projects by Murad</h2>
+            <div class="blog-container" id="projects-posts">
+              
+            </div>
+            <div class="view-more" id="view-more-projects">
+                <button id="view-more-projects-button">View More</button>
+            </div>
+        </section>
+
+        <section id="athletic">
+            <h2>Athletic by Murad</h2>
+            <div class="blog-container" id="athletic-posts">
+              
+            </div>
+            <div class="view-more" id="view-more-athletic">
+                <button id="view-more-athletic-button">View More</button>
+            </div>
+        </section>
+
+        <section id="achievements">
+            <h2>Achievements by Murad</h2>
+            <div class="blog-container" id="achievements-posts">
+              
+            </div>
+            <div class="view-more" id="view-more-achievements">
+                <button id="view-more-achievements-button">View More</button>
+            </div>
+        </section>
+
+        <section id="contact">
+            <h2>Get in Touch</h2>
+            <form id="contactForm">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" rows="5" required></textarea>
+                <button type="submit">Send Message</button>
+            </form>
+        </section>
+    </main>
+    <footer>
+        <p>© 2024 Murad's Portfolio. Made with love in Dhaka.</p>
+        <section id="admin">
+            <li><a href="admin.html">Admin</a></li>
+        </section>
+    </footer>
+    <button id="back-to-top" class="back-to-top">↑</button>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBnDhuKL60HNcX40JI9zQ6YIZDr1hbMZHc",
+            authDomain: "trihardmurad.firebaseapp.com",
+            projectId: "trihardmurad",
+            storageBucket: "trihardmurad.appspot.com",
+            messagingSenderId: "146538214416",
+            appId: "1:146538214416:web:0d7ad5834eb432c385c695",
+            measurementId: "G-GQNJV0VQQQ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let storytellingPosts = [];
+        let projectsPosts = [];
+        let athleticPosts = [];
+        let achievementsPosts = [];
+        let displayedStorytellingPosts = 0;
+        let displayedProjectsPosts = 0;
+        let displayedAthleticPosts = 0;
+        let displayedAchievementsPosts = 0;
+
+        const loadPosts = async () => {
+            const storytellingQuerySnapshot = await getDocs(collection(db, 'storytellingPosts'));
+            storytellingPosts = storytellingQuerySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            displayStorytellingPosts();
+
+            const projectsQuerySnapshot = await getDocs(collection(db, 'projectsPosts'));
+            projectsPosts = projectsQuerySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            displayProjectsPosts();
+
+            const athleticQuerySnapshot = await getDocs(collection(db, 'athleticPosts'));
+            athleticPosts = athleticQuerySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            displayAthleticPosts();
+
+            const achievementsQuerySnapshot = await getDocs(collection(db, 'achievementsPosts'));
+            achievementsPosts = achievementsQuerySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            displayAchievementsPosts();
+        };
+
+        const createPostElement = (post, page) => {
+            const postElement = document.createElement('div');
+            postElement.classList.add('blog-card');
+            postElement.innerHTML = `
+                <img src="${post.imageUrl}" alt="${post.title}">
+                <div class="blog-content">
+                    <span class="tag">#${post.tag}</span>
+                    <p class="date">${new Date(post.date).toDateString()}</p>
+                    <h3>${post.title}</h3>
+                    <p>${post.content.substring(0, 100)}...</p>
+                </div>
+            `;
+            postElement.addEventListener('click', () => {
+                window.location.href = `${page}-fullpost.html?id=${post.id}`;
+            });
+            return postElement;
+        };
+
+        const displayPosts = (posts, containerId, displayedPostsCount, viewMoreButtonId, page) => {
+            const container = document.getElementById(containerId);
+            const postsToShow = posts.slice(displayedPostsCount, displayedPostsCount + 3); // Show 3 posts at a time
+            postsToShow.forEach(post => container.appendChild(createPostElement(post, page)));
+            displayedPostsCount += 3;
+            if (displayedPostsCount >= posts.length) {
+                document.getElementById(viewMoreButtonId).style.display = 'none';
+            }
+            return displayedPostsCount;
+        };
+
+        const displayStorytellingPosts = () => {
+            displayedStorytellingPosts = displayPosts(storytellingPosts, 'storytelling-posts', displayedStorytellingPosts, 'view-more-storytelling', 'storytelling');
+        };
+
+        const displayProjectsPosts = () => {
+            displayedProjectsPosts = displayPosts(projectsPosts, 'projects-posts', displayedProjectsPosts, 'view-more-projects', 'projects');
+        };
+
+        const displayAthleticPosts = () => {
+            displayedAthleticPosts = displayPosts(athleticPosts, 'athletic-posts', displayedAthleticPosts, 'view-more-athletic', 'athletic');
+        };
+
+        const displayAchievementsPosts = () => {
+            displayedAchievementsPosts = displayPosts(achievementsPosts, 'achievements-posts', displayedAchievementsPosts, 'view-more-achievements', 'achievements');
+        };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadPosts();
+            document.getElementById('view-more-storytelling-button').addEventListener('click', displayStorytellingPosts);
+            document.getElementById('view-more-projects-button').addEventListener('click', displayProjectsPosts);
+            document.getElementById('view-more-athletic-button').addEventListener('click', displayAthleticPosts);
+            document.getElementById('view-more-achievements-button').addEventListener('click', displayAchievementsPosts);
+        });
+
+        // Navbar functionality
+        const hamburger = document.querySelector('.hamburger');
+        const navUl = document.querySelector('nav ul');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('close');
+            navUl.classList.toggle('show');
+        });
+
+        window.addEventListener('scroll', () => {
+            const backToTopButton = document.getElementById('back-to-top');
+            if (window.scrollY > 300) {
+                backToTopButton.classList.add('show');
+            } else {
+                backToTopButton.classList.remove('show');
+            }
+        });
+
+        document.getElementById('back-to-top').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Image slider functionality
+        let slideIndex = 0;
+        const slides = document.querySelectorAll('.slider figure');
+
+        const showSlides = () => {
+            slides.forEach((slide, index) => {
+                slide.style.display = index === slideIndex ? 'block' : 'none';
+            });
+            slideIndex = (slideIndex + 1) % slides.length;
+            setTimeout(showSlides, 3000);
+        };
+
+        showSlides();
+    </script>
+</body>
+
+</html> -->
+
+
+
+
+
+
+<!-- 
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Murad's Portfolio</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <img src="images/logo.png" alt="Logo">
+            <span>Murad's Blog</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html#home">Home</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="storytelling.html">Storytelling Blog</a></li>
+                <li><a href="athletic.html">Athletic Blog</a></li>
+                <li><a href="achievements.html">Achievements</a></li>
+            </ul>
+        </nav>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </header>
+    <div id="captioned-gallery">
+        <figure class="slider">
+            <figure>
+                <img src="images/slider1(1920 x 800 px).jpg" alt="Hobbiton, New Zealand">
+                <figcaption>Hobbiton, New Zealand</figcaption>
+            </figure>
+            <figure>
+                <img src="images/slider2(1920 x 800 px).jpg" alt="Wanaka, New Zealand">
+                <figcaption>Wanaka, New Zealand</figcaption>
+            </figure>
+            <figure>
+                <img src="images/slider3(1920 x 800 px).jpg" alt="Utah, United States">
+                <figcaption>Utah, United States</figcaption>
+            </figure>
+            <figure>
+                <img src="images/slider6.jpg" alt="Bryce Canyon, Utah, United States">
+                <figcaption>Bryce Canyon, Utah, United States</figcaption>
+            </figure>
+            <figure>
+                <img src="images/slider7.jpg" alt="Hobbiton, New Zealand">
+                <figcaption>Hobbiton, New Zealand</figcaption>
+            </figure>
+        </figure>
+    </div>
+    <div class="profile-container">
+        <div class="profile-picture">
+            <img src="images/profile.jpg" alt="Profile Picture">
+        </div>
+        <h3>Welcome to Murad's Portfolio</h3>
+    </div>
+    <div class="life-update-container">
+        <h3>Life Update</h3>
+        <p class="life-update-text">
+            Here you can add a paragraph with your life updates. This text will be justified and the background will be
+            colorful to make it stand out. Make sure to add meaningful and engaging content to keep your visitors
+            interested.
+        </p>
+    </div>
+    <div class="cv-link-container" style="text-align: center;">
+        <h2><a href="https://drive.google.com/link-to-your-cv" target="_blank">Click here to view my CV</a></h2>
+    </div>
+    <main>
+        <section id="home">
+            <div style="text-align: center;">
+            <h2>Storytelling by Murad</h2>
+            </div>
+            <div class="blog-container" id="storytelling-posts">
+               
+            </div>
+            <div class="view-more" id="view-more-storytelling">
+                <button id="view-more-storytelling-button">View More</button>
+            </div>
+        </section>
+
+        <section id="projects">
+            <div style="text-align: center;">
+            <h2>Projects by Murad</h2>
+            </div>
+            <div class="blog-container" id="projects-posts">
+               
+            </div>
+            <div class="view-more" id="view-more-projects">
+                <button id="view-more-projects-button">View More</button>
+            </div>
+        </section>
+
+        <section id="athletic">
+            <div style="text-align: center;">
+            <h2>Athletic by Murad</h2>
+            </div>
+            <div class="blog-container" id="athletic-posts">
+                
+            </div>
+            <div class="view-more" id="view-more-athletic">
+                <button id="view-more-athletic-button">View More</button>
+            </div>
+        </section>
+
+        <section id="achievements">
+            <div style="text-align: center;">
+            <h2>Achievements by Murad</h2>
+            </div>
+            <div class="blog-container" id="achievements-posts">
+               
+            </div>
+            <div class="view-more" id="view-more-achievements">
+                <button id="view-more-achievements-button">View More</button>
+            </div>
+        </section>
+
+    </main>
+    <footer>
+        <div class="footer-left">
+            <p>Connect with me:</p>
+            <div class="social-icons">
+                <a href="mailto:gamerzgold0@gmail.com"><img src="images/mail-icon.png" alt="Mail"></a>
+                <a href="https://www.facebook.com"><img src="images/facebook-icon.png" alt="Facebook"></a>
+                <a href="https://www.linkedin.com"><img src="images/linkedin-icon.png" alt="LinkedIn"></a>
+                <a href="https://www.youtube.com"><img src="images/youtube-icon.png" alt="YouTube"></a>
+                <a href="https://www.strava.com"><img src="images/strava-icon.png" alt="Strava"></a>
+            </div>
+            <p>Address: Dhaka, Bangladesh</p>
+        </div>
+        <div class="footer-right">
+            <form action="https://formspree.io/YOUR_FORM_ID" method="POST">
+                <input type="text" id="name" name="name" placeholder="Name" required>
+                <input type="email" id="email" name="email" placeholder="Email" required>
+                <textarea id="message" name="message" rows="3" placeholder="Message" required></textarea>
+                <button type="submit">Send</button>
+            </form>
+        </div>
+        <div class="footer-bottom">
+            <p><i>Don't copy guys! All rights Reserved @2024</i></p>
+            <a href="admin.html">Admin</a>
+        </div>
+        <button id="back-to-top" class="back-to-top">↑</button>
+    </footer>
+    
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBnDhuKL60HNcX40JI9zQ6YIZDr1hbMZHc",
+            authDomain: "trihardmurad.firebaseapp.com",
+            projectId: "trihardmurad",
+            storageBucket: "trihardmurad.appspot.com",
+            messagingSenderId: "146538214416",
+            appId: "1:146538214416:web:0d7ad5834eb432c385c695",
+            measurementId: "G-GQNJV0VQQQ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let storytellingPosts = [];
+        let projectsPosts = [];
+        let athleticPosts = [];
+        let achievementsPosts = [];
+        let displayedStorytellingPosts = 0;
+        let displayedProjectsPosts = 0;
+        let displayedAthleticPosts = 0;
+        let displayedAchievementsPosts = 0;
+
+        const loadPosts = async () => {
+            const storytellingQuerySnapshot = await getDocs(collection(db, 'storytellingPosts'));
+            storytellingPosts = storytellingQuerySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            displayStorytellingPosts();
+
+            const projectsQuerySnapshot = await getDocs(collection(db, 'projectsPosts'));
+            projectsPosts = projectsQuerySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            displayProjectsPosts();
+
+            const athleticQuerySnapshot = await getDocs(collection(db, 'athleticPosts'));
+            athleticPosts = athleticQuerySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            displayAthleticPosts();
+
+            const achievementsQuerySnapshot = await getDocs(collection(db, 'achievementsPosts'));
+            achievementsPosts = achievementsQuerySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            displayAchievementsPosts();
+        };
+
+        const createPostElement = (post, page) => {
+            const postElement = document.createElement('div');
+            postElement.classList.add('blog-card');
+            postElement.innerHTML = `
+                <img src="${post.imageUrl}" alt="${post.title}">
+                <div class="blog-content">
+                    <span class="tag">#${post.tag}</span>
+                    <p class="date">${new Date(post.date).toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' })}</p>
+                    <h3>${post.title}</h3>
+                    <p>${post.content.substring(0, 100)}...</p>
+                    <img src="images/share-icon.png" alt="Share" class="share-icon">
+                </div>
+            `;
+            postElement.addEventListener('click', () => {
+                window.location.href = `${page}-fullpost.html?id=${post.id}`;
+            });
+            return postElement;
+        };
+
+        const displayPosts = (posts, containerId, displayedPostsCount, viewMoreButtonId, page) => {
+            const container = document.getElementById(containerId);
+            const postsToShow = posts.slice(displayedPostsCount, displayedPostsCount + 3); // Show 3 posts at a time
+            postsToShow.forEach(post => container.appendChild(createPostElement(post, page)));
+            displayedPostsCount += 3;
+            if (displayedPostsCount >= posts.length) {
+                document.getElementById(viewMoreButtonId).style.display = 'none';
+            }
+            return displayedPostsCount;
+        };
+
+        const displayStorytellingPosts = () => {
+            displayedStorytellingPosts = displayPosts(storytellingPosts, 'storytelling-posts', displayedStorytellingPosts, 'view-more-storytelling', 'storytelling');
+        };
+
+        const displayProjectsPosts = () => {
+            displayedProjectsPosts = displayPosts(projectsPosts, 'projects-posts', displayedProjectsPosts, 'view-more-projects', 'projects');
+        };
+
+        const displayAthleticPosts = () => {
+            displayedAthleticPosts = displayPosts(athleticPosts, 'athletic-posts', displayedAthleticPosts, 'view-more-athletic', 'athletic');
+        };
+
+        const displayAchievementsPosts = () => {
+            displayedAchievementsPosts = displayPosts(achievementsPosts, 'achievements-posts', displayedAchievementsPosts, 'view-more-achievements', 'achievements');
+        };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadPosts();
+            document.getElementById('view-more-storytelling-button').addEventListener('click', displayStorytellingPosts);
+            document.getElementById('view-more-projects-button').addEventListener('click', displayProjectsPosts);
+            document.getElementById('view-more-athletic-button').addEventListener('click', displayAthleticPosts);
+            document.getElementById('view-more-achievements-button').addEventListener('click', displayAchievementsPosts);
+        });
+
+               // Navbar functionality
+               const hamburger = document.querySelector('.hamburger');
+        const navUl = document.querySelector('nav ul');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('close');
+            navUl.classList.toggle('show');
+        });
+
+        window.addEventListener('scroll', () => {
+            const backToTopButton = document.getElementById('back-to-top');
+            if (window.scrollY > 300) {
+                backToTopButton.classList.add('show');
+            } else {
+                backToTopButton.classList.remove('show');
+            }
+        });
+
+        document.getElementById('back-to-top').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Image slider functionality
+        let slideIndex = 0;
+        const slides = document.querySelectorAll('.slider figure');
+
+        const showSlides = () => {
+            slides.forEach((slide, index) => {
+                slide.style.display = index === slideIndex ? 'block' : 'none';
+            });
+            slideIndex = (slideIndex + 1) % slides.length;
+            setTimeout(showSlides, 3000);
+        };
+
+        showSlides();
+    </script>
+</body>
+
+</html> -->
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Murad's Portfolio</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head> -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,106 +871,311 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Murad's Portfolio</title>
     <link rel="stylesheet" href="css/styles.css">
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            background-color: #f5f7fa;
-            color: #333;
-        }
-        header {
-            background-color: #f8f9fa;
-            padding: 20px;
-            text-align: center;
-        }
-        nav ul {
-            list-style: none;
-            padding: 0;
-        }
-        nav ul li {
-            display: inline;
-            margin-right: 15px;
-        }
-        nav ul li a {
-            text-decoration: none;
-            color: #333;
-        }
-        .intro {
-            padding: 50px;
-            text-align: center;
-        }
-        main {
-            padding: 20px;
-        }
-        footer {
-            background-color: #f8f9fa;
-            padding: 10px;
-            text-align: center;
-        }
-        .blog-post {
-            margin-bottom: 20px;
-        }
-        .blog-post h3 {
-            margin: 0;
-        }
-        .blog-post p {
-            margin: 5px 0;
-        }
-    </style>
+    <base href="file:///C:/Users/murad/OneDrive/Desktop/trihardmurad/public/">
 </head>
-<body>
+    <body>
     <header>
+        <div class="logo">
+            <img src="images/logo.png" alt="Logo">
+            <span>Murad's Blog</span>
+        </div>
         <nav>
             <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About Me</a></li>
+                <li><a href="index.html#home">Home</a></li>
+                <li><a href="projects.html">Projects</a></li>
                 <li><a href="storytelling.html">Storytelling Blog</a></li>
                 <li><a href="athletic.html">Athletic Blog</a></li>
-                <li><a href="contact.html">Contact Me</a></li>
-                <li><a href="admin.html">Admin</a></li>
+                <li><a href="achievements.html">Achievements</a></li>
             </ul>
         </nav>
-        <div class="intro">
-            <h1>Hi, my name is Murad.</h1>
-            <p>Welcome to my portfolio. I'm an electrical engineer and triathlete.</p>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
         </div>
     </header>
+    <div id="captioned-gallery">
+        <figure class="slider">
+            <figure>
+                <img src="images/slider1(1920 x 800 px).jpg" alt="Hobbiton, New Zealand">
+                <figcaption class="typing-animation">Hobbiton, New Zealand</figcaption>
+            </figure>
+            <figure>
+                <img src="images/slider2(1920 x 800 px).jpg" alt="Wanaka, New Zealand">
+                <figcaption class="typing-animation">Wanaka, New Zealand</figcaption>
+            </figure>
+            <figure>
+                <img src="images/slider3(1920 x 800 px).jpg" alt="Utah, United States">
+                <figcaption class="typing-animation">Utah, United States</figcaption>
+            </figure>
+            <figure>
+                <img src="images/slider6.jpg" alt="Bryce Canyon, Utah, United States">
+                <figcaption class="typing-animation">Bryce Canyon, Utah, United States</figcaption>
+            </figure>
+            <figure>
+                <img src="images/slider7.jpg" alt="Hobbiton, New Zealand">
+                <figcaption class="typing-animation">Hobbiton, New Zealand</figcaption>
+            </figure>
+        </figure>
+    </div>
+    
+    <div class="profile-container" style="text-align: center;">
+        <div class="profile-picture">
+            <img src="images/profile.jpg" alt="Profile Picture">
+        </div>
+        <h3 class="typing-animation">Welcome to Murad's Portfolio</h3>
+    </div>
+    <div class="life-update-container" style="text-align: center;">
+        <h3>Life Update</h3>
+        <p class="life-update-text">
+            Here you can add a paragraph with your life updates. This text will be justified and the background will be
+            colorful to make it stand out. Make sure to add meaningful and engaging content to keep your visitors
+            interested. Here you can add a paragraph with your life updates. This text will be justified and the background will be
+            colorful to make it stand out. Make sure to add meaningful and engaging content to keep your visitors
+            interested. Here you can add a paragraph with your life updates. This text will be justified and the background will be
+            colorful to make it stand out. 
+           
+          
+    </div>
+    <div class="cv-link-container" style="text-align: center;">
+        <h2 class="bounce-animation"><a href="https://drive.google.com/link-to-your-cv" target="_blank">Click here to view my CV</a></h2>
+    </div>
+    
+   
     <main>
-        <section>
-            <h2>About Me</h2>
-            <p>Information about Murad's engineering career and athletic achievements.</p>
+        <section id="home">
+            <div style="text-align: center;">
+            <h2>Storytelling by Murad</h2>
+            </div>
+            <div class="blog-container" id="storytelling-posts">
+                <!-- Storytelling posts will be dynamically added here -->
+            </div>
+            <div class="view-more" id="view-more-storytelling">
+                <button id="view-more-storytelling-button">View More</button>
+            </div>
         </section>
-        <section>
-            <h2>Recent Blog Posts</h2>
-            <div id="blog-posts"></div>
+
+        <section id="projects">
+            <div style="text-align: center;">
+            <h2>Projects by Murad</h2>
+            </div>
+            <div class="blog-container" id="projects-posts">
+                <!-- Projects posts will be dynamically added here -->
+            </div>
+            <div class="view-more" id="view-more-projects">
+                <button id="view-more-projects-button">View More</button>
+            </div>
         </section>
+
+        <section id="athletic">
+            <div style="text-align: center;">
+            <h2>Athletic by Murad</h2>
+            </div>
+            <div class="blog-container" id="athletic-posts">
+                <!-- Athletic posts will be dynamically added here -->
+            </div>
+            <div class="view-more" id="view-more-athletic">
+                <button id="view-more-athletic-button">View More</button>
+            </div>
+        </section>
+
+        <section id="achievements">
+            <div style="text-align: center;">
+            <h2>Achievements by Murad</h2>
+            </div>
+            <div class="blog-container" id="achievements-posts">
+                <!-- Achievements posts will be dynamically added here -->
+            </div>
+            <div class="view-more" id="view-more-achievements">
+                <button id="view-more-achievements-button">View More</button>
+            </div>
+        </section>
+
     </main>
     <footer>
-        <p>© 2024 Murad's Portfolio. Made with love in Dhaka.</p>
+        <div class="footer-container">
+            <div class="footer-left">
+                <p>Connect with me:</p>
+                <div class="social-icons">
+                    <a href="mailto:gamerzgold0@gmail.com"><img src="images/mail-icon.png" alt="Mail"></a>
+                    <a href="https://www.facebook.com"><img src="images/facebook-icon.png" alt="Facebook"></a>
+                    <a href="https://www.linkedin.com"><img src="images/linkedin-icon.png" alt="LinkedIn"></a>
+                    <a href="https://www.youtube.com"><img src="images/youtube-icon.png" alt="YouTube"></a>
+                    <a href="https://www.strava.com"><img src="images/strava-icon.png" alt="Strava"></a>
+                </div>
+                <p>Address: Dhaka, Bangladesh</p>
+            </div>
+            <div class="footer-right">
+                <form action="https://formspree.io/YOUR_FORM_ID" method="POST">
+                    <input type="text" id="name" name="name" placeholder="Name" required>
+                    <input type="email" id="email" name="email" placeholder="Email" required>
+                    <textarea id="message" name="message" rows="3" placeholder="Message" required></textarea>
+                    <button type="submit">Send</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p><i>Don't copy guys! All rights Reserved @2024</i></p>
+            <a href="admin.html">Admin</a>
+        </div>
+        <button id="back-to-top" class="back-to-top">↑</button>
     </footer>
+    
+    
 
-    <script>
-        // JavaScript to load recent blog posts
-        document.addEventListener("DOMContentLoaded", () => {
-            const blogPostsContainer = document.getElementById('blog-posts');
-            fetch('blogposts.json')
-                .then(response => response.json())
-                .then(blogPosts => {
-                    blogPosts.slice(-3).reverse().forEach(post => {
-                        const postElement = document.createElement('div');
-                        postElement.classList.add('blog-post');
-                        postElement.innerHTML = `
-                            <h3>${post.title}</h3>
-                            <p>${post.content}</p>
-                            <p><em>${post.date}</em></p>
-                        `;
-                        blogPostsContainer.appendChild(postElement);
-                    });
-                })
-                .catch(error => console.error('Error:', error));
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBnDhuKL60HNcX40JI9zQ6YIZDr1hbMZHc",
+            authDomain: "trihardmurad.firebaseapp.com",
+            projectId: "trihardmurad",
+            storageBucket: "trihardmurad.appspot.com",
+            messagingSenderId: "146538214416",
+            appId: "1:146538214416:web:0d7ad5834eb432c385c695",
+            measurementId: "G-GQNJV0VQQQ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let storytellingPosts = [];
+        let projectsPosts = [];
+        let athleticPosts = [];
+        let achievementsPosts = [];
+        let displayedStorytellingPosts = 0;
+        let displayedProjectsPosts = 0;
+        let displayedAthleticPosts = 0;
+        let displayedAchievementsPosts = 0;
+
+        const loadPosts = async () => {
+            const storytellingQuerySnapshot = await getDocs(collection(db, 'storytellingPosts'));
+            storytellingPosts = storytellingQuerySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            displayStorytellingPosts();
+
+            const projectsQuerySnapshot = await getDocs(collection(db, 'projectsPosts'));
+            projectsPosts = projectsQuerySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            displayProjectsPosts();
+
+            const athleticQuerySnapshot = await getDocs(collection(db, 'athleticPosts'));
+            athleticPosts = athleticQuerySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            displayAthleticPosts();
+
+            const achievementsQuerySnapshot = await getDocs(collection(db, 'achievementsPosts'));
+            achievementsPosts = achievementsQuerySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            displayAchievementsPosts();
+        };
+
+        const createPostElement = (post, page) => {
+    const postElement = document.createElement('div');
+    postElement.classList.add('blog-card');
+    postElement.innerHTML = `
+        <img src="${post.imageUrl}" alt="${post.title}">
+        <div class="blog-content">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span class="tag">#${post.tag}</span>
+               <div class="content-right">
+    </a>
+</div>
+
+            </div>
+            <p class="date">${new Date(post.date).toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' })}</p>
+            <h3>${post.title}</h3>
+            <p class="blog-excerpt">${post.content.substring(0, 100)}...</p>
+        </div>
+    `;
+    postElement.addEventListener('click', () => {
+        window.location.href = `${page}-fullpost.html?id=${post.id}`;
+    });
+    return postElement;
+};
+
+
+        const displayPosts = (posts, containerId, displayedPostsCount, viewMoreButtonId, page) => {
+            const container = document.getElementById(containerId);
+            const postsToShow = posts.slice(displayedPostsCount, displayedPostsCount + 3); // Show 3 posts at a time
+            postsToShow.forEach(post => container.appendChild(createPostElement(post, page)));
+            displayedPostsCount += 3;
+            if (displayedPostsCount >= posts.length) {
+                document.getElementById(viewMoreButtonId).style.display = 'none';
+            }
+            return displayedPostsCount;
+        };
+
+        const displayStorytellingPosts = () => {
+            displayedStorytellingPosts = displayPosts(storytellingPosts, 'storytelling-posts', displayedStorytellingPosts, 'view-more-storytelling', 'storytelling');
+        };
+
+        const displayProjectsPosts = () => {
+            displayedProjectsPosts = displayPosts(projectsPosts, 'projects-posts', displayedProjectsPosts, 'view-more-projects', 'projects');
+        };
+
+        const displayAthleticPosts = () => {
+            displayedAthleticPosts = displayPosts(athleticPosts, 'athletic-posts', displayedAthleticPosts, 'view-more-athletic', 'athletic');
+        };
+
+        const displayAchievementsPosts = () => {
+            displayedAchievementsPosts = displayPosts(achievementsPosts, 'achievements-posts', displayedAchievementsPosts, 'view-more-achievements', 'achievements');
+        };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadPosts();
+            document.getElementById('view-more-storytelling-button').addEventListener('click', displayStorytellingPosts);
+            document.getElementById('view-more-projects-button').addEventListener('click', displayProjectsPosts);
+            document.getElementById('view-more-athletic-button').addEventListener('click', displayAthleticPosts);
+            document.getElementById('view-more-achievements-button').addEventListener('click', displayAchievementsPosts);
         });
+
+        // Navbar functionality
+        const hamburger = document.querySelector('.hamburger');
+        const navUl = document.querySelector('nav ul');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('close');
+            navUl.classList.toggle('show');
+        });
+
+        window.addEventListener('scroll', () => {
+            const backToTopButton = document.getElementById('back-to-top');
+            if (window.scrollY > 300) {
+                backToTopButton.classList.add('show');
+            } else {
+                backToTopButton.classList.remove('show');
+            }
+        });
+
+        document.getElementById('back-to-top').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Image slider functionality
+        let slideIndex = 0;
+        const slides = document.querySelectorAll('.slider figure');
+
+        const showSlides = () => {
+            slides.forEach((slide, index) => {
+                slide.style.display = index === slideIndex ? 'block' : 'none';
+            });
+            slideIndex = (slideIndex + 1) % slides.length;
+            setTimeout(showSlides, 3000);
+        };
+
+        showSlides();
+        document.addEventListener("DOMContentLoaded", function () {
+            const typingText = document.querySelector(".typing-animation");
+            const textArray = typingText.innerHTML.split("");
+            typingText.innerHTML = "";
+    
+            textArray.forEach((char, i) => {
+                setTimeout(() => {
+                    typingText.innerHTML += char;
+                }, 100 * i);
+            });
+        });
+       
+
     </script>
 </body>
+
 </html>

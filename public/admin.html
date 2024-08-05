@@ -1,3 +1,775 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page - Murad</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.tiny.cloud/1/71b8ealpyomcy263ik5eskpq1tp4ytjd36rtiukg5r6xsg6p/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBnDhuKL60HNcX40JI9zQ6YIZDr1hbMZHc",
+            authDomain: "trihardmurad.firebaseapp.com",
+            projectId: "trihardmurad",
+            storageBucket: "trihardmurad.appspot.com",
+            messagingSenderId: "146538214416",
+            appId: "1:146538214416:web:0d7ad5834eb432c385c695",
+            measurementId: "G-GQNJV0VQQQ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const loginForm = document.getElementById('loginForm');
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+
+                try {
+                    await signInWithEmailAndPassword(auth, email, password);
+                    document.getElementById('login-section').style.display = 'none';
+                    document.getElementById('admin-section').style.display = 'block';
+                } catch (error) {
+                    alert('Login failed: ' + error.message);
+                }
+            });
+
+            const addButton = document.getElementById('addButton');
+            addButton.addEventListener('click', async () => {
+                const title = document.getElementById('blogTitle').value;
+                const content = tinymce.get('blogContent').getContent();
+                const category = document.getElementById('blogCategory').value;
+                const tags = document.getElementById('blogTags').value.split(','); // Get the tags as an array
+                const file = document.getElementById('blogImage').files[0];
+
+                if (!file) {
+                    alert('Please select an image.');
+                    return;
+                }
+
+                try {
+                    const storageRef = ref(storage, `blogImages/${file.name}`);
+                    await uploadBytes(storageRef, file);
+                    const imageUrl = await getDownloadURL(storageRef);
+
+                    await addDoc(collection(db, `${category}Posts`), { title, content, tags, imageUrl, date: new Date().toISOString() });
+
+                    alert('Blog post added successfully!');
+                    document.getElementById('blogTitle').value = '';
+                    tinymce.get('blogContent').setContent('');
+                    document.getElementById('blogCategory').value = '';
+                    document.getElementById('blogTags').value = ''; // Clear the tags input
+                    document.getElementById('blogImage').value = '';
+                    loadPosts(); // Refresh the posts list
+                } catch (error) {
+                    alert('Error adding blog post: ' + error.message);
+                }
+            });
+
+            async function loadPosts() {
+                try {
+                    const storytellingPostsRef = collection(db, "storytellingPosts");
+                    const athleticPostsRef = collection(db, "athleticPosts");
+                    const achievementsPostsRef = collection(db, "achievementsPosts");
+                    const projectsPostsRef = collection(db, "projectsPosts");
+
+                    const storytellingPostsSnap = await getDocs(storytellingPostsRef);
+                    const athleticPostsSnap = await getDocs(athleticPostsRef);
+                    const achievementsPostsSnap = await getDocs(achievementsPostsRef);
+                    const projectsPostsSnap = await getDocs(projectsPostsRef);
+
+                    const storytellingPosts = storytellingPostsSnap.docs.map(doc => doc.data());
+                    const athleticPosts = athleticPostsSnap.docs.map(doc => doc.data());
+                    const achievementsPosts = achievementsPostsSnap.docs.map(doc => doc.data());
+                    const projectsPosts = projectsPostsSnap.docs.map(doc => doc.data());
+
+                    const postsContainer = document.getElementById('posts-list');
+                    postsContainer.innerHTML = '';
+
+                    storytellingPosts.forEach(post => {
+                        const postElement = document.createElement('li');
+                        postElement.textContent = post.title;
+                        postsContainer.appendChild(postElement);
+                    });
+
+                    athleticPosts.forEach(post => {
+                        const postElement = document.createElement('li');
+                        postElement.textContent = post.title;
+                        postsContainer.appendChild(postElement);
+                    });
+
+                    achievementsPosts.forEach(post => {
+                        const postElement = document.createElement('li');
+                        postElement.textContent = post.title;
+                        postsContainer.appendChild(postElement);
+                    });
+
+                    projectsPosts.forEach(post => {
+                        const postElement = document.createElement('li');
+                        postElement.textContent = post.title;
+                        postsContainer.appendChild(postElement);
+                    });
+                } catch (error) {
+                    console.error('Error loading posts:', error);
+                }
+            }
+
+            loadPosts();
+        });
+
+        tinymce.init({
+            selector: 'textarea.tinymce',
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+            tinycomments_mode: 'embedded',
+            tinycomments_author: 'Author name',
+            mergetags_list: [
+                { value: 'First.Name', title: 'First Name' },
+                { value: 'Email', title: 'Email' }
+            ],
+            images_upload_handler: function (blobInfo, success, failure) {
+                const storageRef = ref(storage, 'images/' + blobInfo.filename());
+                uploadBytes(storageRef, blobInfo.blob()).then(snapshot => {
+                    getDownloadURL(snapshot.ref).then(url => {
+                        success(url);
+                    }).catch(err => {
+                        failure(err.message);
+                    });
+                }).catch(err => {
+                    failure(err.message);
+                });
+            }
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="images/logo.png" alt="Logo">
+            <span>Murad's Blog</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="storytelling.html">Storytelling Blog</a></li>
+                <li><a href="athletic.html">Athletic Blog</a></li>
+                <li><a href="achievements.html">Achievements Blog</a></li>
+                <li><a href="contact.html">Contact Me</a></li>
+                <li><a href="admin.html">Admin</a></li>
+            </ul>
+        </nav>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </header>
+    <main>
+        <section id="login-section">
+            <h2>Login</h2>
+            <form id="loginForm">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                <button type="submit">Login</button>
+            </form>
+        </section>
+        <section id="admin-section" style="display:none;">
+            <h2>Add a New Blog Post</h2>
+            <form>
+                <label for="blogTitle">Title:</label>
+                <input type="text" id="blogTitle" name="blogTitle" required>
+                <label for="blogContent">Content:</label>
+                <textarea id="blogContent" name="blogContent" rows="5" class="tinymce" required></textarea>
+                <label for="blogCategory">Category:</label>
+                <select id="blogCategory" name="blogCategory">
+                    <option value="storytelling">Storytelling</option>
+                    <option value="athletic">Athletic</option>
+                    <option value="achievements">Achievements</option>
+                    <option value="projects">Projects</option>
+                </select>
+                <label for="blogTags">Tags (comma separated):</label>
+                <input type="text" id="blogTags" name="blogTags" required>
+                <label for="blogImage">Image:</label>
+                <input type="file" id="blogImage" name="blogImage" required>
+                <button type="button" id="addButton">Add Blog Post</button>
+            </form>
+            <h2>Existing Posts</h2>
+            <ul id="posts-list"></ul>
+        </section>
+    </main>
+    <footer>
+        <p>© 2024 Murad's Portfolio. Made with love in Dhaka.</p>
+    </footer>
+    <script>
+        const hamburger = document.querySelector('.hamburger');
+        const navUl = document.querySelector('nav ul');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('close');
+            navUl.classList.toggle('show');
+        });
+    </script>
+</body>
+</html> -->
+
+
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page - Murad</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.tiny.cloud/1/71b8ealpyomcy263ik5eskpq1tp4ytjd36rtiukg5r6xsg6p/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBnDhuKL60HNcX40JI9zQ6YIZDr1hbMZHc",
+            authDomain: "trihardmurad.firebaseapp.com",
+            projectId: "trihardmurad",
+            storageBucket: "trihardmurad.appspot.com",
+            messagingSenderId: "146538214416",
+            appId: "1:146538214416:web:0d7ad5834eb432c385c695",
+            measurementId: "G-GQNJV0VQQQ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const loginForm = document.getElementById('loginForm');
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+
+                try {
+                    await signInWithEmailAndPassword(auth, email, password);
+                    document.getElementById('login-section').style.display = 'none';
+                    document.getElementById('admin-section').style.display = 'block';
+                } catch (error) {
+                    alert('Login failed: ' + error.message);
+                }
+            });
+
+            const addButton = document.getElementById('addButton');
+            addButton.addEventListener('click', async () => {
+                const title = document.getElementById('blogTitle').value;
+                const content = tinymce.get('blogContent').getContent();
+                const category = document.getElementById('blogCategory').value;
+                const tags = document.getElementById('blogTags').value.split(',').map(tag => tag.trim().toLowerCase());
+                const file = document.getElementById('blogImage').files[0];
+
+                if (!file) {
+                    alert('Please select an image.');
+                    return;
+                }
+
+                try {
+                    const storageRef = ref(storage, `blogImages/${file.name}`);
+                    await uploadBytes(storageRef, file);
+                    const imageUrl = await getDownloadURL(storageRef);
+
+                    await addDoc(collection(db, `${category}Posts`), { title, content, imageUrl, date: new Date().toISOString(), tags });
+
+                    alert('Blog post added successfully!');
+                    document.getElementById('blogTitle').value = '';
+                    tinymce.get('blogContent').setContent('');
+                    document.getElementById('blogCategory').value = '';
+                    document.getElementById('blogImage').value = '';
+                    document.getElementById('blogTags').value = '';
+                    loadPosts(); // Refresh the posts list
+                } catch (error) {
+                    alert('Error adding blog post: ' + error.message);
+                }
+            });
+
+            async function loadPosts() {
+                try {
+                    const storytellingPostsRef = collection(db, "storytellingPosts");
+                    const athleticPostsRef = collection(db, "athleticPosts");
+                    const achievementsPostsRef = collection(db, "achievementsPosts");
+                    const projectsPostsRef = collection(db, "projectsPosts");
+
+                    const storytellingPostsSnap = await getDocs(storytellingPostsRef);
+                    const athleticPostsSnap = await getDocs(athleticPostsRef);
+                    const achievementsPostsSnap = await getDocs(achievementsPostsRef);
+                    const projectsPostsSnap = await getDocs(projectsPostsRef);
+
+                    const storytellingPosts = storytellingPostsSnap.docs.map(doc => doc.data());
+                    const athleticPosts = athleticPostsSnap.docs.map(doc => doc.data());
+                    const achievementsPosts = achievementsPostsSnap.docs.map(doc => doc.data());
+                    const projectsPosts = projectsPostsSnap.docs.map(doc => doc.data());
+
+                    const postsContainer = document.getElementById('posts-list');
+                    postsContainer.innerHTML = '';
+
+                    storytellingPosts.forEach(post => {
+                        const postElement = document.createElement('li');
+                        postElement.textContent = post.title;
+                        postsContainer.appendChild(postElement);
+                    });
+
+                    athleticPosts.forEach(post => {
+                        const postElement = document.createElement('li');
+                        postElement.textContent = post.title;
+                        postsContainer.appendChild(postElement);
+                    });
+
+                    achievementsPosts.forEach(post => {
+                        const postElement = document.createElement('li');
+                        postElement.textContent = post.title;
+                        postsContainer.appendChild(postElement);
+                    });
+
+                    projectsPosts.forEach(post => {
+                        const postElement = document.createElement('li');
+                        postElement.textContent = post.title;
+                        postsContainer.appendChild(postElement);
+                    });
+                } catch (error) {
+                    console.error('Error loading posts:', error);
+                }
+            }
+
+            loadPosts();
+        });
+
+        tinymce.init({
+            selector: 'textarea.tinymce',
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+            tinycomments_mode: 'embedded',
+            tinycomments_author: 'Author name',
+            mergetags_list: [
+                { value: 'First.Name', title: 'First Name' },
+                { value: 'Email', title: 'Email' }
+            ],
+            images_upload_handler: function (blobInfo, success, failure) {
+                const storageRef = ref(storage, 'images/' + blobInfo.filename());
+                uploadBytes(storageRef, blobInfo.blob()).then(snapshot => {
+                    getDownloadURL(snapshot.ref).then(url => {
+                        success(url);
+                    }).catch(err => {
+                        failure(err.message);
+                    });
+                }).catch(err => {
+                    failure(err.message);
+                });
+            }
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="images/logo.png" alt="Logo">
+            <span>Murad's Blog</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#about">About Me</a></li>
+                <li><a href="storytelling.html">Storytelling Blog</a></li>
+                <li><a href="athletic.html">Athletic Blog</a></li>
+                <li><a href="achievements.html">Achievements Blog</a></li>
+                <li><a href="projects.html">Projects Blog</a></li>
+                <li><a href="contact.html">Contact Me</a></li>
+                <li><a href="admin.html">Admin</a></li>
+            </ul>
+        </nav>
+        <div class="admin-icon">
+            <a href="admin.html"><img src="images/admin-icon.png" alt="Admin"></a>
+        </div>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </header>
+    <main>
+        <section id="login-section">
+            <h2>Login</h2>
+            <form id="loginForm">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+               
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+               
+                <button type="submit">Login</button>
+            </form>
+        </section>
+        <section id="admin-section" style="display:none;">
+            <h2>Add a New Blog Post</h2>
+            <form>
+                <label for="blogTitle">Title:</label>
+                <input type="text" id="blogTitle" name="blogTitle" required>
+               
+                <label for="blogContent">Content:</label>
+                <textarea id="blogContent" class="tinymce" name="blogContent"></textarea>
+               
+                <label for="blogCategory">Category:</label>
+                <select id="blogCategory" name="blogCategory" required>
+                    <option value="">Select a category</option>
+                    <option value="storytelling">Storytelling</option>
+                    <option value="athletic">Athletic</option>
+                    <option value="achievements">Achievements</option>
+                    <option value="projects">Projects</option>
+                </select>
+               
+                <label for="blogImage">Image:</label>
+                <input type="file" id="blogImage" name="blogImage" accept="image/*" required>
+               
+                <label for="blogTags">Tags (comma separated):</label>
+                <input type="text" id="blogTags" name="blogTags" required>
+               
+                <button type="button" id="addButton">Add Blog Post</button>
+            </form>
+           
+            <h2>Existing Blog Posts</h2>
+            <ul id="posts-list"></ul>
+        </section>
+    </main>
+    <footer>
+        <p>© 2024 Murad's Portfolio. Made with love in Dhaka.</p>
+    </footer>
+    <script>
+        const hamburger = document.querySelector('.hamburger');
+        const navUl = document.querySelector('nav ul');
+        const adminIcon = document.querySelector('.admin-icon');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('close');
+            navUl.classList.toggle('show');
+            if (adminIcon) {
+                adminIcon.classList.toggle('hide');
+            }
+        });
+
+        window.addEventListener('scroll', () => {
+            const backToTopButton = document.getElementById('back-to-top');
+            if (window.scrollY > 300) {
+                backToTopButton.classList.add('show');
+            } else {
+                backToTopButton.classList.remove('show');
+            }
+        });
+
+        document.getElementById('back-to-top').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>  -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page - Murad</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.tiny.cloud/1/71b8ealpyomcy263ik5eskpq1tp4ytjd36rtiukg5r6xsg6p/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBnDhuKL60HNcX40JI9zQ6YIZDr1hbMZHc",
+            authDomain: "trihardmurad.firebaseapp.com",
+            projectId: "trihardmurad",
+            storageBucket: "trihardmurad.appspot.com",
+            messagingSenderId: "146538214416",
+            appId: "1:146538214416:web:0d7ad5834eb432c385c695",
+            measurementId: "G-GQNJV0VQQQ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const loginForm = document.getElementById('loginForm');
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+
+                try {
+                    await signInWithEmailAndPassword(auth, email, password);
+                    document.getElementById('login-section').style.display = 'none';
+                    document.getElementById('admin-section').style.display = 'block';
+                } catch (error) {
+                    alert('Login failed: ' + error.message);
+                }
+            });
+
+            const addButton = document.getElementById('addButton');
+            addButton.addEventListener('click', async () => {
+                const title = document.getElementById('blogTitle').value;
+                const content = tinymce.get('blogContent').getContent();
+                const category = document.getElementById('blogCategory').value;
+                const tags = document.getElementById('blogTags').value.split(',').map(tag => tag.trim().toLowerCase());
+                const file = document.getElementById('blogImage').files[0];
+
+                if (!file) {
+                    alert('Please select an image.');
+                    return;
+                }
+
+                try {
+                    const storageRef = ref(storage, `blogImages/${file.name}`);
+                    await uploadBytes(storageRef, file);
+                    const imageUrl = await getDownloadURL(storageRef);
+
+                    await addDoc(collection(db, `${category}Posts`), { title, content, imageUrl, date: new Date().toISOString(), tags });
+
+                    alert('Blog post added successfully!');
+                    document.getElementById('blogTitle').value = '';
+                    tinymce.get('blogContent').setContent('');
+                    document.getElementById('blogCategory').value = '';
+                    document.getElementById('blogImage').value = '';
+                    document.getElementById('blogTags').value = '';
+                    loadPosts(); // Refresh the posts list
+                } catch (error) {
+                    alert('Error adding blog post: ' + error.message);
+                }
+            });
+
+            async function loadPosts() {
+                try {
+                    const storytellingPostsRef = collection(db, "storytellingPosts");
+                    const athleticPostsRef = collection(db, "athleticPosts");
+                    const achievementsPostsRef = collection(db, "achievementsPosts");
+                    const projectsPostsRef = collection(db, "projectsPosts");
+
+                    const storytellingPostsSnap = await getDocs(storytellingPostsRef);
+                    const athleticPostsSnap = await getDocs(athleticPostsRef);
+                    const achievementsPostsSnap = await getDocs(achievementsPostsRef);
+                    const projectsPostsSnap = await getDocs(projectsPostsRef);
+
+                    const storytellingPosts = storytellingPostsSnap.docs.map(doc => doc.data());
+                    const athleticPosts = athleticPostsSnap.docs.map(doc => doc.data());
+                    const achievementsPosts = achievementsPostsSnap.docs.map(doc => doc.data());
+                    const projectsPosts = projectsPostsSnap.docs.map(doc => doc.data());
+
+                    const postsContainer = document.getElementById('posts-list');
+                    postsContainer.innerHTML = '';
+
+                    storytellingPosts.forEach(post => {
+                        const postElement = document.createElement('li');
+                        postElement.textContent = post.title;
+                        postsContainer.appendChild(postElement);
+                    });
+
+                    athleticPosts.forEach(post => {
+                        const postElement = document.createElement('li');
+                        postElement.textContent = post.title;
+                        postsContainer.appendChild(postElement);
+                    });
+
+                    achievementsPosts.forEach(post => {
+                        const postElement = document.createElement('li');
+                        postElement.textContent = post.title;
+                        postsContainer.appendChild(postElement);
+                    });
+
+                    projectsPosts.forEach(post => {
+                        const postElement = document.createElement('li');
+                        postElement.textContent = post.title;
+                        postsContainer.appendChild(postElement);
+                    });
+                } catch (error) {
+                    console.error('Error loading posts:', error);
+                }
+            }
+
+            loadPosts();
+        });
+
+        tinymce.init({
+            selector: 'textarea.tinymce',
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+            tinycomments_mode: 'embedded',
+            tinycomments_author: 'Author name',
+            mergetags_list: [
+                { value: 'First.Name', title: 'First Name' },
+                { value: 'Email', title: 'Email' }
+            ],
+            images_upload_handler: function (blobInfo, success, failure) {
+                const storageRef = ref(storage, 'images/' + blobInfo.filename());
+                uploadBytes(storageRef, blobInfo.blob()).then(snapshot => {
+                    getDownloadURL(snapshot.ref).then(url => {
+                        success(url);
+                    }).catch(err => {
+                        failure(err.message);
+                    });
+                }).catch(err => {
+                    failure(err.message);
+                });
+            }
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="images/logo.png" alt="Logo">
+            <span>Murad's Blog</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#about">About Me</a></li>
+                <li><a href="storytelling.html">Storytelling Blog</a></li>
+                <li><a href="athletic.html">Athletic Blog</a></li>
+                <li><a href="achievements.html">Achievements Blog</a></li>
+                <li><a href="projects.html">Projects Blog</a></li>
+                <li><a href="contact.html">Contact Me</a></li>
+                <li><a href="admin.html">Admin</a></li>
+            </ul>
+        </nav>
+        <div class="admin-icon">
+            <a href="admin.html"><img src="images/admin-icon.png" alt="Admin"></a>
+        </div>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </header>
+    <main>
+        <section id="login-section">
+            <h2>Login</h2>
+            <form id="loginForm">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+               
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+               
+                <button type="submit">Login</button>
+            </form>
+        </section>
+        <section id="admin-section" style="display:none;">
+            <h2>Add a New Blog Post</h2>
+            <form>
+                <label for="blogTitle">Title:</label>
+                <input type="text" id="blogTitle" name="blogTitle" required>
+               
+                <label for="blogContent">Content:</label>
+                <textarea id="blogContent" class="tinymce" name="blogContent"></textarea>
+               
+                <label for="blogCategory">Category:</label>
+                <select id="blogCategory" name="blogCategory" required>
+                    <option value="">Select a category</option>
+                    <option value="storytelling">Storytelling</option>
+                    <option value="athletic">Athletic</option>
+                    <option value="achievements">Achievements</option>
+                    <option value="projects">Projects</option>
+                </select>
+               
+                <label for="blogImage">Image:</label>
+                <input type="file" id="blogImage" name="blogImage" accept="image/*" required>
+               
+                <label for="blogTags">Tags (comma separated):</label>
+                <input type="text" id="blogTags" name="blogTags" required>
+               
+                <button type="button" id="addButton">Add Blog Post</button>
+            </form>
+           
+            <h2>Existing Blog Posts</h2>
+            <ul id="posts-list"></ul>
+        </section>
+    </main>
+    <footer>
+        <p>© 2024 Murad's Portfolio. Made with love in Dhaka.</p>
+    </footer>
+    <script>
+        const hamburger = document.querySelector('.hamburger');
+        const navUl = document.querySelector('nav ul');
+        const adminIcon = document.querySelector('.admin-icon');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('close');
+            navUl.classList.toggle('show');
+            if (adminIcon) {
+                adminIcon.classList.toggle('hide');
+            }
+        });
+
+        window.addEventListener('scroll', () => {
+            const backToTopButton = document.getElementById('back-to-top');
+            if (window.scrollY > 300) {
+                backToTopButton.classList.add('show');
+            } else {
+                backToTopButton.classList.remove('show');
+            }
+        });
+
+        document.getElementById('back-to-top').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html> -->
+
+
+
+
+
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,112 +777,220 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Page - Murad</title>
     <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.tiny.cloud/1/71b8ealpyomcy263ik5eskpq1tp4ytjd36rtiukg5r6xsg6p/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBnDhuKL60HNcX40JI9zQ6YIZDr1hbMZHc",
+            authDomain: "trihardmurad.firebaseapp.com",
+            projectId: "trihardmurad",
+            storageBucket: "trihardmurad.appspot.com",
+            messagingSenderId: "146538214416",
+            appId: "1:146538214416:web:0d7ad5834eb432c385c695",
+            measurementId: "G-GQNJV0VQQQ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const loginForm = document.getElementById('loginForm');
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+
+                try {
+                    await signInWithEmailAndPassword(auth, email, password);
+                    document.getElementById('login-section').style.display = 'none';
+                    document.getElementById('admin-section').style.display = 'block';
+                } catch (error) {
+                    alert('Login failed: ' + error.message);
+                }
+            });
+
+            const addButton = document.getElementById('addButton');
+            addButton.addEventListener('click', async () => {
+                const title = document.getElementById('blogTitle').value;
+                const content = tinymce.get('blogContent').getContent();
+                const category = document.getElementById('blogCategory').value;
+                const tag = document.getElementById('blogTag').value; // Get the tag value
+                const file = document.getElementById('blogImage').files[0];
+
+                if (!file) {
+                    alert('Please select an image.');
+                    return;
+                }
+
+                try {
+                    const storageRef = ref(storage, `blogImages/${file.name}`);
+                    await uploadBytes(storageRef, file);
+                    const imageUrl = await getDownloadURL(storageRef);
+
+                    await addDoc(collection(db, `${category}Posts`), { title, content, tag, imageUrl, date: new Date().toISOString() });
+
+                    alert('Blog post added successfully!');
+                    document.getElementById('blogTitle').value = '';
+                    tinymce.get('blogContent').setContent('');
+                    document.getElementById('blogCategory').value = '';
+                    document.getElementById('blogTag').value = ''; // Clear the tag input
+                    document.getElementById('blogImage').value = '';
+                    loadPosts(); // Refresh the posts list
+                } catch (error) {
+                    alert('Error adding blog post: ' + error.message);
+                }
+            });
+
+            async function loadPosts() {
+                try {
+                    const storytellingPostsRef = collection(db, "storytellingPosts");
+                    const athleticPostsRef = collection(db, "athleticPosts");
+                    const achievementsPostsRef = collection(db, "achievementsPosts");
+                    const projectsPostsRef = collection(db, "projectsPosts");
+
+                    const storytellingPostsSnap = await getDocs(storytellingPostsRef);
+                    const athleticPostsSnap = await getDocs(athleticPostsRef);
+                    const achievementsPostsSnap = await getDocs(achievementsPostsRef);
+                    const projectsPostsSnap = await getDocs(projectsPostsRef);
+
+                    const storytellingPosts = storytellingPostsSnap.docs.map(doc => doc.data());
+                    const athleticPosts = athleticPostsSnap.docs.map(doc => doc.data());
+                    const achievementsPosts = achievementsPostsSnap.docs.map(doc => doc.data());
+                    const projectsPosts = projectsPostsSnap.docs.map(doc => doc.data());
+
+                    const postsContainer = document.getElementById('posts-list');
+                    postsContainer.innerHTML = '';
+
+                    storytellingPosts.forEach(post => {
+                        const postElement = document.createElement('li');
+                        postElement.textContent = post.title;
+                        postsContainer.appendChild(postElement);
+                    });
+
+                    athleticPosts.forEach(post => {
+                        const postElement = document.createElement('li');
+                        postElement.textContent = post.title;
+                        postsContainer.appendChild(postElement);
+                    });
+
+                    achievementsPosts.forEach(post => {
+                        const postElement = document.createElement('li');
+                        postElement.textContent = post.title;
+                        postsContainer.appendChild(postElement);
+                    });
+
+                    projectsPosts.forEach(post => {
+                        const postElement = document.createElement('li');
+                        postElement.textContent = post.title;
+                        postsContainer.appendChild(postElement);
+                    });
+                } catch (error) {
+                    console.error('Error loading posts:', error);
+                }
+            }
+
+            loadPosts();
+        });
+
+        tinymce.init({
+            selector: 'textarea.tinymce',
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+            tinycomments_mode: 'embedded',
+            tinycomments_author: 'Author name',
+            mergetags_list: [
+                { value: 'First.Name', title: 'First Name' },
+                { value: 'Email', title: 'Email' }
+            ],
+            images_upload_handler: function (blobInfo, success, failure) {
+                const storageRef = ref(storage, 'images/' + blobInfo.filename());
+                uploadBytes(storageRef, blobInfo.blob()).then(snapshot => {
+                    getDownloadURL(snapshot.ref).then(url => {
+                        success(url);
+                    }).catch(err => {
+                        failure(err.message);
+                    });
+                }).catch(err => {
+                    failure(err.message);
+                });
+            }
+        });
+    </script>
 </head>
 <body>
     <header>
+        <div class="logo">
+            <img src="images/logo.png" alt="Logo">
+            <span>Murad's Blog</span>
+        </div>
         <nav>
             <ul>
                 <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About Me</a></li>
+                <li><a href="projects.html">Projects</a></li>
                 <li><a href="storytelling.html">Storytelling Blog</a></li>
                 <li><a href="athletic.html">Athletic Blog</a></li>
+                <li><a href="achievements.html">Achievements Blog</a></li>
                 <li><a href="contact.html">Contact Me</a></li>
                 <li><a href="admin.html">Admin</a></li>
             </ul>
         </nav>
-        <div class="intro">
-            <h1>Admin Page</h1>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
         </div>
     </header>
     <main>
         <section id="login-section">
             <h2>Login</h2>
             <form id="loginForm">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required>
-                
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" required>
-                
                 <button type="submit">Login</button>
             </form>
         </section>
-        <section id="admin-section" style="display: none;">
+        <section id="admin-section" style="display:none;">
             <h2>Add a New Blog Post</h2>
             <form>
                 <label for="blogTitle">Title:</label>
                 <input type="text" id="blogTitle" name="blogTitle" required>
-                
                 <label for="blogContent">Content:</label>
-                <textarea id="blogContent" name="blogContent" rows="5" required></textarea>
-                
+                <textarea id="blogContent" name="blogContent" rows="5" class="tinymce" required></textarea>
                 <label for="blogCategory">Category:</label>
                 <select id="blogCategory" name="blogCategory">
                     <option value="storytelling">Storytelling</option>
                     <option value="athletic">Athletic</option>
+                    <option value="achievements">Achievements</option>
+                    <option value="projects">Projects</option>
                 </select>
-                
+                <label for="blogTag">Tag:</label>
+                <input type="text" id="blogTag" name="blogTag" required>
+                <label for="blogImage">Image:</label>
+                <input type="file" id="blogImage" name="blogImage" required>
                 <button type="button" id="addButton">Add Blog Post</button>
             </form>
+            <h2>Existing Posts</h2>
+            <ul id="posts-list"></ul>
         </section>
     </main>
     <footer>
         <p>© 2024 Murad's Portfolio. Made with love in Dhaka.</p>
     </footer>
-
     <script>
-        // Dummy login validation
-        const validUsername = "admin";
-        const validPassword = "password123";
+        const hamburger = document.querySelector('.hamburger');
+        const navUl = document.querySelector('nav ul');
 
-        function showAdminSection() {
-            document.getElementById("login-section").style.display = "none";
-            document.getElementById("admin-section").style.display = "block";
-        }
-
-        function handleLogin(event) {
-            event.preventDefault();
-            const username = document.getElementById("username").value;
-            const password = document.getElementById("password").value;
-
-            if (username === validUsername && password === validPassword) {
-                showAdminSection();
-            } else {
-                alert("Invalid username or password");
-            }
-        }
-
-        function addBlogPost() {
-            const blogTitle = document.getElementById("blogTitle").value;
-            const blogContent = document.getElementById("blogContent").value;
-            const blogCategory = document.getElementById("blogCategory").value;
-            
-            const blogPost = {
-                title: blogTitle,
-                content: blogContent,
-                category: blogCategory,
-                date: new Date().toLocaleDateString()
-            };
-            
-            let blogPosts = localStorage.getItem("blogPosts");
-            if (blogPosts) {
-                blogPosts = JSON.parse(blogPosts);
-            } else {
-                blogPosts = [];
-            }
-            
-            blogPosts.push(blogPost);
-            localStorage.setItem("blogPosts", JSON.stringify(blogPosts));
-            
-            alert("Blog post added successfully!");
-        }
-        
-        document.addEventListener("DOMContentLoaded", () => {
-            const loginForm = document.getElementById("loginForm");
-            loginForm.addEventListener("submit", handleLogin);
-
-            const addButton = document.getElementById("addButton");
-            addButton.addEventListener("click", addBlogPost);
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('close');
+            navUl.classList.toggle('show');
         });
     </script>
 </body>
