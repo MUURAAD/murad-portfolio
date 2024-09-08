@@ -3,8 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Full Blog Post - Murad</title>
+    <title>Storytelling Full Blog Post - Murad</title>
     <link rel="stylesheet" href="css/styles.css">
+  
+    <style>
+        /* Added styles for the hamburger menu */
+        header .hamburger {
+            display: none; /* Hidden by default */
+            flex-direction: column; /* Flexbox layout */
+            cursor: pointer; /* Pointer cursor */
+        }
+
+        header .hamburger .bar {
+            width: 25px; /* Bar width */
+            height: 3px; /* Bar height */
+            background-color: #f5f1f1; /* Background color */
+            margin: 4px 0; /* Margin */
+        }
+
+        header .hamburger.close .bar:nth-child(2) {
+            opacity: 0; /* Hide the second bar */
+        }
+
+        header .hamburger.close .bar:nth-child(1) {
+            transform: translateY(7px) rotate(45deg); /* Transform first bar */
+        }
+
+        header .hamburger.close .bar:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg); /* Transform third bar */
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            header .hamburger {
+                display: flex; /* Show hamburger menu on small screens */
+                margin-left: auto; /* Align hamburger to the right */
+            }
+
+            nav ul {
+                display: none; /* Hide menu by default */
+                flex-direction: column; /* Stack menu items vertically */
+                width: 100%; /* Full width */
+                background-color: #333; /* Background color */
+                position: absolute; /* Position menu */
+                top: 60px; /* Position below header */
+                right: 0; /* Align to right */
+                padding: 0; /* Remove padding */
+                margin: 0; /* Remove margin */
+            }
+
+            nav ul.show {
+                display: flex; /* Show menu when hamburger is clicked */
+            }
+
+            nav ul li {
+                text-align: center; /* Center text */
+                width: 100%; /* Full width */
+            }
+
+            nav ul li a {
+                color: #fff; /* White text color */
+                display: block; /* Block level link */
+                padding: 10px; /* Padding */
+                text-decoration: none; /* Remove underline */
+            }
+
+            nav ul li a:hover {
+                background-color: #575757; /* Background color on hover */
+            }
+        }
+    </style>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -31,144 +100,26 @@
             if (postSnap.exists()) {
                 const post = postSnap.data();
                 document.getElementById('full-post').innerHTML = `
-                    <img src="${post.imageUrl}" alt="${post.title}" style="height: 33vh; width: 100%; object-fit: cover;">
-                    <h2>${post.title}</h2>
-                    <p>${post.content}</p>
-                `;
-            } else {
-                document.getElementById('full-post').innerHTML = '<p>No such post!</p>';
-            }
-
-            // Load other posts
-            const blogPostsRef = collection(db, "athleticPosts");
-            const blogPostsSnap = await getDocs(blogPostsRef);
-            const blogPosts = blogPostsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
-            const otherPostsContainer = document.getElementById('other-posts');
-            blogPosts.forEach(post => {
-                if (post.id !== postId) {
-                    const postElement = document.createElement('div');
-                    postElement.classList.add('blog-post-small');
-                    postElement.innerHTML = `
-                        <img src="${post.imageUrl}" alt="${post.title}">
-                        <div class="blog-content-small">
-                            <h3>${post.title}</h3>
-                            <p>${post.content.substring(0, 50)}...</p>
+                    <div class="full-post-card">
+                        <h2>${post.title}</h2>
+                        <div class="tag-date">
+                            <span class="tag">#${post.tag}</span>
+                            <span class="date">${new Date(post.date).toLocaleDateString()}</span>
                         </div>
-                    `;
-                    postElement.addEventListener('click', () => {
-                        window.location.href = `athletic-fullpost.html?id=${post.id}`;
-                    });
-                    otherPostsContainer.appendChild(postElement);
-                }
-            });
-        });
-    </script>
-</head>
-<body>
-    <header>
-        <div class="logo">
-            <img src="images/logo.png" alt="Logo">
-            <span>Murad's Blog</span>
-        </div>
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="projects.html">projects</a></li>
-                <li><a href="storytelling.html">Storytelling Blog</a></li>
-                <li><a href="athletic.html">Athletic Blog</a></li>
-                <li><a href="achievements.html">Achievements</a></li>
-            </ul>
-        </nav>
-    </header>
-    <main>
-        <section id="full-post" class="full-post-container"></section>
-        <section id="other-posts" class="other-posts-container">
-            <h2>Other Posts</h2>
-            <div id="other-posts" class="blog-posts-grid"></div>
-        </section>
-    </main>
-    <footer>
-        <p>© 2024 Murad's Portfolio. Made with love in Dhaka.</p>
-    </footer>
-    <script>
-        const hamburger = document.querySelector('.hamburger');
-        const navUl = document.querySelector('nav ul');
-        const adminIcon = document.querySelector('.admin-icon');
-
-        hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('close');
-            navUl.classList.toggle('show');
-            adminIcon.classList.toggle('hide');
-        });
-    </script>
-</body>
-</html> -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Full Blog Post - Murad</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyBnDhuKL60HNcX40JI9zQ6YIZDr1hbMZHc",
-            authDomain: "trihardmurad.firebaseapp.com",
-            projectId: "trihardmurad",
-            storageBucket: "trihardmurad.appspot.com",
-            messagingSenderId: "146538214416",
-            appId: "1:146538214416:web:0d7ad5834eb432c385c695",
-            measurementId: "G-GQNJV0VQQQ"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        document.addEventListener("DOMContentLoaded", async () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const postId = urlParams.get('id');
-            const postRef = doc(db, "athleticPosts", postId);
-            const postSnap = await getDoc(postRef);
-
-            if (postSnap.exists()) {
-                const post = postSnap.data();
-                document.getElementById('full-post').innerHTML = `
-                    <h2>${post.title}</h2>
-                    <div class="tag-date">
-                        <span class="tag">#${post.tag}</span>
-                        <span class="date">${new Date(post.date).toLocaleDateString()}</span>
+                        <img src="${post.imageUrl}" alt="${post.title}" class="full-image">
+                        <p class="image-caption"><i>${post.imageCaption}</i></p>
+                        <p>${post.content}</p>
                     </div>
-                    <img src="${post.imageUrl}" alt="${post.title}" class="full-image">
-                    <p class="image-caption">${post.imageCaption}</p>
-                    <p>${post.content}</p>
                 `;
             } else {
                 document.getElementById('full-post').innerHTML = '<p>No such post!</p>';
             }
 
-            // Load other posts
             const blogPostsRef = collection(db, "athleticPosts");
             const blogPostsSnap = await getDocs(blogPostsRef);
             const blogPosts = blogPostsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
-            const otherPostsContainer = document.getElementById('other-posts');
+            const otherPostsContainer = document.getElementById('other-posts-grid');
             otherPostsContainer.innerHTML = '';
             blogPosts.forEach(post => {
                 if (post.id !== postId) {
@@ -180,9 +131,6 @@
                             <div class="content-left">
                                 <span class="tag">#${post.tag}</span>
                                 <p class="date">${new Date(post.date).toLocaleDateString()}</p>
-                            </div>
-                            <div class="content-right">
-                                <img src="images/share-icon.png" alt="Share" class="share-icon">
                             </div>
                             <h3>${post.title}</h3>
                             <p>${post.content.substring(0, 100)}...</p>
@@ -196,12 +144,13 @@
             });
         });
     </script>
+    
 </head>
 <body>
     <header>
         <div class="logo">
-            <img src="images/logo.png" alt="Logo">
-            <a href="index.html"><span>Murad's Blog</span></a>
+            <a href="index.html"><img src="images/logo.png" alt="Logo"></a>
+            <span>Murad's Blog</span>
         </div>
         <nav>
             <ul>
@@ -212,6 +161,7 @@
                 <li><a href="achievements.html">Achievements</a></li>
             </ul>
         </nav>
+        
         <div class="hamburger">
             <div class="bar"></div>
             <div class="bar"></div>
@@ -219,39 +169,57 @@
         </div>
     </header>
     <main>
-        <section id="full-post" class="full-post-container"></section>
+       
+        <section id="full-post" class="full-post-container" style="margin-top: 80px;"></section>
+        <section id="other-recent-posts" style="background-color: #f0f0f0; padding: 20px; text-align: center;"></section>
         <section id="other-posts" class="other-posts-container">
-            <h2 class="relevant-posts-heading">Relevant Posts</h2>
-            <div class="blog-posts-grid"></div>
+
+        
+            <h2 style="display: inline-block; background-color: #f7007b; padding: 10px; border-radius: 5px; color: white; font-size: 24px;">Relevant Posts</h2>
+            <div id="other-posts-grid" class="blog-posts-grid"></div>
         </section>
     </main>
     <footer>
-        <div class="footer-left">
-            <p>Connect with me:</p>
-            <a href="mailto:gamerzgold0@gmail.com"><img src="images/mail-icon.png" alt="Mail"></a>
-            <a href="https://www.facebook.com"><img src="images/facebook-icon.png" alt="Facebook"></a>
-            <a href="https://www.linkedin.com"><img src="images/linkedin-icon.png" alt="LinkedIn"></a>
-            <a href="https://www.youtube.com"><img src="images/youtube-icon.png" alt="YouTube"></a>
-            <a href="https://www.strava.com"><img src="images/strava-icon.png" alt="Strava"></a>
-            <p>Address: Dhaka, Bangladesh</p>
-        </div>
-        <div class="footer-right">
-            <form action="https://formspree.io/YOUR_FORM_ID" method="POST">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required>
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-                <label for="message">Message:</label>
-                <textarea id="message" name="message" rows="5" required></textarea>
-                <button type="submit">Send Message</button>
-            </form>
+        <div class="footer-container">
+            <div class="footer-left">
+                <p>Connect with me:</p>
+                <div class="social-icons" style="display: flex; justify-content: center; align-items: center; gap: 15px; margin: 20px 0;">
+                    <a href="mailto:muradcu42@gmail.com" style="display: flex; justify-content: center; align-items: center; width: 75px; height: 75px; background-color: #333; border-radius: 50%; text-align: center; transition: transform 0.3s;">
+                        <img src="images/mail-icon.png" alt="Mail" style="width: 36px; height: 36px;">
+                    </a>
+                    <a href="https://www.facebook.com/murad4231" style="display: flex; justify-content: center; align-items: center; width: 75px; height: 75px; background-color: #333; border-radius: 50%; text-align: center; transition: transform 0.3s;">
+                        <img src="images/facebook-icon.png" alt="Facebook" style="width: 36px; height: 36px;">
+                    </a>
+                    <a href="https://www.linkedin.com/in/muradhossain42" style="display: flex; justify-content: center; align-items: center; width: 75px; height: 75px; background-color: #333; border-radius: 50%; text-align: center; transition: transform 0.3s;">
+                        <img src="images/linkedin-icon.png" alt="LinkedIn" style="width: 36px; height: 36px;">
+                    </a>
+                    <a href="https://www.youtube.com/@muradhossain5116" style="display: flex; justify-content: center; align-items: center; width: 75px; height: 75px; background-color: #333; border-radius: 50%; text-align: center; transition: transform 0.3s;">
+                        <img src="images/youtube-icon.png" alt="YouTube" style="width: 36px; height: 36px;">
+                    </a>
+                    <a href="https://www.strava.com" style="display: flex; justify-content: center; align-items: center; width: 75px; height: 75px; background-color: #333; border-radius: 50%; text-align: center; transition: transform 0.3s;">
+                        <img src="images/strava-icon.png" alt="strava" style="width: 36px; height: 36px;">
+                    </a>
+                </div>
+                <p>Address: Dhaka, Bangladesh</p>
+            </div>
+            <div class="footer-right">
+                <form action="https://formspree.io/f/xvoejldb" method="POST">
+                    <input type="text" id="name" name="name" placeholder="Name" required>
+                    <input type="email" id="email" name="email" placeholder="Email" required>
+                    <textarea id="message" name="message" rows="3" placeholder="Message" required></textarea>
+                    <button type="submit">Send</button>
+                </form>
+            </div>
         </div>
         <div class="footer-bottom">
             <p><i>Don't copy guys! All rights Reserved @2024</i></p>
+    
         </div>
+        <button id="back-to-top" class="back-to-top">↑</button>
     </footer>
-    <button id="back-to-top" class="back-to-top">↑</button>
+
     <script>
+        // Navbar functionality
         const hamburger = document.querySelector('.hamburger');
         const navUl = document.querySelector('nav ul');
 
@@ -272,6 +240,683 @@
         document.getElementById('back-to-top').addEventListener('click', () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
+    </script>
+</body>
+</html> -->
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Achievements - Murad</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Custom styles for cards and hover effects */
+        .card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .card-body {
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            flex-grow: 1;
+        }
+
+        .card:hover {
+            transform: scale(1.01);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (min-width: 768px) {
+            .blog-container {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .blog-container .card {
+                flex: 1 1 calc(33.333% - 20px);
+                margin: 10px;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .blog-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .blog-container .card {
+                width: calc(100% - 20px);
+                max-width: none;
+                margin: 10px 0;
+            }
+        }
+
+        /* Initial styles for the share icon box */
+        .share-icons {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 50px;
+            cursor: pointer;
+            background-color: transparent;
+            border-radius: 25px;
+            width: 50px;
+            overflow: hidden;
+            transition: width 0.5s ease, border-radius 0.5s ease;
+            margin: 0 auto; /* Center align the box */
+        }
+
+        /* Hide the share icons initially */
+        .share-icons__item {
+            opacity: 0;
+            transform: scale(0.5);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            padding: 0 10px;
+        }
+
+        /* Expand the box and reveal the icons when hovering */
+        .share-icons:hover {
+            width: 200px; /* Expand width to show all share icons */
+            border-radius: 25px; /* Keep border radius when expanded */
+        }
+
+        .share-icons:hover .share-icons__item {
+            opacity: 1; /* Make icons visible */
+            transform: scale(1); /* Bring icons into view */
+        }
+
+        /* Hide the main share icon when hovering */
+        .share-icons:hover .share-icon-main {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Hover effect on individual icons */
+        .share-icons__item a:hover i {
+            color: #03a9f4;
+            transform: scale(1.2);
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        /* Style the main share icon that is always visible initially */
+        .share-icon-main {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10; /* Make sure it's on top */
+            transition: opacity 0.3s ease;
+        }
+
+        /* General button styles */
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        /* Specific button colors */
+        .btn-primary {
+            background-color: #5f125b;
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        /* Hover effects for buttons */
+        .btn:hover {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+        }
+
+        /* Hover effects for specific buttons */
+        .btn-primary:hover {
+            background-color: #d6178a;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        /* General box styles */
+        .box {
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s, transform 0.3s;
+        }
+
+        /* Hover effect for boxes */
+        .box:hover {
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            transform: translateY(-5px);
+        }
+
+        /* Styling for boxes with hover-dependent color change */
+        .box-color-change {
+            background-color: #ffffff;
+            border: 1px solid #dddddd;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        /* Hover effect for color-changing boxes */
+        .box-color-change:hover {
+            background-color: #f7f7f7;
+            border-color: #cccccc;
+        }
+
+        /* Primary Navbar Styles */
+        .navbar {
+            background-color: #1b0bac; /* Background color for primary navbar */
+            padding: 10px 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s;
+        }
+
+        /* Specific hover effects for primary navigation links */
+        .navbar-nav .nav-item .nav-link {
+            color: #000000; /* Default text color for nav links */
+            transition: color 0.3s;
+        }
+
+        .navbar-nav .nav-item .nav-link:hover {
+            color: #d6178a; /* Hover color for nav links */
+            text-decoration: underline;
+        }
+        /* Ensure the main content starts after the navbar */
+body {
+    padding-top: 70px; /* Adjust this value to match your navbar height */
+}
+
+/* Fix the navbar to the top and ensure proper stacking context */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000; /* Ensures it stays on top of other content */
+}
+
+/* Ensure the toggle switch aligns properly */
+.navbar-toggler {
+    display: flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+}
+    </style>
+</head>
+<body>
+    <header class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <div class="container">
+            <a href="index.html">
+                <img src="images/logo.png" alt="Logo" style="height: 60px; transition: transform 0.3s ease, opacity 0.3s ease;" onmouseover="this.style.transform='scale(1.5)'; this.style.opacity='0.8';" onmouseout="this.style.transform='scale(1)'; this.style.opacity='1';" ontouchstart="this.style.transform='scale(1.5)'; this.style.opacity='0.8';" ontouchend="this.style.transform='scale(1)'; this.style.opacity='1';">
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="projects.html">Projects</a></li>
+                    <li class="nav-item"><a class="nav-link" href="storytelling.html">Storytelling Blog</a></li>
+                    <li class="nav-item"><a class="nav-link" href="athletic.html">Athletic Blog</a></li>
+                    <li class="nav-item"><a class="nav-link" href="achievements.html">Achievements</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">CV</a></li>
+                    <li class="nav-item">
+                        <div class="container">
+                            <label class="switch" style="position: relative; display: inline-block; width: 60px; height: 30px;">
+                                <!-- The Checkbox -->
+                                <input id="toggle" type="checkbox" style="opacity: 0; width: 0; height: 0;" 
+                                       onclick="
+                                           this.nextElementSibling.nextElementSibling.style.transform=this.checked ? 'translateX(30px)' : 'translateX(0)';
+                                           this.nextElementSibling.style.backgroundColor=this.checked ? '#000000' : '#ffffff';
+                                           document.body.style.background=this.checked ? '#000000' : '#f4f4f4';
+                                           localStorage.setItem('theme', this.checked ? 'night' : 'day');"> <!-- Save theme in localStorage -->
+
+                                <!-- The Slider (Capsule Background) -->
+                                <span style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; 
+                                      background-color: #c6c6c6; border-radius: 30px; 
+                                      transition: background-color .4s; cursor: pointer;"></span>
+
+                                <!-- The Circle/Knob inside the slider -->
+                                <span style="position: absolute; width: 30px; height: 30px; background: white; 
+                                      border-radius: 50%; top: 0; left: 0; 
+                                      box-shadow: 0 2px 5px rgba(0,0,0,.2); 
+                                      transition: transform .4s;"></span>
+                            </label>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mt-5">
+        <section id="full-post" class="mb-5"></section>
+
+        <!-- Comment Section -->
+        <section id="comment-section">
+            <h2 class="text-center bg-danger text-white py-2 rounded" style="display: inline-block; padding: 0.5em 1em; background-color: yellow; color: black;">Comments</h2>
+
+            <form id="comment-form" class="mb-4">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="comment-author" placeholder="Your Name" required>
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control" id="comment-content" rows="3" placeholder="Your Comment" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <span id="comment-submit-text">Submit Comment</span>
+                    <span id="comment-submit-spinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
+                </button>
+            </form>
+            <div id="confirmation-message" class="alert alert-success" role="alert" style="display: none;">
+                Your comment has been added successfully!
+            </div>
+            <div id="comment-list" class="list-group mt-4"></div>
+        </section>
+
+        <!-- Other Relevant Posts Section -->
+        <section id="other-posts" class="other-posts-container">
+            <h2 class="text-center bg-danger text-white py-2 rounded" style="display: inline-block; padding: 0.5em 1em; background-color: yellow; color: black;">Relevant Posts</h2>
+
+
+            <div id="other-posts-grid" class="row"></div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white p-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-left">
+                    <p>Connect with me:</p>
+                    <div class="social-icons d-flex justify-content-center justify-content-md-start">
+                        <a href="mailto:muradcu42@gmail.com" class="d-flex justify-content-center align-items-center m-2 bg-secondary rounded-circle" style="width: 40px; height: 40px; transition: transform 0.3s;">
+                            <img src="images/mail-icon.png" alt="Mail" style="width: 100%; height: 100%;">
+                        </a>
+                        <a href="https://www.facebook.com/murad4231" class="d-flex justify-content-center align-items-center m-2 bg-secondary rounded-circle" style="width: 40px; height: 40px; transition: transform 0.3s;">
+                            <img src="images/facebook-icon.png" alt="Facebook" style="width: 100%; height: 100%;">
+                        </a>
+                        <a href="https://www.linkedin.com/in/muradhossain42" class="d-flex justify-content-center align-items-center m-2 bg-secondary rounded-circle" style="width: 40px; height: 40px; transition: transform 0.3s;">
+                            <img src="images/linkedin-icon.png" alt="LinkedIn" style="width: 100%; height: 100%;">
+                        </a>
+                        <a href="https://www.youtube.com/@muradhossain5116" class="d-flex justify-content-center align-items-center m-2 bg-secondary rounded-circle" style="width: 40px; height: 40px; transition: transform 0.3s;">
+                            <img src="images/youtube-icon.png" alt="YouTube" style="width: 80%; height: 80%;">
+                        </a>
+                        <a href="https://www.strava.com" class="d-flex justify-content-center align-items-center m-2 bg-secondary rounded-circle" style="width: 40px; height: 40px; transition: transform 0.3s;">
+                            <img src="images/strava-icon.png" alt="Strava" style="width: 100%; height: 100%;">
+                        </a>
+                    </div>
+                    <p>Address: Dhaka, Bangladesh</p>
+                </div>
+                <div class="col-md-6">
+                    <form action="https://formspree.io/f/xvoejldb" method="POST" class="text-center text-md-right">
+                        <input type="text" id="name" name="name" class="form-control mb-2" placeholder="Name" required style="transition: transform 0.3s;">
+                        <input type="email" id="email" name="email" class="form-control mb-2" placeholder="Email" required style="transition: transform 0.3s;">
+                        <textarea id="message" name="message" rows="3" class="form-control mb-2" placeholder="Message" required style="transition: transform 0.3s;"></textarea>
+                        <button type="submit" class="btn btn-primary" style="padding: 10px 20px; font-size: 16px; cursor: pointer; transition: background-color 0.3s, transform 0.3s; background-color: #5f125b; color: white; border: none; border-radius: 5px;">Send</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom text-center mt-4">
+                <p><i>Don't copy guys! All rights Reserved @2024</i></p>
+                <a href="admin.html" class="text-white" style="color: #e91e63; text-decoration: none;">Admin</a>
+            </div>
+            <button id="back-to-top" class="btn btn-secondary rounded-circle" style="display: none; position: fixed; bottom: 20px; right: 20px; background-color: #333; color: white; padding: 10px 15px; border: none; border-radius: 5px; font-size: 1.5rem; cursor: pointer; transition: background-color 0.3s, transform 0.3s;">↑</button>
+        </div>
+    </footer>
+
+    <style>
+        .social-icons a:hover {
+            transform: scale(1.2);
+        }
+
+        .form-control:hover {
+            transform: scale(1.05);
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+        }
+    </style>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Firebase SDK and Custom Script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, doc, getDoc, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBnDhuKL60HNcX40JI9zQ6YIZDr1hbMZHc",
+            authDomain: "trihardmurad.firebaseapp.com",
+            projectId: "trihardmurad",
+            storageBucket: "trihardmurad.appspot.com",
+            messagingSenderId: "146538214416",
+            appId: "1:146538214416:web:0d7ad5834eb432c385c695",
+            measurementId: "G-GQNJV0VQQQ"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            // Fetch and display the blog post
+            const urlParams = new URLSearchParams(window.location.search);
+            const postId = urlParams.get('id');
+            const postRef = doc(db, "athleticPosts", postId);
+            const postSnap = await getDoc(postRef);
+
+            if (postSnap.exists()) {
+                const post = postSnap.data();
+                document.getElementById('full-post').innerHTML = `
+                    <div class="full-post-card card mb-4">
+                        <h2 class="card-header">${post.title}</h2>
+                        <div class="card-body">
+                            <div class="mb-2 text-muted">
+                                <span class="tag badge badge-secondary">#${post.tag}</span>
+                                <span class="date">${new Date(post.date).toLocaleDateString()}</span>
+                            </div>
+                            <img src="${post.imageUrl}" alt="${post.title}" class="card-img-top">
+                            <p class="image-caption text-muted"><i>${post.imageCaption}</i></p>
+                            <p class="card-text">${post.content}</p>
+                        </div>
+                    </div>
+                `;
+            } else {
+                document.getElementById('full-post').innerHTML = '<p>No such post!</p>';
+            }
+
+            // Fetch and display other relevant blog posts
+            const blogPostsRef = collection(db, "athleticPosts");
+            const blogPostsSnap = await getDocs(blogPostsRef);
+            const blogPosts = blogPostsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+            const otherPostsContainer = document.getElementById('other-posts-grid');
+            otherPostsContainer.innerHTML = ''; // Clear the container for new content
+
+            blogPosts.forEach(post => {
+                if (post.id !== postId) {
+                    const postElement = document.createElement('div');
+                    postElement.classList.add('col-md-4', 'mb-4', 'blog-card');
+                    
+                    // Create the card content
+                    postElement.innerHTML = 
+                        `<div class="card h-100" style="position: relative; overflow: hidden;">
+                            <img src="${post.imageUrl}" class="card-img-top" alt="${post.title}">
+                            <div class="card-body">
+                                <div class="mb-2 text-muted">
+                                    <span class="tag badge badge-secondary">#${post.tag}</span>
+                                    <p class="date">${new Date(post.date).toLocaleDateString()}</p>
+                                </div>
+                                <h5 class="card-title" style="color: black;">${post.title}</h5>
+                                <p class="card-text" style="color: black;">${post.content.substring(0, 100)}...</p>
+                            </div>
+                            <ul class="share-icons" style="display: flex; justify-content: space-between; position: absolute; bottom: 10px; width: 100%; padding: 0 10px; margin: 0; list-style-type: none; box-shadow: inset 0 -6px 10px -8px rgba(0, 0, 0, 0.3), inset 0 6px 10px -8px rgba(0, 0, 0, 0.3); cursor: pointer;">
+                                <!-- Main share icon indicator in the center -->
+                                <li class="share-icon-main" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.5;">
+                                    <i class="fas fa-share-alt" style="font-size: 2em; color: black;"></i>
+                                </li>
+                                <!-- WhatsApp share icon -->
+                                <li class="share-icons__item" style="margin: 0 5px; padding: 0.75rem;">
+                                    <a href="https://api.whatsapp.com/send?text=${encodeURIComponent(post.title)}%20${encodeURIComponent(window.location.href)}" target="_blank" style="color: black;">
+                                        <i class="fab fa-whatsapp" style="font-size: 1.5em;"></i>
+                                    </a>
+                                </li>
+                                <!-- Facebook share icon -->
+                                <li class="share-icons__item" style="margin: 0 5px; padding: 0.75rem;">
+                                    <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}" target="_blank" style="color: black;">
+                                        <i class="fab fa-facebook" style="font-size: 1.5em;"></i>
+                                    </a>
+                               
+                               
+                                <!-- Copy Link Address icon -->
+                                <li class="share-icons__item" style="margin: 0 5px; padding: 0.75rem;">
+                                    <a href="#" onclick="navigator.clipboard.writeText(window.location.href); alert('Link copied to clipboard!');" style="color: black;">
+                                        <i class="fas fa-copy" style="font-size: 1.5em;"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>`;
+
+                    // Event listener for the share icons container
+                    const shareIconsContainer = postElement.querySelector('.share-icons');
+                    const shareIconsItems = shareIconsContainer.querySelectorAll('.share-icons__item');
+                    const mainIcon = shareIconsContainer.querySelector('.share-icon-main');
+
+                    // Toggle share icons on click
+                    shareIconsContainer.addEventListener('click', event => {
+                        event.stopPropagation(); // Prevent the event from propagating to the full post page
+
+                        const isExpanded = mainIcon.style.opacity === "0"; // Check if the icons are already expanded
+
+                        if (isExpanded) {
+                            // Collapse the icons
+                            shareIconsItems.forEach(icon => {
+                                icon.style.display = 'none';
+                            });
+                            mainIcon.style.opacity = "0.5"; // Show the main icon
+                        } else {
+                            // Expand the icons
+                            shareIconsItems.forEach(icon => {
+                                icon.style.display = 'flex'; // Show the icons
+                            });
+                            mainIcon.style.opacity = "0"; // Hide the main icon
+                        }
+                    });
+
+                    // Add an event listener to prevent the click event from propagating to the full post link
+                    postElement.addEventListener('click', event => {
+                        if (!event.target.closest('.share-icons')) { // Check if the click is outside of the share icons
+                            window.location.href = `athletic-fullpost.html?id=${post.id}`; // Redirect to the full post
+                        }
+                    });
+
+                    otherPostsContainer.appendChild(postElement); // Append the post element to the container
+                }
+            });
+
+
+            // Add Bootstrap's row class to ensure proper alignment and spacing
+            otherPostsContainer.classList.add('row'); // Ensure the container has Bootstrap's row class
+
+            // Function to adjust the card heights to be equal
+            const adjustCardHeights = () => {
+                const cards = document.querySelectorAll('.card.h-100');
+                let maxHeight = 0;
+
+                // Reset heights
+                cards.forEach(card => {
+                    card.style.height = 'auto';
+                });
+
+                // Find the maximum height
+                cards.forEach(card => {
+                    if (card.offsetHeight > maxHeight) {
+                        maxHeight = card.offsetHeight;
+                    }
+                });
+
+                // Set all cards to the maximum height
+                cards.forEach(card => {
+                    card.style.height = `${maxHeight}px`;
+                });
+            };
+
+            // Adjust card heights on load
+            adjustCardHeights();
+
+            // Adjust card heights on window resize
+            window.addEventListener('resize', adjustCardHeights);
+
+            // Fetch and display comments
+            const commentsRef = collection(db, "athleticPosts", postId, "comments");
+            const commentsSnap = await getDocs(commentsRef);
+            const comments = commentsSnap.docs.map(doc => doc.data());
+
+            const commentList = document.getElementById('comment-list');
+            comments.forEach(comment => {
+                const commentElement = document.createElement('div');
+                commentElement.classList.add('list-group-item');
+                commentElement.innerHTML = `
+                    <h5>${comment.author}</h5>
+                    <p>${comment.content}</p>
+                `;
+                commentList.appendChild(commentElement);
+            });
+
+            // Handle new comment submission
+            document.getElementById('comment-form').addEventListener('submit', async (e) => {
+                e.preventDefault(); // Prevent the default form submission behavior
+                
+                const submitButton = document.querySelector('#comment-form button[type="submit"]');
+                const submitText = document.getElementById('comment-submit-text');
+                const submitSpinner = document.getElementById('comment-submit-spinner');
+                const confirmationMessage = document.getElementById('confirmation-message');
+
+                // Show loading spinner and hide submit text
+                submitText.style.display = 'none';
+                submitSpinner.style.display = 'inline-block';
+
+                const author = document.getElementById('comment-author').value;
+                const content = document.getElementById('comment-content').value;
+
+                try {
+                    // Add the comment to the Firestore collection
+                    await addDoc(commentsRef, {
+                        author,
+                        content,
+                        date: new Date()
+                    });
+
+                    // Show confirmation message
+                    confirmationMessage.style.display = 'block';
+                    setTimeout(() => {
+                        confirmationMessage.style.display = 'none';
+                    }, 3000);
+
+                    // Clear the form
+                    document.getElementById('comment-form').reset();
+
+                    // Append the new comment to the list
+                    const newCommentElement = document.createElement('div');
+                    newCommentElement.classList.add('list-group-item');
+                    newCommentElement.innerHTML = `
+                        <h5>${author}</h5>
+                        <p>${content}</p>
+                    `;
+                    commentList.appendChild(newCommentElement);
+
+                } catch (error) {
+                    console.error('Error adding comment: ', error);
+                } finally {
+                    // Hide loading spinner and show submit text
+                    submitText.style.display = 'inline';
+                    submitSpinner.style.display = 'none';
+                }
+            });
+        });
+
+        // Navbar functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const hamburger = document.querySelector('.navbar-toggler');
+            const navUl = document.querySelector('#navbarNav');
+
+            hamburger.addEventListener('click', (event) => {
+                event.stopPropagation();  // Prevent event from bubbling up
+                navUl.classList.toggle('show');
+                if (navUl.classList.contains('show')) {
+                    navUl.style.display = 'flex';  // Show the mobile menu
+                } else {
+                    navUl.style.display = 'none';  // Hide the mobile menu
+                }
+            });
+
+            document.addEventListener('click', (event) => {
+                if (!navUl.contains(event.target) && !hamburger.contains(event.target)) {
+                    navUl.classList.remove('show');
+                    navUl.style.display = 'none';  // Hide the mobile menu when clicking outside
+                }
+            });
+
+            // Back to top button functionality
+            window.addEventListener('scroll', () => {
+                const backToTopButton = document.getElementById('back-to-top');
+                if (window.scrollY > 300) {
+                    backToTopButton.classList.add('show');
+                    backToTopButton.style.display = 'block';
+                } else {
+                    backToTopButton.classList.remove('show');
+                    backToTopButton.style.display = 'none';
+                }
+            });
+
+            document.getElementById('back-to-top').addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // Apply the saved theme on page load
+            const savedTheme = localStorage.getItem('theme') || 'day';
+            document.body.style.background = savedTheme === 'night' ? '#000000' : '#f4f4f4';
+            document.getElementById('toggle').checked = savedTheme === 'night';
+        });
+
     </script>
 </body>
 </html>

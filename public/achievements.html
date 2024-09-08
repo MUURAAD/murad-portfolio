@@ -1,102 +1,4 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Achievements - Murad</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyBnDhuKL60HNcX40JI9zQ6YIZDr1hbMZHc",
-            authDomain: "trihardmurad.firebaseapp.com",
-            projectId: "trihardmurad",
-            storageBucket: "trihardmurad.appspot.com",
-            messagingSenderId: "146538214416",
-            appId: "1:146538214416:web:0d7ad5834eb432c385c695",
-            measurementId: "G-GQNJV0VQQQ"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        document.addEventListener("DOMContentLoaded", async () => {
-            const blogPostsRef = collection(db, "achievementsPosts");
-            const blogPostsSnap = await getDocs(blogPostsRef);
-            const blogPosts = blogPostsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
-            const blogPostsContainer = document.getElementById('blog-posts');
-            blogPosts.forEach(post => {
-                const postElement = document.createElement('div');
-                postElement.classList.add('blog-card');
-                postElement.innerHTML = `
-                    <img src="${post.imageUrl}" alt="${post.title}">
-                    <div class="blog-content">
-                        <span class="tag">#${post.tag}</span>
-                        <p class="date">${new Date(post.date).toDateString()}</p>
-                        <h3>${post.title}</h3>
-                        <p>${post.content.substring(0, 100)}...</p>
-                    </div>
-                `;
-                postElement.addEventListener('click', () => {
-                    window.location.href = `achievements-fullpost.html?id=${post.id}`;
-                });
-                blogPostsContainer.appendChild(postElement);
-            });
-        });
-    </script>
-</head>
-<body>
-    <header>
-        <div class="logo">
-            <img src="images/logo.png" alt="Logo">
-            <span>Murad's Blog</span>
-        </div>
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="projects.html">projects</a></li>
-                <li><a href="storytelling.html">Storytelling Blog</a></li>
-                <li><a href="athletic.html">Athletic Blog</a></li>
-                <li><a href="achievements.html">Achievements</a></li>
-            </ul>
-        </nav>
-        <div class="admin-icon">
-            <a href="admin.html"><img src="images/admin-icon.png" alt="Admin"></a>
-        </div>
-        <div class="hamburger">
-            <div class="bar"></div>
-            <div class="bar"></div>
-            <div class="bar"></div>
-        </div>
-    </header>
-    <h2 class="centered-heading">Your Achievements Are Here</h2>
-    <main>
-        <section id="blog-container">
-            <div id="blog-posts" class="blog-posts-grid"></div>
-        </section>
-    </main>
-    <footer>
-        <p>© 2024 Murad's Portfolio. Made with love in Dhaka.</p>
-    </footer>
-    <script>
-        const hamburger = document.querySelector('.hamburger');
-        const navUl = document.querySelector('nav ul');
-        const adminIcon = document.querySelector('.admin-icon');
-
-        hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('close');
-            navUl.classList.toggle('show');
-            adminIcon.classList.toggle('hide');
-        });
-    </script>
-</body>
-</html> -->
-
-
-
+<!-- 
 
 
 
@@ -195,39 +97,50 @@
         </div>
     </div>
     <main>
-        <section id="page-intro">
-            <h2>Murad's Achievements</h2>
-        </section>
-        <section id="blog-container">
+        <section id="page-intro" style="margin-top: 50px; text-align: center;">
+            <h2 style="display: inline-block; background-color: #f7007b; padding: 10px; border-radius: 5px; color: white; font-size: 24px;">Murad's Achievements</h2>
+       
             <div id="blog-posts" class="blog-posts-grid"></div>
         </section>
     </main>
     <footer>
-        <div class="footer-left">
-            <p>Connect with me:</p>
-            <a href="mailto:gamerzgold0@gmail.com"><img src="images/mail-icon.png" alt="Mail"></a>
-            <a href="https://www.facebook.com"><img src="images/facebook-icon.png" alt="Facebook"></a>
-            <a href="https://www.linkedin.com"><img src="images/linkedin-icon.png" alt="LinkedIn"></a>
-            <a href="https://www.youtube.com"><img src="images/youtube-icon.png" alt="YouTube"></a>
-            <a href="https://www.strava.com"><img src="images/strava-icon.png" alt="Strava"></a>
-            <p>Address: Dhaka, Bangladesh</p>
-        </div>
-        <div class="footer-right">
-            <form action="https://formspree.io/YOUR_FORM_ID" method="POST">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required>
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-                <label for="message">Message:</label>
-                <textarea id="message" name="message" rows="5" required></textarea>
-                <button type="submit">Send Message</button>
-            </form>
+        <div class="footer-container">
+            <div class="footer-left">
+                <p>Connect with me:</p>
+                <div class="social-icons" style="display: flex; justify-content: center; align-items: center; gap: 15px; margin: 20px 0;">
+                    <a href="mailto:muradcu42@gmail.com" style="display: flex; justify-content: center; align-items: center; width: 75px; height: 75px; background-color: #333; border-radius: 50%; text-align: center; transition: transform 0.3s;">
+                        <img src="images/mail-icon.png" alt="Mail" style="width: 36px; height: 36px;">
+                    </a>
+                    <a href="https://www.facebook.com/murad4231" style="display: flex; justify-content: center; align-items: center; width: 75px; height: 75px; background-color: #333; border-radius: 50%; text-align: center; transition: transform 0.3s;">
+                        <img src="images/facebook-icon.png" alt="Facebook" style="width: 36px; height: 36px;">
+                    </a>
+                    <a href="https://www.linkedin.com/in/muradhossain42" style="display: flex; justify-content: center; align-items: center; width: 75px; height: 75px; background-color: #333; border-radius: 50%; text-align: center; transition: transform 0.3s;">
+                        <img src="images/linkedin-icon.png" alt="LinkedIn" style="width: 36px; height: 36px;">
+                    </a>
+                    <a href="https://www.youtube.com/@muradhossain5116" style="display: flex; justify-content: center; align-items: center; width: 75px; height: 75px; background-color: #333; border-radius: 50%; text-align: center; transition: transform 0.3s;">
+                        <img src="images/youtube-icon.png" alt="YouTube" style="width: 36px; height: 36px;">
+                    </a>
+                    <a href="https://www.strava.com" style="display: flex; justify-content: center; align-items: center; width: 75px; height: 75px; background-color: #333; border-radius: 50%; text-align: center; transition: transform 0.3s;">
+                        <img src="images/strava-icon.png" alt="strava" style="width: 36px; height: 36px;">
+                    </a>
+                </div>
+                <p>Address: Dhaka, Bangladesh</p>
+            </div>
+            <div class="footer-right">
+                <form action="https://formspree.io/f/xvoejldb" method="POST">
+                    <input type="text" id="name" name="name" placeholder="Name" required>
+                    <input type="email" id="email" name="email" placeholder="Email" required>
+                    <textarea id="message" name="message" rows="3" placeholder="Message" required></textarea>
+                    <button type="submit">Send</button>
+                </form>
+            </div>
         </div>
         <div class="footer-bottom">
             <p><i>Don't copy guys! All rights Reserved @2024</i></p>
+    
         </div>
+        <button id="back-to-top" class="back-to-top">↑</button>
     </footer>
-    <button id="back-to-top" class="back-to-top">↑</button>
 
     <script>
         const hamburger = document.querySelector('.hamburger');
@@ -303,4 +216,869 @@
     </script>
 </body>
 
+</html> -->
+
+
+
+
+
+
+
+<!-- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Achievements - Murad</title>
+    
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/styles.css">
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBnDhuKL60HNcX40JI9zQ6YIZDr1hbMZHc",
+            authDomain: "trihardmurad.firebaseapp.com",
+            projectId: "trihardmurad",
+            storageBucket: "trihardmurad.appspot.com",
+            messagingSenderId: "146538214416",
+            appId: "1:146538214416:web:0d7ad5834eb432c385c695",
+            measurementId: "G-GQNJV0VQQQ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            const blogPostsRef = collection(db, "achievementsPosts");
+            const blogPostsSnap = await getDocs(blogPostsRef);
+            const blogPosts = blogPostsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+            const blogPostsContainer = document.getElementById('blog-posts');
+            blogPostsContainer.innerHTML = '';
+            blogPosts.forEach(post => {
+                const postElement = document.createElement('div');
+                postElement.classList.add('col-md-4', 'mb-4');
+                postElement.innerHTML = `
+                    <div class="card h-100">
+                        <img src="${post.imageUrl}" class="card-img-top" alt="${post.title}">
+                        <div class="card-body">
+                            <div class="mb-2 text-muted" style="background-color: #f4f4f4; padding: 5px;">
+                                <span class="tag">#${post.tag}</span>
+                                <p class="date">${new Date(post.date).toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}</p>
+                            </div>
+                            <h5 class="card-title">${post.title}</h5>
+                            <p class="card-text">${post.content.substring(0, 100)}...</p>
+                        </div>
+                    </div>
+                `;
+                postElement.addEventListener('click', () => {
+                    window.location.href = `achievements-fullblog.html?id=${post.id}`;
+                });
+                blogPostsContainer.appendChild(postElement);
+            });
+        });
+    </script>
+</head>
+<body>
+    <header class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="images/logo.png" alt="Logo" style="height: 40px;">
+                Murad's Blog
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="projects.html">Projects</a></li>
+                    <li class="nav-item"><a class="nav-link" href="storytelling.html">Storytelling Blog</a></li>
+                    <li class="nav-item"><a class="nav-link" href="athletic.html">Athletic Blog</a></li>
+                    <li class="nav-item"><a class="nav-link" href="achievements.html">Achievements</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <div class="secondary-nav bg-light p-3">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div class="input-group">
+                <input type="text" id="search-input" class="form-control" placeholder="Search...">
+                <div class="input-group-append">
+                    <button id="search-button" class="btn btn-primary">Search</button>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle filter-button" type="button" id="filterDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Filter
+                </button>
+                <div class="dropdown-menu filter-dropdown-content" aria-labelledby="filterDropdown">
+                    <label class="dropdown-item"><input type="checkbox" value="Academic"> Academic</label>
+                    <label class="dropdown-item"><input type="checkbox" value="Athletic"> Athletic</label>
+                    <label class="dropdown-item"><input type="checkbox" value="Well-being"> Well-being</label>
+                    <label class="dropdown-item"><input type="checkbox" value="Others"> Others</label>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main class="container mt-5">
+        <section id="page-intro" class="text-center">
+            <h2 class="display-4" style="background-color: #f7007b; padding: 10px; border-radius: 5px; color: white;">Murad's Achievements</h2>
+        </section>
+        <div id="blog-posts" class="row mt-4"></div>
+    </main>
+
+    <footer class="bg-light text-center text-lg-start">
+        <div class="container p-4">
+            <div class="row">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <h5 class="text-uppercase">Connect with me</h5>
+                    <div class="d-flex justify-content-center align-items-center my-3">
+                        <a href="mailto:muradcu42@gmail.com" class="btn btn-dark btn-lg mx-2 rounded-circle"><img src="images/mail-icon.png" alt="Mail" style="width: 24px;"></a>
+                        <a href="https://www.facebook.com/murad4231" class="btn btn-dark btn-lg mx-2 rounded-circle"><img src="images/facebook-icon.png" alt="Facebook" style="width: 24px;"></a>
+                        <a href="https://www.linkedin.com/in/muradhossain42" class="btn btn-dark btn-lg mx-2 rounded-circle"><img src="images/linkedin-icon.png" alt="LinkedIn" style="width: 24px;"></a>
+                        <a href="https://www.youtube.com/@muradhossain5116" class="btn btn-dark btn-lg mx-2 rounded-circle"><img src="images/youtube-icon.png" alt="YouTube" style="width: 24px;"></a>
+                        <a href="https://www.strava.com" class="btn btn-dark btn-lg mx-2 rounded-circle"><img src="images/strava-icon.png" alt="strava" style="width: 24px;"></a>
+                    </div>
+                    <p>Address: Dhaka, Bangladesh</p>
+                </div>
+                <div class="col-lg-6">
+                    <h5 class="text-uppercase">Contact</h5>
+                    <form action="https://formspree.io/f/xvoejldb" method="POST">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control" id="message" name="message" rows="3" placeholder="Message" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Send</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="text-center py-3">
+            <p class="mb-0"><i>Don't copy guys! All rights Reserved @2024</i></p>
+        </div>
+        <button id="back-to-top" class="btn btn-primary btn-lg rounded-circle" style="position: fixed; bottom: 20px; right: 20px; display: none;">↑</button>
+    </footer>
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // Navbar functionality
+        const hamburger = document.querySelector('.navbar-toggler');
+        const navUl = document.querySelector('#navbarNav');
+
+        hamburger.addEventListener('click', (event) => {
+            event.stopPropagation();  // Prevent event from bubbling up
+            navUl.classList.toggle('show');
+
+          
+
+        document.addEventListener('click', (event) => {
+            if (!navUl.contains(event.target) && !hamburger.contains(event.target)) {
+                navUl.classList.remove('show');
+                navUl.style.backgroundColor = '';
+                navUl.querySelectorAll('.nav-link').forEach(link => {
+                    link.style.color = '';
+                });
+            }
+        });
+
+        window.addEventListener('scroll', () => {
+            const secondaryNav = document.querySelector('.secondary-nav');
+            if (window.scrollY > 300) {
+                secondaryNav.classList.add('hide');
+            } else {
+                secondaryNav.classList.remove('hide');
+            }
+
+            const backToTopButton = document.getElementById('back-to-top');
+            if (window.scrollY > 300) {
+                backToTopButton.classList.add('show');
+            } else {
+                backToTopButton.classList.remove('show');
+            }
+        });
+
+        document.getElementById('back-to-top').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Image slider functionality
+        let slideIndex = 0;
+        const slides = document.querySelectorAll('.slider figure');
+
+        const showSlides = () => {
+            slides.forEach((slide, index) => {
+                slide.style.display = index === slideIndex ? 'block' : 'none';
+            });
+            slideIndex = (slideIndex + 1) % slides.length;
+            setTimeout(showSlides, 3000);
+        };
+
+        showSlides();
+
+    </script>
+</body>
 </html>
+         -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+         <!DOCTYPE html>
+         <html lang="en">
+         
+         <head>
+             <meta charset="UTF-8">
+             <meta name="viewport" content="width=device-width, initial-scale=1.0">
+             <title>Achievements - Murad</title>
+             <!-- Bootstrap CSS -->
+             <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+             <!-- Font Awesome for icons -->
+             <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+             <style>
+                 /* Custom styles for cards and hover effects */
+                 .card img {
+                     width: 100%;
+                     height: 150px;
+                     object-fit: cover;
+                 }
+         
+                 .card-body {
+                     padding: 10px;
+                     display: flex;
+                     flex-direction: column;
+                     justify-content: flex-start;
+                     flex-grow: 1;
+                 }
+         
+                 .card:hover,
+                 .card.touch-hover {
+                     transform: scale(1.05);
+                     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                 }
+         
+                 @media (min-width: 768px) {
+                     .blog-container {
+                         display: flex;
+                         flex-wrap: wrap;
+                         justify-content: center;
+                     }
+         
+                     .blog-container .card {
+                         flex: 1 1 calc(33.333% - 20px);
+                         margin: 10px;
+                     }
+                 }
+         
+                 @media (max-width: 767px) {
+                     .blog-container {
+                         display: flex;
+                         flex-direction: column;
+                         align-items: center;
+                     }
+         
+                     .blog-container .card {
+                         width: calc(100% - 20px);
+                         max-width: none;
+                         margin: 10px 0;
+                     }
+                 }
+         
+                 /* Initial styles for the share icon box */
+                 .share-icons {
+                     position: relative;
+                     display: flex;
+                     justify-content: center;
+                     align-items: center;
+                     height: 50px;
+                     cursor: pointer;
+                     background-color: transparent;
+                     border-radius: 25px;
+                     width: 50px;
+                     overflow: hidden;
+                     transition: width 0.5s ease, border-radius 0.5s ease;
+                     margin: 0 auto;
+                 }
+         
+                 /* Hide the share icons initially */
+                 .share-icons__item {
+                     opacity: 0;
+                     transform: scale(0.5);
+                     transition: opacity 0.3s ease, transform 0.3s ease;
+                     padding: 0 10px;
+                 }
+         
+                 /* Expand the box and reveal the icons when hovering or in touch-hover mode */
+                 .share-icons:hover,
+                 .share-icons.touch-hover {
+                     width: 200px;
+                     border-radius: 25px;
+                 }
+         
+                 .share-icons:hover .share-icons__item,
+                 .share-icons.touch-hover .share-icons__item {
+                     opacity: 1;
+                     transform: scale(1);
+                 }
+         
+                 /* Hide the main share icon when hovering or in touch-hover mode */
+                 .share-icons:hover .share-icon-main,
+                 .share-icons.touch-hover .share-icon-main {
+                     opacity: 0;
+                     transition: opacity 0.3s ease;
+                 }
+         
+                 /* Hover effect on individual icons */
+                 .share-icons__item a:hover i {
+                     color: #03a9f4;
+                     transform: scale(1.2);
+                     transition: color 0.3s ease, transform 0.3s ease;
+                 }
+         
+                 /* Style the main share icon that is always visible initially */
+                 .share-icon-main {
+                     position: absolute;
+                     left: 0;
+                     top: 0;
+                     bottom: 0;
+                     right: 0;
+                     display: flex;
+                     justify-content: center;
+                     align-items: center;
+                     z-index: 10;
+                     transition: opacity 0.3s ease;
+                 }
+         
+                 /* General button styles */
+                 .btn {
+                     padding: 10px 20px;
+                     font-size: 16px;
+                     cursor: pointer;
+                     border: none;
+                     border-radius: 5px;
+                     transition: background-color 0.3s, transform 0.3s;
+                 }
+         
+                 /* Specific button colors */
+                 .btn-primary {
+                     background-color: #5f125b;
+                     color: white;
+                 }
+         
+                 .btn-secondary {
+                     background-color: #6c757d;
+                     color: white;
+                 }
+         
+                 .btn-success {
+                     background-color: #28a745;
+                     color: white;
+                 }
+         
+                 .btn-danger {
+                     background-color: #dc3545;
+                     color: white;
+                 }
+         
+                 /* Hover effects for buttons */
+                 .btn:hover,
+                 .btn.touch-hover {
+                     transform: scale(1.05);
+                     filter: brightness(1.1);
+                 }
+         
+                 /* General box styles */
+                 .box {
+                     background-color: #f0f0f0;
+                     border-radius: 10px;
+                     padding: 20px;
+                     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                     transition: box-shadow 0.3s, transform 0.3s;
+                 }
+         
+                 /* Hover effect for boxes */
+                 .box:hover,
+                 .box.touch-hover {
+                     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+                     transform: translateY(-5px);
+                 }
+         
+                 /* Styling for boxes with hover-dependent color change */
+                 .box-color-change {
+                     background-color: #ffffff;
+                     border: 1px solid #dddddd;
+                     transition: background-color 0.3s, border-color 0.3s;
+                 }
+         
+                 /* Hover effect for color-changing boxes */
+                 .box-color-change:hover,
+                 .box-color-change.touch-hover {
+                     background-color: #f7f7f7;
+                     border-color: #cccccc;
+                 }
+         
+                 /* Primary Navbar Styles */
+                 .navbar {
+                     background-color: #1b0bac;
+                     padding: 10px 20px;
+                     border-radius: 5px;
+                     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                     transition: background-color 0.3s;
+                 }
+         
+                 /* Specific hover effects for primary navigation links */
+                 .navbar-nav .nav-item .nav-link {
+                     color: #000000;
+                     transition: color 0.3s;
+                 }
+         
+                 .navbar-nav .nav-item .nav-link:hover {
+                     color: #d6178a;
+                     text-decoration: underline;
+                 }
+         
+                 /* Secondary Navbar Styles */
+                 .secondary-nav {
+                     background-color: #00ad5c;
+                     padding: 10px 20px;
+                     border-radius: 5px;
+                     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                     transition: background-color 0.3s;
+                 }
+         
+                 /* Hover effect for secondary navigation dropdown buttons */
+                 .secondary-nav .filter-button {
+                     background-color: #6c757d;
+                     color: white;
+                     transition: background-color 0.3s, transform 0.3s;
+                 }
+         
+                 .secondary-nav .filter-button:hover {
+                     background-color: #d6178a;
+                     color: white;
+                     transform: scale(1.05);
+                 }
+         
+                 /* Hover effect for input fields in secondary nav */
+                 .secondary-nav .form-control {
+                     border-color: #5f125b;
+                     transition: transform 0.3s, border-color 0.3s;
+                 }
+         
+                 .secondary-nav .form-control:hover {
+                     transform: scale(1.03);
+                     border-color: #d6178a;
+                 }
+             </style>
+         </head>
+         
+         <body>
+             <header class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+                 <div class="container">
+                     <a href="index.html">
+                         <img src="images/logo.png" alt="Logo" style="height: 80px; transition: transform 0.3s ease, opacity 0.3s ease;" onmouseover="this.style.transform='scale(1.5)'; this.style.opacity='0.8';" onmouseout="this.style.transform='scale(1)'; this.style.opacity='1';" ontouchstart="this.style.transform='scale(1.5)'; this.style.opacity='0.8';" ontouchend="this.style.transform='scale(1)'; this.style.opacity='1';">
+                     </a>
+                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                         <span class="navbar-toggler-icon"></span>
+                     </button>
+                     <div class="collapse navbar-collapse" id="navbarNav">
+                         <ul class="navbar-nav ml-auto">
+                             <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                             <li class="nav-item"><a class="nav-link" href="projects.html">Projects</a></li>
+                             <li class="nav-item"><a class="nav-link" href="storytelling.html">Storytelling Blog</a></li>
+                             <li class="nav-item"><a class="nav-link" href="athletic.html">Athletic Blog</a></li>
+                             <li class="nav-item"><a class="nav-link" href="achievements.html">Achievements</a></li>
+                             <li class="nav-item"><a class="nav-link" href="about.html">CV</a></li>
+                             <li class="nav-item">
+                                 <div class="container">
+                                     <label class="switch" style="position: relative; display: inline-block; width: 60px; height: 30px;">
+         
+                                         <!-- The Checkbox -->
+                                         <input id="toggle" type="checkbox" style="opacity: 0; width: 0; height: 0;" onclick="
+             this.nextElementSibling.nextElementSibling.style.transform=this.checked ? 'translateX(30px)' : 'translateX(0)';
+             this.nextElementSibling.style.backgroundColor=this.checked ? '#000000' : '#ffffff';
+             document.body.style.background=this.checked ? '#000000' : '#f4f4f4';
+             localStorage.setItem('theme', this.checked ? 'night' : 'day');"> <!-- Save theme in localStorage -->
+         
+                                         <!-- The Slider (Capsule Background) -->
+                                         <span style="position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+               background-color: #c6c6c6; border-radius: 30px;
+               transition: background-color .4s; cursor: pointer;"></span>
+         
+                                         <!-- The Circle/Knob inside the slider -->
+                                         <span style="position: absolute; width: 30px; height: 30px; background: white;
+               border-radius: 50%; top: 0; left: 0;
+               box-shadow: 0 2px 5px rgba(0,0,0,.2);
+               transition: transform .4s;"></span>
+         
+                                     </label>
+                                 </div>
+                             </li>
+         
+                         </ul>
+                     </div>
+                 </div>
+             </header>
+         
+             <div class="secondary-nav bg-light p-3" style="margin-top: 100px;">
+                 <!-- Add margin-top if hidden behind the header -->
+                 <div class="container d-flex flex-wrap justify-content-between align-items-center">
+                     <!-- Dropdown for filtering -->
+                     <div class="dropdown" style="flex-grow: 1; max-width: 20%;">
+                         <button class="btn btn-secondary dropdown-toggle filter-button" type="button" id="filterDropdown" aria-haspopup="true" aria-expanded="false" style="background-color: #5f125b; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s, transform 0.3s; width: 100%;">
+                             Filter
+                         </button>
+                         <div class="dropdown-menu filter-dropdown-content" aria-labelledby="filterDropdown" style="background-color: white; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 5px; padding: 10px; display: none; width: 100%;">
+                             <label class="dropdown-item" style="display: flex; align-items: center; margin-bottom: 10px; width: 100%;"><input type="checkbox" value=" Academic" style="margin-right: 10px;"> Academic</label>
+                             <label class="dropdown-item" style="display: flex; align-items: center; margin-bottom: 10px; width: 100%;"><input type="checkbox" value="Athletic" style="margin-right: 10px;">Athletic</label>
+                             <label class="dropdown-item" style="display: flex; align-items: center; margin-bottom: 10px; width: 100%;"><input type="checkbox" value="Well-being" style="margin-right: 10px;"> Well-being</label>
+                             <label class="dropdown-item" style="display: flex; align-items: center; margin-bottom: 10px; width: 100%;"><input type="checkbox" value=" Leadership" style="margin-right: 10px;"> Leadership</label>
+                             <label class="dropdown-item" style="display: flex; align-items: center; margin-bottom: 10px; width: 100%;"><input type="checkbox" value="others" style="margin-right: 10px;"> Others</label>
+                         </div>
+                     </div>
+         
+                     <!-- Search input -->
+                     <div class="input-group" style="flex-grow: 1; max-width: 70%; margin-left: auto;">
+                         <input type="text" id="search-input" class="form-control" placeholder="Search..." style="padding: 10px; border: 2px solid #5f125b; border-radius: 5px 0 0 5px; width: calc(100% - 120px);">
+                         <div class="input-group-append">
+                             <button id="search-button" class="btn btn-primary" style="padding: 10px 20px; border: none; border-radius: 0 5px 5px 0; cursor: pointer; transition: background-color 0.3s, transform 0.3s; background-color: #5f125b; color: white;">Search</button>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         
+             <main class="container mt-5">
+                 <section id="page-intro" class="text-center">
+                     <h2 class="display-4" style="background-color: #f7007b; padding: 10px; border-radius: 5px; color: white;">Achievements</h2>
+                 </section>
+                 <div id="blog-posts" class="row mt-4"></div>
+             </main>
+         
+             <!-- Footer Section -->
+             <footer class="bg-dark text-white p-4" style="background-color: #333; color: white; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                 <div class="container">
+                     <div class="row">
+                         <div class="col-md-6 text-center text-md-left">
+                             <p>Connect with me:</p>
+                             <div class="social-icons d-flex justify-content-center justify-content-md-start">
+                                 <a href="mailto:muradcu42@gmail.com" class="d-flex justify-content-center align-items-center m-2 bg-secondary rounded-circle" style="width: 40px; height: 40px; transition: transform 0.3s;">
+                                     <img src="images/mail-icon.png" alt="Mail" style="width: 100%; height: 100%;">
+                                 </a>
+                                 <a href="https://www.facebook.com/murad4231" class="d-flex justify-content-center align-items-center m-2 bg-secondary rounded-circle" style="width: 40px; height: 40px; transition: transform 0.3s;">
+                                     <img src="images/facebook-icon.png" alt="Facebook" style="width: 100%; height: 100%;">
+                                 </a>
+                                 <a href="https://www.linkedin.com/in/muradhossain42" class="d-flex justify-content-center align-items-center m-2 bg-secondary rounded-circle" style="width: 40px; height: 40px; transition: transform 0.3s;">
+                                     <img src="images/linkedin-icon.png" alt="LinkedIn" style="width: 100%; height: 100%;">
+                                 </a>
+                                 <a href="https://www.youtube.com/@muradhossain5116" class="d-flex justify-content-center align-items-center m-2 bg-secondary rounded-circle" style="width: 40px; height: 40px; transition: transform 0.3s;">
+                                     <img src="images/youtube-icon.png" alt="YouTube" style="width: 80%; height: 80%;">
+                                 </a>
+                                 <a href="https://www.strava.com" class="d-flex justify-content-center align-items-center m-2 bg-secondary rounded-circle" style="width: 40px; height: 40px; transition: transform 0.3s;">
+                                     <img src="images/strava-icon.png" alt="Strava" style="width: 100%; height: 100%;">
+                                 </a>
+                             </div>
+                             <p>Address: Dhaka, Bangladesh</p>
+                         </div>
+                         <div class="col-md-6">
+                             <form action="https://formspree.io/f/xvoejldb" method="POST" class="text-center text-md-right">
+                                 <input type="text" id="name" name="name" class="form-control mb-2" placeholder="Name" required style="transition: transform 0.3s;">
+                                 <input type="email" id="email" name="email" class="form-control mb-2" placeholder="Email" required style="transition: transform 0.3s;">
+                                 <textarea id="message" name="message" rows="3" class="form-control mb-2" placeholder="Message" required style="transition: transform 0.3s;"></textarea>
+                                 <button type="submit" class="btn btn-primary" style="padding: 10px 20px; font-size: 16px; cursor: pointer; transition: background-color 0.3s, transform 0.3s; background-color: #5f125b; color: white; border: none; border-radius: 5px;">Send</button>
+                             </form>
+                         </div>
+                     </div>
+                     <div class="footer-bottom text-center mt-4">
+                         <p><i>Don't copy guys! All rights Reserved @2024</i></p>
+                         <a href="admin.html" class="text-white" style="color: #e91e63; text-decoration: none;">Admin</a>
+                     </div>
+                     <button id="back-to-top" class="btn btn-secondary rounded-circle" style="display: none; position: fixed; bottom: 20px; right: 20px; background-color: #333; color: white; padding: 10px 15px; border: none; border-radius: 5px; font-size: 1.5rem; cursor: pointer; transition: background-color 0.3s, transform 0.3s;">↑</button>
+                 </div>
+             </footer>
+         
+             <!-- Embedded CSS and JavaScript for Hover Effects -->
+             <style>
+                 .social-icons a:hover {
+                     transform: scale(1.2);
+                 }
+         
+                 .form-control:hover {
+                     transform: scale(1.05);
+                 }
+         
+                 .btn:hover {
+                     transform: scale(1.1);
+                 }
+             </style>
+         
+             <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+             <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+             <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+             <script type="module">
+                 import {
+                     initializeApp
+                 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+                 import {
+                     getFirestore,
+                     collection,
+                     getDocs
+                 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+         
+                 const firebaseConfig = {
+                    apiKey: "AIzaSyBnDhuKL60HNcX40JI9zQ6YIZDr1hbMZHc",
+            authDomain: "trihardmurad.firebaseapp.com",
+            projectId: "trihardmurad",
+            storageBucket: "trihardmurad.appspot.com",
+            messagingSenderId: "146538214416",
+            appId: "1:146538214416:web:0d7ad5834eb432c385c695",
+            measurementId: "G-GQNJV0VQQQ"
+                 };
+         
+                 const app = initializeApp(firebaseConfig);
+                 const db = getFirestore(app);
+         
+                 document.addEventListener("DOMContentLoaded", async () => {
+                     const blogPostsRef = collection(db, "achievementsPosts");
+                     const blogPostsSnap = await getDocs(blogPostsRef);
+                     const blogPosts = blogPostsSnap.docs.map(doc => ({
+                         id: doc.id,
+                         ...doc.data()
+                     }));
+         
+                     const blogPostsContainer = document.getElementById('blog-posts');
+                     if (!blogPostsContainer) {
+                         console.error('blogPostsContainer element not found');
+                         return;
+                     }
+         
+                     blogPostsContainer.innerHTML = '';
+         
+                     blogPosts.forEach(post => {
+                         const postElement = document.createElement('div');
+                         postElement.classList.add('col-md-4', 'mb-4', 'blog-card');
+                         postElement.innerHTML =
+                             `<div class="card h-100" style="position: relative; overflow: hidden;">
+                         <img src="${post.imageUrl}" class="card-img-top" alt="${post.title}">
+                         <div class="card-body">
+                             <div class="mb-2 text-muted">
+                                 <span class="tag badge badge-secondary">#${post.tag}</span>
+                                 <p class="date">${new Date(post.date).toLocaleDateString()}</p>
+                             </div>
+                             <h5 class="card-title" style="color: black;">${post.title}</h5>
+                             <p class="card-text" style="color: black;">${post.content.substring(0, 100)}...</p>
+                         </div>
+                         <ul class="share-icons" style="display: flex; justify-content: space-between; position: absolute; bottom: 10px; width: 100%; padding: 0 10px; margin: 0; list-style-type: none; box-shadow: inset 0 -6px 10px -8px rgba(0, 0, 0, 0.3), inset 0 6px 10px -8px rgba(0, 0, 0, 0.3); cursor: pointer;">
+                             <!-- Main share icon indicator in the center -->
+                             <li class="share-icon-main" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.5;">
+                                 <i class="fas fa-share-alt" style="font-size: 2em; color: black;"></i>
+                             </li>
+                              <!-- WhatsApp share icon -->
+                             <li class="share-icons__item" style="margin: 0 5px; padding: 0.75rem;">
+                                 <a href="https://api.whatsapp.com/send?text=${encodeURIComponent(post.title)}%20${encodeURIComponent(window.location.href)}" target="_blank" style="color: black;">
+                                     <i class="fab fa-whatsapp" style="font-size: 1.5em;"></i>
+                                 </a>
+                             </li>
+                             <!-- Facebook share icon -->
+                             <li class="share-icons__item" style="margin: 0 5px; padding: 0.75rem;">
+                                 <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}" target="_blank" style="color: black;">
+                                     <i class="fab fa-facebook" style="font-size: 1.5em;"></i>
+                                 </a>
+                             </li>
+                            
+                             <!-- Copy Link Address icon -->
+                             <li class="share-icons__item" style="margin: 0 5px; padding: 0.75rem;">
+                                 <a href="#" onclick="navigator.clipboard.writeText(window.location.href); alert('Link copied to clipboard!');" style="color: black;">
+                                     <i class="fas fa-copy" style="font-size: 1.5em;"></i>
+                                 </a>
+                             </li>
+                         </ul>
+                     </div>`;
+         
+                         const shareIconsContainer = postElement.querySelector('.share-icons');
+                         const shareIconsItems = shareIconsContainer.querySelectorAll('.share-icons__item');
+                         const mainIcon = shareIconsContainer.querySelector('.share-icon-main');
+         
+                         shareIconsContainer.addEventListener('click', event => {
+                             event.stopPropagation();
+         
+                             const isExpanded = mainIcon.style.opacity === "0";
+         
+                             if (isExpanded) {
+                                 shareIconsItems.forEach(icon => {
+                                     icon.style.display = 'none';
+                                 });
+                                 mainIcon.style.opacity = "0.5";
+                             } else {
+                                 shareIconsItems.forEach(icon => {
+                                     icon.style.display = 'flex';
+                                 });
+                                 mainIcon.style.opacity = "0";
+                             }
+                         });
+         
+                         postElement.addEventListener('click', event => {
+                             if (!event.target.closest('.share-icons')) {
+                                 window.location.href = `achievements-fullpost.html?id=${post.id}`;
+                             }
+                         });
+         
+                         blogPostsContainer.appendChild(postElement);
+                     });
+         
+                     blogPostsContainer.classList.add('row');
+         
+                     const adjustCardHeights = () => {
+                         const cards = document.querySelectorAll('.card.h-100');
+                         let maxHeight = 0;
+         
+                         cards.forEach(card => {
+                             card.style.height = 'auto';
+                         });
+         
+                         cards.forEach(card => {
+                             if (card.offsetHeight > maxHeight) {
+                                 maxHeight = card.offsetHeight;
+                             }
+                         });
+         
+                         cards.forEach(card => {
+                             card.style.height = `${maxHeight}px`;
+                         });
+                     };
+         
+                     adjustCardHeights();
+                     window.addEventListener('resize', adjustCardHeights);
+         
+                     const filterButton = document.querySelector('.filter-button');
+                     const filterContent = document.querySelector('.filter-dropdown-content');
+         
+                     filterButton.addEventListener('click', () => {
+                         filterContent.classList.toggle('show');
+                         if (filterContent.classList.contains('show')) {
+                             filterContent.style.display = 'block';
+                         } else {
+                             filterContent.style.display = 'none';
+                         }
+                     });
+         
+                     document.addEventListener('click', (event) => {
+                         if (!filterContent.contains(event.target) && !filterButton.contains(event.target)) {
+                             filterContent.classList.remove('show');
+                             filterContent.style.display = 'none';
+                         }
+                     });
+         
+                     const filterCheckboxes = document.querySelectorAll('.filter-dropdown-content input[type="checkbox"]');
+                     filterCheckboxes.forEach(checkbox => {
+                         const label = checkbox.parentElement;
+                         label.style.display = 'flex';
+                         label.style.alignItems = 'center';
+                         label.style.marginBottom = '10px';
+                         checkbox.style.marginRight = '10px';
+         
+                         checkbox.addEventListener('change', () => {
+                             const checkedValues = Array.from(filterCheckboxes)
+                                 .filter(cb => cb.checked)
+                                 .map(cb => cb.value.toLowerCase().trim());
+                             const blogPosts = document.querySelectorAll('.blog-card');
+                             blogPosts.forEach(post => {
+                                 const postTag = post.querySelector('.tag').innerText.replace('#', '').toLowerCase().trim();
+                                 if (checkedValues.length === 0 || checkedValues.includes(postTag)) {
+                                     post.style.display = 'block';
+                                 } else {
+                                     post.style.display = 'none';
+                                 }
+                             });
+                         });
+                     });
+         
+                     const searchButton = document.getElementById('search-button');
+                     const searchInput = document.getElementById('search-input');
+         
+                     searchButton.addEventListener('click', () => {
+                         const searchText = searchInput.value.toLowerCase();
+                         const blogPosts = document.querySelectorAll('.blog-card');
+                         let foundMatch = false;
+                         blogPosts.forEach(post => {
+                             const postText = post.innerText.toLowerCase();
+                             if (postText.includes(searchText)) {
+                                 post.style.display = 'block';
+                                 foundMatch = true;
+                             } else {
+                                 post.style.display = 'none';
+                             }
+                         });
+         
+                         let noMatchMessage = document.getElementById('no-match-message');
+                         if (!foundMatch) {
+                             if (!noMatchMessage) {
+                                 noMatchMessage = document.createElement('p');
+                                 noMatchMessage.id = 'no-match-message';
+                                 noMatchMessage.innerText = 'No posts matched your search.';
+                                 noMatchMessage.style.color = '#ff0000';
+                                 noMatchMessage.style.fontWeight = 'bold';
+                                 noMatchMessage.style.marginTop = '20px';
+                                 blogPostsContainer.appendChild(noMatchMessage);
+                             }
+                         } else {
+                             if (noMatchMessage) {
+                                 noMatchMessage.remove();
+                             }
+                         }
+                     });
+         
+                     window.addEventListener('scroll', () => {
+                         const secondaryNav = document.querySelector('.secondary-nav');
+                         const backToTopButton = document.getElementById('back-to-top');
+         
+                         if (window.scrollY > 300) {
+                             secondaryNav.classList.add('hide');
+                             backToTopButton.classList.add('show');
+                         } else {
+                             secondaryNav.classList.remove('hide');
+                             backToTopButton.classList.remove('show');
+                         }
+                     });
+         
+                     document.getElementById('back-to-top').addEventListener('click', () => {
+                         window.scrollTo({
+                             top: 0,
+                             behavior: 'smooth'
+                         });
+                     });
+         
+                     // Apply the saved theme on page load
+            const savedTheme = localStorage.getItem('theme') || 'day';
+            document.body.style.background = savedTheme === 'night' ? '#000000' : '#f4f4f4';
+            document.getElementById('toggle').checked = savedTheme === 'night';
+        });
+             </script>
+         </body>
+         
+         </html>
+         
