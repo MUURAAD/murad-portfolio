@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" data-accent="green">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Murad - Research</title> 
+  
+  <link rel="icon" type="image/png" href="images/logo.png">
+
+  <!-- Bootstrap + Icons + Fonts -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+
+
+  <style>
+    /* ----------------- THEME & ACCENT VARIABLES ----------------- */
+    :root{
+      --bg: #f4f7fb; --card-bg: #ffffff; --muted: #596a75;
+      --primary: #20c997; --primary-700:#179b77;
+      --glass: rgba(255,255,255,0.6); --shadow: 0 10px 30px rgba(16,24,40,0.08);
+      --radius: 14px; --accent-shadow: 0 12px 30px rgba(32,201,151,0.14);
+      --nav-height: 64px; --max-content-width: 1180px;
+      --profile-grad-from: var(--primary); --profile-grad-to: var(--primary-700);
+    }
+
+    [data-theme="dark"]{
+      --bg: #0b1220; --card-bg: #0f1b28; --muted: #b6cad6;
+      --primary: #43d9b2; --primary-700:#2fbf9a;
+      --glass: rgba(255,255,255,0.03); --shadow: 0 12px 40px rgba(0,0,0,0.7);
+      --accent-shadow: 0 12px 30px rgba(67,217,178,0.08);
+    }
+
+    /* Traffic-light accents */
+    [data-accent="green"] { --primary: #20c997; --primary-700: #179b77; --accent-shadow: 0 12px 30px rgba(32,201,151,0.14); }
+    [data-accent="yellow"] { --primary: #f1c40f; --primary-700: #d4a70b; --accent-shadow: 0 12px 30px rgba(241,196,15,0.12); }
+    [data-accent="red"] { --primary: #e74c3c; --primary-700: #c0382b; --accent-shadow: 0 12px 30px rgba(231,76,60,0.12); }
+
+    html,body{height:100%;}
+    body{
+      margin:0; font-family:'Comfortaa',sans-serif;
+      background:var(--bg); color:var(--muted);
+      transition: background .35s ease, color .35s ease;
+      padding-top: var(--nav-height);
+      padding-bottom: 60px; /* Space for potential footer content */
+    }
+
+    /* layout utilities */
+    .container-xl{ max-width: var(--max-content-width); }
+    .shadow-soft{ box-shadow: var(--shadow); }
+    .glass{ background: var(--glass); border-radius: 10px; }
+    .section-divider {
+        border-top: 1px solid var(--glass);
+        margin: 40px auto;
+        width: 80%;
+    }
+
+    /* NAVBAR */
+    .navbar-custom{
+      height: var(--nav-height);
+      background: linear-gradient(90deg, rgba(0,0,0,0.04), rgba(255,255,255,0.02));
+      backdrop-filter: blur(6px);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+    }
+    .logo-img { /* New style for the logo image */
+      height: 40px; /* Control logo height */
+      width: auto;
+      object-fit: contain;
+      border-radius: 50%; /* Make it circular */
+      border: 2px solid var(--primary); /* Add border with accent color */
+      transition: border-color 0.3s ease; /* Smooth transition for border color */
+    }
+    .logo-text{ font-weight:800; color:var(--primary-700); font-size:1.35rem; }
+    .nav-link{ color:var(--muted) !important; padding:8px 14px; border-radius:8px; font-weight:600; }
+    .nav-link:hover{ background: rgba(0,0,0,0.04); color:var(--primary) !important; transform: translateY(-3px); }
+
+    .accent-palette { display:flex; gap:8px; align-items:center; }
+    .accent-dot {
+      width:18px; height:18px; border-radius:50%;
+      cursor:pointer; border:2px solid rgba(255,255,255,0.9);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+    }
+    .accent-dot[aria-checked="true"] { transform: scale(1.15); box-shadow: 0 6px 18px rgba(0,0,0,0.15); }
+
+    /* --- Hamburger Menu BG (Mobile) --- */
+    @media (max-width: 991.98px) { /* Bootstrap's 'lg' breakpoint */
+      .navbar-collapse.show {
+        background: var(--card-bg);
+        padding: 16px;
+        border-radius: var(--radius);
+        margin-top: 8px;
+        box-shadow: var(--shadow);
+        display: block; 
+      }
+      .navbar-collapse.show .navbar-nav .nav-link {
+        padding: 10px 12px;
+      }
+    }
+
+    /* SCROLL PROGRESS BAR STYLES */
+    #scrollProgressBar {
+      position: fixed;
+      top: var(--nav-height); 
+      left: 0;
+      width: 100%;
+      height: 4px; 
+      background: var(--glass); 
+      z-index: 997; 
+    }
+    #scrollProgressIndicator {
+      height: 100%;
+      width: 0%; 
+      background: var(--primary);
+      transition: width 0.1s ease-out, background 0.4s ease; 
+    }
+
+    /* transitions (fade) */
+    .page-fade-out { opacity: 0; transition: opacity .35s ease; }
+    .animate-entrance { transform: translateY(12px); opacity: 0; }
+    .visible { transform: none; opacity: 1; transition: all .6s cubic-bezier(.16,.84,.44,1); }
+
+    /* Footer Style */
+    footer {
+      background: transparent; 
+      color: var(--muted);
+      padding: 40px 15px;
+      margin-top: 60px;
+    }
+    [data-theme="dark"] footer { background: transparent; }
+    footer h5 { color: var(--primary); }
+    footer .form-control {
+      background: var(--card-bg);
+      border-color: var(--glass);
+      color: var(--muted);
+    }
+    footer .form-control::placeholder { color: var(--muted); opacity: 0.7; }
+    
+    /* Research Page Specific Styles */
+    .page-header {
+        padding: 40px 0;
+        text-align: center;
+        margin-bottom: 30px;
+        background: var(--glass);
+        backdrop-filter: blur(5px);
+    }
+    .page-header h1 {
+        font-family: 'Inter', sans-serif;
+        font-weight: 800;
+        color: var(--primary-700);
+        margin-bottom: 8px;
+    }
+    .page-header p {
+        font-size: 1.1rem;
+        color: var(--muted);
+        max-width: 700px;
+        margin: 0 auto;
+    }
+    
+    .publication-card {
+        background: var(--card-bg);
+        border-radius: var(--radius);
+        margin-bottom: 30px;
+        padding: 25px;
+        box-shadow: var(--shadow);
+        border: 1px solid transparent; 
+        transition: all 0.25s ease;
+        display: grid;
+        grid-template-columns: 200px 1fr; 
+        gap: 25px;
+        align-items: flex-start; 
+    }
+    .publication-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--accent-shadow);
+        border-color: var(--primary);
+    }
+
+    .pub-image {
+        width: 100%;
+        height: 180px; 
+        object-fit: cover;
+        border-radius: 10px;
+        border: 1px solid var(--glass);
+    }
+    
+    .pub-content h4 {
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+        color: var(--primary-700);
+        font-size: 1.25rem;
+        margin-top: 0;
+        margin-bottom: 10px;
+    }
+    .pub-authors {
+        font-size: 0.9rem;
+        color: var(--muted);
+        margin-bottom: 8px;
+        font-style: italic;
+    }
+    .pub-authors strong { 
+        font-weight: 700;
+        color: var(--primary);
+        font-style: normal;
+    }
+    .pub-journal {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--muted);
+        margin-bottom: 15px;
+    }
+    .pub-journal a {
+        color: var(--primary);
+        text-decoration: none;
+        word-break: break-all; 
+    }
+     .pub-journal a:hover { text-decoration: underline; }
+    .pub-abstract {
+        font-size: 0.95rem;
+        line-height: 1.7;
+        color: var(--muted);
+        margin-bottom: 15px;
+        font-family: 'Inter', sans-serif;
+    }
+    .pub-highlights {
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid var(--glass);
+    }
+    .pub-highlights h6 {
+        font-weight: 700;
+        color: var(--primary);
+        font-size: 0.95rem;
+        margin-bottom: 10px;
+    }
+    .pub-highlights ul {
+        list-style: none;
+        padding-left: 0;
+        margin-bottom: 0;
+    }
+    .pub-highlights li {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        margin-bottom: 8px;
+        font-size: 0.9rem;
+        color: var(--muted);
+    }
+    .pub-highlights li::before {
+        content: '•';
+        color: var(--primary);
+        font-weight: bold;
+        display: inline-block; 
+        margin-top: 1px;
+    }
+    
+    .conference-section {
+        background: var(--glass);
+        padding: 30px;
+        border-radius: var(--radius);
+        text-align: center;
+        margin-top: 40px;
+        margin-bottom: 40px; /* Added margin */
+        box-shadow: var(--shadow);
+    }
+    .conference-section h4 {
+        color: var(--primary-700);
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+    .conference-section p {
+        color: var(--muted);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+     .conference-section i {
+         font-size: 1.5rem;
+         color: var(--primary);
+         margin: 0 10px;
+     }
+
+    /* --- NEW SECTIONS STYLES --- */
+    .centered-heading {
+      text-align: center;
+      color: var(--primary-700);
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
+    .centered-subheading {
+      text-align: center;
+      color: var(--muted);
+      max-width: 700px;
+      margin: 0 auto 30px auto;
+      font-size: 1rem;
+    }
+
+    /* Research Focus Grid */
+    .focus-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+    .focus-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 20px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--glass);
+      transition: all 0.25s ease;
+    }
+    .focus-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--accent-shadow);
+    }
+    .focus-icon {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 15px;
+    }
+    .focus-card h5 {
+      margin-top: 0;
+      color: var(--primary-700);
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+    .focus-card p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* Methodology List */
+    .methodology-list {
+      background: var(--glass);
+      padding: 25px;
+      border-radius: var(--radius);
+      margin-bottom: 40px;
+      box-shadow: var(--shadow);
+    }
+    .methodology-list ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+    }
+    .methodology-list li {
+      background: var(--card-bg);
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--primary-700);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      border: 1px solid var(--glass);
+    }
+     [data-theme="dark"] .methodology-list li {
+         color: var(--primary);
+     }
+
+    /* Impact Section */
+    .impact-section {
+      background: var(--card-bg);
+      padding: 30px;
+      border-radius: var(--radius);
+      margin-bottom: 40px;
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+     .impact-section i {
+         font-size: 2rem;
+         color: var(--primary);
+         margin-bottom: 15px;
+     }
+     .impact-section p {
+         color: var(--muted);
+         font-size: 1rem;
+         line-height: 1.7;
+         max-width: 650px;
+         margin: 0 auto;
+     }
+
+    /* Collaboration Card */
+    .collaboration-card {
+        background: linear-gradient(135deg, var(--primary), var(--primary-700));
+        border-radius: var(--radius);
+        padding: 35px;
+        margin-bottom: 40px;
+        box-shadow: var(--accent-shadow);
+        color: #fff;
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+     .collaboration-card:hover {
+         transform: scale(1.02);
+         box-shadow: 0 15px 40px rgba(32,201,151,0.25);
+     }
+    .collaboration-card h4 {
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+        margin-top: 0;
+        margin-bottom: 15px;
+        color: #fff; /* Explicitly white */
+        text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+    .collaboration-card p {
+        max-width: 600px;
+        margin: 0 auto 20px auto;
+        opacity: 0.9;
+        font-size: 1rem;
+    }
+    .collaboration-card .btn-light {
+        font-weight: 600;
+    }
+
+     /* Mentoring Note */
+    .mentoring-note {
+      text-align: center;
+      margin-bottom: 40px;
+      padding: 20px;
+      background: var(--glass);
+      border-radius: var(--radius);
+    }
+     .mentoring-note p {
+         color: var(--muted);
+         margin-bottom: 0;
+     }
+     .mentoring-note i {
+         color: var(--primary);
+         margin-right: 8px;
+     }
+    /* --- End New Sections Styles --- */
+
+    /* Responsive adjustments for publication cards */
+    @media (max-width: 768px) {
+        .publication-card {
+            grid-template-columns: 1fr; /* Stack image and content */
+        }
+        .pub-image {
+            height: 200px; /* Allow image to be taller */
+            margin-bottom: 15px;
+        }
+         .pub-content h4 { text-align: center; }
+         .collaboration-card { padding: 25px; }
+    }
+    /* --- End Research Page Styles --- */
+
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg fixed-top navbar-custom">
+    <!-- Same Navbar content as index.html -->
+    <div class="container-xl d-flex align-items-center justify-content-between">
+      <div class="d-flex align-items-center">
+        <a class="navbar-brand d-flex align-items-center" href="index.html">
+          <img src="images/logo.png" alt="Murad Logo" class="logo-img" 
+               onerror="this.onerror=null; this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
+          <div class="logo-text" id="logoFallback" style="display:none;">Murad</div>
+        </a>
+        <small class="ml-3 dev-note d-none d-md-inline">Engineering • Research • Endurance</small>
+      </div>
+
+      <div class="d-flex align-items-center">
+        <div class="accent-palette mr-3" role="tablist" aria-label="Accent color">
+          <div class="accent-dot" data-accent="green" title="Green" style="background:#20c997" aria-checked="true"></div>
+          <div class="accent-dot" data-accent="yellow" title="Yellow" style="background:#f1c40f"></div>
+          <div class="accent-dot" data-accent="red" title="Red" style="background:#e74c3c"></div>
+        </div>
+        <div class="d-flex align-items-center mr-2">
+          <i id="toggleIcon" class="fas fa-sun mr-2" style="color:var(--primary)"></i>
+          <label style="display:inline-block;cursor:pointer">
+            <input id="themeSwitch" type="checkbox" style="display:none" aria-label="Toggle dark mode">
+            <div id="switchVisual" style="width:44px;height:24px;background:rgba(0,0,0,0.06);border-radius:14px;position:relative;">
+              <div id="switchDot" style="width:18px;height:18px;border-radius:50%;background:#fff;position:absolute;left:3px;top:3px;box-shadow:0 4px 10px rgba(0,0,0,0.12);"></div>
+            </div>
+          </label>
+        </div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+          <span class="t-icon navbar-toggler-icon" id="hamburgerSvg"></span>
+        </button>
+      </div>
+
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav align-items-center">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="athletic.html">Athletics</a></li>
+          <li class="nav-item"><a class="nav-link" href="storytelling.html">Storytelling</a></li>
+          <li class="nav-item"><a class="nav-link" href="projects.html">Projects</a></li> 
+          <li class="nav-item"><a class="nav-link active" href="research.html">Research</a></li> <!-- Active Link -->
+          <li class="nav-item"><a class="nav-link" href="achievements.html">Achievements</a></li>
+          <li class="nav-item"><a class="nav-link" href="about.html">Resume</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- SCROLL PROGRESS BAR HTML -->
+  <div id="scrollProgressBar">
+    <div id="scrollProgressIndicator"></div>
+  </div>
+
+  <!-- Main Content Area -->
+  <main class="container-xl mt-4" id="mainContent">
+
+    <!-- Page Header -->
+    <header class="page-header animate-entrance">
+        <h1>Research & Publications</h1>
+        <p>Delving into the structural, optical, magnetic, and electrical properties of advanced materials for next-generation applications.</p>
+    </header>
+    
+    <!-- === NEW: Research Focus Section === -->
+    <section class="animate-entrance">
+      <h4 class="centered-heading">Core Research Areas</h4>
+      <div class="focus-grid">
+        <div class="focus-card">
+          <div class="focus-icon"><i class="fas fa-magnet"></i></div>
+          <h5>Magnetic Materials</h5>
+          <p>Investigating ferrites and perovskites, tuning properties like magnetization and coercivity through doping for advanced magnetic devices.</p>
+        </div>
+        <div class="focus-card">
+          <div class="focus-icon"><i class="fas fa-broadcast-tower"></i></div>
+          <h5>High-Frequency Applications</h5>
+          <p>Synthesizing materials with high resistivity and low dielectric loss, targeting EMI shielding and components for 5G/6G technologies.</p>
+        </div>
+        <div class="focus-card">
+           <div class="focus-icon"><i class="fas fa-atom"></i></div>
+           <h5>Solid-State Synthesis</h5>
+           <p>Utilizing solid-state reaction methods to create novel material compositions and studying the effects of elemental substitution.</p>
+        </div>
+      </div>
+    </section>
+    
+    <!-- === NEW: Methodology Section === -->
+    <section class="animate-entrance">
+       <h4 class="centered-heading">Key Methodologies</h4>
+       <div class="methodology-list">
+           <ul>
+               <li>X-Ray Diffraction (XRD) & Rietveld Refinement</li>
+               <li>Fourier Transform Infrared (FTIR) Spectroscopy</li>
+               <li>UV-Visible (UV-Vis) Spectroscopy</li>
+               <li>Vibrating Sample Magnetometry (VSM / PPMS)</li>
+               <li>Impedance Spectroscopy / Analyzer</li>
+               <li>Solid-State Reaction Synthesis</li>
+               <!-- Add more as needed -->
+           </ul>
+       </div>
+    </section>
+
+    <!-- Divider -->
+    <hr class="section-divider">
+
+    <!-- Publication Section Title -->
+     <h4 class="centered-heading" style="margin-top: 40px;">Publications</h4>
+
+    <!-- Publication 1: Ti-doped BaSrFe -->
+    <article class="publication-card animate-entrance">
+        <img src="images/Jalcom.PNG" alt="Abstract graphical representation" class="pub-image" 
+             onerror="this.src='https://placehold.co/400x360/179b77/ffffff?text=Research+Visual+1'">
+        <div class="pub-content">
+            <h4>Tailoring structural, optical and magnetic properties of Ti-doped Ba0.8Sr0.2Fe12O19 for advanced magnetic devices</h4>
+            <p class="pub-authors">Redwanur Rahman Rubel, Md. Bahar Ullah, Zahid Hasan, <strong>Murad Hossain</strong>, Mohammad Khurshed Alam, Mohammed Nazrul Islam Khan, Jamal Uddin Ahamed</p>
+            <p class="pub-journal">
+                Journal of Alloys and Compounds, Volume 1040, 23 September 2025, 183582 <br>
+                <a href="https://doi.org/10.1016/j.jallcom.2025.183582" target="_blank">https://doi.org/10.1016/j.jallcom.2025.183582</a>
+            </p>
+            <p class="pub-abstract">
+                <strong>Abstract:</strong> Ti-doped barium strontium hexaferrites (Ba0.8Sr0.2Fe12-xTixO19, x = 0.0–0.20) were synthesized via solid-state reaction to investigate Ti substitution effects on structural, optical, and magnetic properties... The x = 0.20 composition emerges as a promising candidate for magneto-optic devices.
+            </p>
+             <div class="pub-highlights">
+                <h6><i class="fas fa-star" style="margin-right: 5px;"></i>Highlights</h6>
+                <ul>
+                    <li>Bandgap decreases (2.21 to 1.89 eV) enhancing visible light absorption.</li>
+                    <li>Optimal Mₛ (48.20 emu/g) & Hc (1094 Oe) at x = 0.20.</li>
+                    <li>Lowest porosity (8.86%) improves domain alignment.</li>
+                    <li>Critical Ti level (x = 0.10) marks lattice shift correlating with coercivity.</li>
+                </ul>
+            </div>
+        </div>
+    </article>
+
+    <!-- Publication 2: Mo-Substituted Ni-Zn Ferrites -->
+    <article class="publication-card animate-entrance">
+         <img src="images/TEM_Revised_Murad.jpg" alt="Abstract graphical representation" class="pub-image"
+              onerror="this.src='https://placehold.co/400x360/f1c40f/000000?text=Research+Visual+2'">
+        <div class="pub-content">
+            <h4>Ultrahigh Resistivity and Low-Loss Mo Doped Ni-Zn
+Ferrites for 5G/6G High-Frequency Applications</h4>
+            <p class="pub-authors"><strong>Murad Hossain</strong>, Jamal Uddin Ahamed, Hasan Mahmud, Mohammad Khurshed Alam, M. N. I. Khan</p>
+            <p class="pub-journal">
+                Preprint / Working Paper (Posted: 18 May 2025)
+            </p>
+            <p class="pub-abstract">
+                <strong>Abstract:</strong> Explores Mo6+ substitution effects on Ni0.5Zn0.5Fe2-xMoxO4 ferrites. Confirmed pure cubic spinel structure... Showed increase in optical bandgap (3.79–3.89 eV)... Reduction in saturation magnetization (61.85–71.6 emu/g)... Significant enhancement in resistivity (up to 2756 kΩ·cm) and reduced dielectric loss... promising for 5G/6G applications (EMI shielding, inductors).
+            </p>
+             <div class="pub-highlights">
+                 <h6><i class="fas fa-star" style="margin-right: 5px;"></i>Key Findings</h6>
+                 <ul>
+                    <li>Mo6+ substitution confirmed in spinel structure.</li>
+                    <li>Optical bandgap increased; saturation magnetization decreased.</li>
+                    <li>Enhanced resistivity and reduced dielectric loss observed.</li>
+                    <li>Promising results for high-frequency (5G/6G) applications.</li>
+                 </ul>
+             </div>
+        </div>
+    </article>
+
+    <!-- Publication 3: Ti-doped Mn–Ni–Zn ferrite -->
+     <article class="publication-card animate-entrance">
+         <img src="images/AIP.PNG alt="Abstract graphical representation" class="pub-image"
+              onerror="this.src='https://placehold.co/400x360/c0382b/ffffff?text=Research+Visual+3'">
+        <div class="pub-content">
+            <h4>Synthesis and exploration of structural, optical, magnetic, and electrical properties of Ti-doped Mn–Ni–Zn ferrite</h4>
+            <p class="pub-authors">Md. Arman Hossain, Hasan Khaled Rouf, <strong>Murad Hossain</strong>, Mohammad Khurshed Alam, Mohammed Nazrul Islam Khan</p>
+            <p class="pub-journal">
+                AIP Advances 15, 055016 (2025) <br>
+                <a href="https://doi.org/10.1063/5.0265876" target="_blank">https://doi.org/10.1063/5.0265876</a>
+            </p>
+            <p class="pub-abstract">
+                <strong>Abstract:</strong> Mn0.5Ni0.1Zn0.4TixFe2−xO4 (x = 0.00-0.10) synthesized via solid-state reaction... Confirmed spinel cubic structure with secondary Fe2O3... Lattice parameter increases with Ti... Bandgap increases with Ti... Saturation magnetization decreases... Dielectric properties improve with frequency... 5% Ti doping shows potential for high-frequency use.
+            </p>
+            <div class="pub-highlights">
+                 <h6><i class="fas fa-star" style="margin-right: 5px;"></i>Key Findings</h6>
+                 <ul>
+                    <li>Spinel structure confirmed; lattice parameter increases with Ti.</li>
+                    <li>Bandgap increased; saturation magnetization decreased.</li>
+                    <li>Improved dielectric properties at higher frequencies.</li>
+                    <li>5% Ti doping shows promise for high-frequency applications.</li>
+                 </ul>
+             </div>
+        </div>
+    </article>
+
+    <!-- Publication 4: Mn-Nb Co-doped BaMgTiO3 -->
+     <article class="publication-card animate-entrance">
+         <img src="images/xrd 7-07.png" alt="Abstract graphical representation" class="pub-image"
+              onerror="this.src='https://placehold.co/400x360/596a75/ffffff?text=Research+Visual+4'">
+        <div class="pub-content">
+            <h4>Synergistic Enhancement of Magnetic and Dielectric Properties in Mn-Nb Co-doped Ba0.7Mg0.3TiO3 Perovskite Ceramics</h4>
+            <p class="pub-authors">J. U. Ahamed, <strong>Murad Hossain</strong></p>
+            <p class="pub-journal">
+                Ceramics International (Under Review)
+            </p>
+            <p class="pub-abstract">
+                <strong>Status:</strong> Under Review. Investigates Mn and Nb co-doping effects on Ba0.7Mg0.3TiO3 perovskite via solid-state reaction. Aims to enhance magnetic and dielectric properties synergistically for multifunctional devices using XRD, SEM, VSM, and dielectric spectroscopy.
+            </p>
+        </div>
+    </article>
+    
+    <!-- Divider -->
+    <hr class="section-divider">
+
+    <!-- === NEW: Impact & Applications Section === -->
+     <section class="impact-section animate-entrance">
+        <h4 class="centered-heading">Impact & Applications</h4>
+        <i class="fas fa-cogs"></i>
+        <p>My research focuses on developing materials crucial for future technologies. By carefully tuning composition and structure, we can create components for advanced magnetic storage, efficient high-frequency communications (5G/6G), sensitive sensors, and potential biomedical applications. The goal is to bridge fundamental materials science with tangible technological advancements.</p>
+     </section>
+
+    <!-- === NEW: Collaboration Section === -->
+    <section class="collaboration-card animate-entrance">
+        <h4>Let's Collaborate!</h4>
+        <p>I am actively seeking collaborations with researchers, academic institutions, and industry partners interested in magnetic materials, functional ceramics, high-frequency device applications, and related fields. If you have an idea or project, let's connect and explore the possibilities.</p>
+        <!-- Link to the contact section in the footer or a dedicated contact page -->
+        <a href="#mainContact" class="btn btn-light">Get in Touch</a> 
+    </section>
+
+    <!-- Conference Participation Section -->
+    <section class="conference-section animate-entrance">
+        <h4><i class="fas fa-microphone-alt"></i> Active Conference Participation <i class="fas fa-users"></i></h4>
+        <p>Engaging with the scientific community through presentations and discussions at national and international conferences is key to fostering collaboration and advancing knowledge in materials science.</p>
+    </section>
+    
+    <!-- === NEW: Mentoring Note === -->
+    <section class="mentoring-note animate-entrance">
+       <p><i class="fas fa-user-graduate"></i> Open to mentoring students and early-career researchers passionate about materials science. Feel free to reach out to discuss potential projects or guidance.</p>
+    </section>
+
+
+  </main>
+
+ <!-- Footer -->
+<footer id="contact">
+  <div class="container-xl">
+    <div class="row">
+      <!-- Left: Contact Form -->
+      <div class="col-md-6">
+        <h5>Contact for Collab</h5>
+        <form action="https://formspree.io/f/mwpkvrvr" method="POST" id="mainContact">
+          <input class="form-control mb-2" name="name" id="cname" placeholder="Name" required>
+          <input class="form-control mb-2" name="email" id="cemail" placeholder="Email" type="email" required>
+          <textarea class="form-control mb-2" name="message" id="cmsg" rows="3"
+            placeholder="Your message, story idea, or volunteer interest..." required></textarea>
+          <button class="btn btn-primary" type="submit">Send Message</button>
+        </form>
+      </div>
+
+      <!-- Right: Social Links -->
+      <div class="col-md-6 text-right d-none d-md-block">
+        <h5>Connect Socially</h5>
+        <div style="font-size:1.2rem; gap:10px; display:inline-flex; align-items:center;">
+          <a href="https://www.facebook.com/murad4231" target="_blank" class="text-decoration-none text-muted">
+            <i class="bi bi-facebook"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/muradhossain42" target="_blank" class="text-decoration-none text-muted">
+            <i class="bi bi-linkedin"></i>
+          </a>
+          <a href="mailto:muradcu42@gmail.com" class="text-decoration-none text-muted">
+            <i class="bi bi-envelope"></i>
+          </a>
+        </div>
+        <p class="mt-3 dev-note">Address: Lakshmipur, Bangladesh</p>
+        <p class="mt-2 dev-note">#TrihardMurad</p>
+      </div>
+    </div>
+
+    <!-- Footer bottom -->
+    <div class="text-center mt-4 dev-note">
+      <a href="admin.html" style="text-decoration: none; color: inherit;" title="Admin Section">&copy; 2025</a>
+      Murad Hossain — Built with passion and tea.
+
+    </div>
+  </div>
+</footer>
+
+
+  <!-- Toast Notification HTML -->
+  <div id="toastNotification"></div>
+
+  <!-- Shared Scripts (Theme, Accent, Scroll, Smooth Nav, Contact, Toast) -->
+  <script type="module">
+    // Firebase for Contact Form
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js';
+    import { getFirestore, collection, addDoc, setLogLevel } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js';
+
+     const firebaseConfig = {
+          apiKey: "AIzaSyBnDhuKL60HNcX40JI9zQ6YIZDr1hbMZHc",
+          authDomain: "trihardmurad.firebaseapp.com",
+          projectId: "trihardmurad",
+          storageBucket: "trihardmurad.appspot.com",
+          messagingSenderId: "146538214416",
+          appId: "1:146538214416:web:0d7ad5834eb432c385c695",
+          measurementId: "G-GQNJV0VQQQ"
+        };
+    
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    // setLogLevel('debug'); 
+
+    // intersection observer for reveal animations
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('visible');
+      });
+    }, { threshold: 0.1 }); // Adjusted threshold slightly
+
+    // Observe all elements with .animate-entrance with staggered delay
+    document.querySelectorAll('.animate-entrance').forEach((el, index) => {
+        const delay = index * 60; // Slightly increased stagger
+        el.style.transitionDelay = `${delay}ms`;
+        io.observe(el);
+    });
+
+    // theme & accent handlers
+    const accentDots = document.querySelectorAll('.accent-dot');
+    function setAccent(accentKey) {
+      document.documentElement.setAttribute('data-accent', accentKey);
+      localStorage.setItem('site-accent', accentKey);
+      // mark aria-checked
+      accentDots.forEach(d => d.setAttribute('aria-checked', d.dataset.accent === accentKey ? 'true' : 'false'));
+      // redraw hamburger icon color & logo border
+      drawHamburger(); 
+       const logoImg = document.querySelector('.logo-img');
+       if (logoImg) logoImg.style.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
+      // Update scroll bar color
+      const scrollIndicator = document.getElementById('scrollProgressIndicator');
+      if (scrollIndicator) scrollIndicator.style.background = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
+    }
+
+    accentDots.forEach(dot => {
+      dot.addEventListener('click', () => setAccent(dot.dataset.accent));
+    });
+
+    // day/night toggle
+    const themeSwitch = document.getElementById('themeSwitch');
+    const switchVisual = document.getElementById('switchVisual');
+    const switchDot = document.getElementById('switchDot');
+    const toggleIcon = document.getElementById('toggleIcon');
+
+    function setTheme(t) {
+      document.documentElement.setAttribute('data-theme', t);
+      localStorage.setItem('site-theme', t);
+      if (t === 'dark') {
+        switchDot.style.left = '23px';
+        toggleIcon.className = 'fas fa-moon mr-2';
+      } else {
+        switchDot.style.left = '3px';
+        toggleIcon.className = 'fas fa-sun mr-2';
+      }
+    }
+
+    // initial load of stored choices
+    const storedTheme = localStorage.getItem('site-theme') || 'light';
+    setTheme(storedTheme);
+    const storedAccent = localStorage.getItem('site-accent') || 'green';
+    setAccent(storedAccent);
+
+    if (switchVisual) { // Add check if element exists
+        switchVisual.addEventListener('click', () => {
+          const current = document.documentElement.getAttribute('data-theme') || 'light';
+          setTheme(current === 'dark' ? 'light' : 'dark');
+        });
+    }
+
+
+    // draw hamburger svg colored by accent
+    function drawHamburger(){
+      const accent = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim() || '#20c997';
+      const svg = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath stroke='${encodeURIComponent(accent)}' stroke-width='2' d='M3 6h18M3 12h18M3 18h18' stroke-linecap='round'/%3E%3C/svg%3E`;
+      const el = document.getElementById('hamburgerSvg');
+      if (el) {
+        el.style.backgroundImage = `url("${svg}")`;
+        el.style.backgroundSize = '20px 20px';
+      }
+    }
+    drawHamburger(); // Initial draw
+    window.addEventListener('resize', drawHamburger); // Redraw on resize
+
+     // --- Toast Notification Logic ---
+    const toastEl = document.getElementById('toastNotification');
+    let toastTimeout;
+    function showToast(message, isError = false) {
+      if (!toastEl) return; // Add check if element exists
+      clearTimeout(toastTimeout);
+      toastEl.textContent = message;
+      toastEl.className = isError ? 'error' : ''; // Reset classes
+      toastEl.classList.add('show');
+      toastTimeout = setTimeout(() => toastEl.classList.remove('show'), 3000);
+    }
+
+    // contact form handler
+    window.handleContact = async function(e){
+      e.preventDefault();
+      const name = document.getElementById('cname').value;
+      const email = document.getElementById('cemail').value;
+      const msg = document.getElementById('cmsg').value;
+      const sendButton = e.target.querySelector('button');
+      sendButton.disabled = true;
+      sendButton.textContent = 'Sending...';
+
+      try {
+        const collectionPath = 'contacts'; // Using simple path as per previous correction
+        await addDoc(collection(db, collectionPath), { name, email, message: msg, createdAt: new Date().toISOString() });
+        showToast('Thanks! Message sent.');
+        e.target.reset();
+      } catch (err) {
+        console.error('contact error', err);
+        showToast('Failed to send. Please try later.', true);
+      } finally {
+        sendButton.disabled = false;
+        sendButton.textContent = 'Send';
+      }
+    };
+
+    // SCROLL PROGRESS BAR LOGIC
+    const scrollProgressIndicator = document.getElementById('scrollProgressIndicator');
+    if (scrollProgressIndicator) { // Add check if element exists
+        window.addEventListener('scroll', () => {
+          const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+          const height = scrollHeight - clientHeight;
+          const scrollPercent = height > 0 ? (scrollTop / height) * 100 : 0; // Avoid NaN
+          scrollProgressIndicator.style.width = `${scrollPercent}%`;
+        });
+    }
+
+
+    // smooth page transitions
+    document.querySelectorAll('a.nav-link, a[href$=".html"]').forEach(a=>{
+      a.addEventListener('click', (ev)=>{
+        const href = a.getAttribute('href');
+        if (!href || href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('#')) return;
+        ev.preventDefault();
+        document.documentElement.classList.add('page-fade-out');
+        setTimeout(()=> { location.href = href; }, 320);
+      });
+    });
+
+    // Smooth scroll for anchor links (like the Collaborate button)
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            const targetId = this.getAttribute('href');
+            // Only prevent default if it's not just '#'
+            if (targetId.length > 1) { 
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    e.preventDefault();
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            }
+        });
+    });
+
+
+  </script>
+
+  <!-- Accessibility: Skip to content -->
+  <a href="#mainContent" style="position:absolute;left:-9999px;top:auto;">Skip to main content</a>
+
+  <!-- Bootstrap JS (for hamburger menu) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
+

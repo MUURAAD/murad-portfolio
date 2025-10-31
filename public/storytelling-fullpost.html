@@ -1,922 +1,595 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Storytelling Full Blog Post - Murad</title>
-    <link rel="stylesheet" href="css/styles.css">
-  
-    <style>
-        /* Added styles for the hamburger menu */
-        header .hamburger {
-            display: none; /* Hidden by default */
-            flex-direction: column; /* Flexbox layout */
-            cursor: pointer; /* Pointer cursor */
-        }
-
-        header .hamburger .bar {
-            width: 25px; /* Bar width */
-            height: 3px; /* Bar height */
-            background-color: #ffffff; /* Background color */
-            margin: 4px 0; /* Margin */
-        }
-
-        header .hamburger.close .bar:nth-child(2) {
-            opacity: 0; /* Hide the second bar */
-        }
-
-        header .hamburger.close .bar:nth-child(1) {
-            transform: translateY(7px) rotate(45deg); /* Transform first bar */
-        }
-
-        header .hamburger.close .bar:nth-child(3) {
-            transform: translateY(-7px) rotate(-45deg); /* Transform third bar */
-        }
-
-        /* Responsive Styles */
-        @media (max-width: 768px) {
-            header .hamburger {
-                display: flex; /* Show hamburger menu on small screens */
-                margin-left: auto; /* Align hamburger to the right */
-            }
-
-            nav ul {
-                display: none; /* Hide menu by default */
-                flex-direction: column; /* Stack menu items vertically */
-                width: 100%; /* Full width */
-                background-color: #333; /* Background color */
-                position: absolute; /* Position menu */
-                top: 60px; /* Position below header */
-                right: 0; /* Align to right */
-                padding: 0; /* Remove padding */
-                margin: 0; /* Remove margin */
-            }
-
-            nav ul.show {
-                display: flex; /* Show menu when hamburger is clicked */
-            }
-
-            nav ul li {
-                text-align: center; /* Center text */
-                width: 100%; /* Full width */
-            }
-
-            nav ul li a {
-                color: #fff; /* White text color */
-                display: block; /* Block level link */
-                padding: 10px; /* Padding */
-                text-decoration: none; /* Remove underline */
-            }
-
-            nav ul li a:hover {
-                background-color: #575757; /* Background color on hover */
-            }
-        }
-    </style>
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyBnDhuKL60HNcX40JI9zQ6YIZDr1hbMZHc",
-            authDomain: "trihardmurad.firebaseapp.com",
-            projectId: "trihardmurad",
-            storageBucket: "trihardmurad.appspot.com",
-            messagingSenderId: "146538214416",
-            appId: "1:146538214416:web:0d7ad5834eb432c385c695",
-            measurementId: "G-GQNJV0VQQQ"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        document.addEventListener("DOMContentLoaded", async () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const postId = urlParams.get('id');
-            const postRef = doc(db, "storytellingPosts", postId);
-            const postSnap = await getDoc(postRef);
-
-            if (postSnap.exists()) {
-                const post = postSnap.data();
-                document.getElementById('full-post').innerHTML = `
-                    <div class="full-post-card">
-                        <h2>${post.title}</h2>
-                        <div class="tag-date">
-                            <span class="tag">#${post.tag}</span>
-                            <span class="date">${new Date(post.date).toLocaleDateString()}</span>
-                        </div>
-                        <img src="${post.imageUrl}" alt="${post.title}" class="full-image">
-                        <p class="image-caption"><i>${post.imageCaption}</i></p>
-                        <p>${post.content}</p>
-                    </div>
-                `;
-            } else {
-                document.getElementById('full-post').innerHTML = '<p>No such post!</p>';
-            }
-
-            const blogPostsRef = collection(db, "storytellingPosts");
-            const blogPostsSnap = await getDocs(blogPostsRef);
-            const blogPosts = blogPostsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
-            const otherPostsContainer = document.getElementById('other-posts-grid');
-            otherPostsContainer.innerHTML = '';
-            blogPosts.forEach(post => {
-                if (post.id !== postId) {
-                    const postElement = document.createElement('div');
-                    postElement.classList.add('blog-card');
-                    postElement.innerHTML = `
-                        <img src="${post.imageUrl}" alt="${post.title}">
-                        <div class="blog-content">
-                            <div class="content-left">
-                                <span class="tag">#${post.tag}</span>
-                                <p class="date">${new Date(post.date).toLocaleDateString()}</p>
-                            </div>
-                            <h3>${post.title}</h3>
-                            <p>${post.content.substring(0, 100)}...</p>
-                        </div>
-                    `;
-                    postElement.addEventListener('click', () => {
-                        window.location.href = `storytelling-fullpost.html?id=${post.id}`;
-                    });
-                    otherPostsContainer.appendChild(postElement);
-                }
-            });
-        });
-    </script>
-    
-</head>
-<body>
-    <header>
-        <div class="logo">
-            <a href="index.html"><img src="images/logo.png" alt="Logo"></a>
-            <span>Murad's Blog</span>
-        </div>
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="projects.html">Projects</a></li>
-                <li><a href="storytelling.html">Storytelling Blog</a></li>
-                <li><a href="athletic.html">Athletic Blog</a></li>
-                <li><a href="achievements.html">Achievements</a></li>
-            </ul>
-        </nav>
-       
-        <div class="hamburger">
-            <div class="bar"></div>
-            <div class="bar"></div>
-            <div class="bar"></div>
-        </div>
-    </header>
-    <main>
-        
-        <section id="full-post" class="full-post-container" style="margin-top: 80px;"></section>
-        <section id="other-recent-posts" style="background-color: #f0f0f0; padding: 20px; text-align: center;"></section>
-        <section id="other-posts" class="other-posts-container">
-            <h2 style="display: inline-block; background-color: #f7007b; padding: 10px; border-radius: 5px; color: white; font-size: 24px;">Relevant Posts</h2>
-            <div id="other-posts-grid" class="blog-posts-grid"></div>
-        </section>
-    </main>
-    <footer>
-        <div class="footer-container">
-            <div class="footer-left">
-                <p>Connect with me:</p>
-                <div class="social-icons" style="display: flex; justify-content: center; align-items: center; gap: 15px; margin: 20px 0;">
-                    <a href="mailto:muradcu42@gmail.com" style="display: flex; justify-content: center; align-items: center; width: 75px; height: 75px; background-color: #333; border-radius: 50%; text-align: center; transition: transform 0.3s;">
-                        <img src="images/mail-icon.png" alt="Mail" style="width: 36px; height: 36px;">
-                    </a>
-                    <a href="https://www.facebook.com/murad4231" style="display: flex; justify-content: center; align-items: center; width: 75px; height: 75px; background-color: #333; border-radius: 50%; text-align: center; transition: transform 0.3s;">
-                        <img src="images/facebook-icon.png" alt="Facebook" style="width: 36px; height: 36px;">
-                    </a>
-                    <a href="https://www.linkedin.com/in/muradhossain42" style="display: flex; justify-content: center; align-items: center; width: 75px; height: 75px; background-color: #333; border-radius: 50%; text-align: center; transition: transform 0.3s;">
-                        <img src="images/linkedin-icon.png" alt="LinkedIn" style="width: 36px; height: 36px;">
-                    </a>
-                    <a href="https://www.youtube.com/@muradhossain5116" style="display: flex; justify-content: center; align-items: center; width: 75px; height: 75px; background-color: #333; border-radius: 50%; text-align: center; transition: transform 0.3s;">
-                        <img src="images/youtube-icon.png" alt="YouTube" style="width: 36px; height: 36px;">
-                    </a>
-                    <a href="https://www.strava.com" style="display: flex; justify-content: center; align-items: center; width: 75px; height: 75px; background-color: #333; border-radius: 50%; text-align: center; transition: transform 0.3s;">
-                        <img src="images/strava-icon.png" alt="strava" style="width: 36px; height: 36px;">
-                    </a>
-                
-                </div>
-                <p>Address: Dhaka, Bangladesh</p>
-            </div>
-            <div class="footer-right">
-                <form action="https://formspree.io/f/xvoejldb" method="POST">
-                    <input type="text" id="name" name="name" placeholder="Name" required>
-                    <input type="email" id="email" name="email" placeholder="Email" required>
-                    <textarea id="message" name="message" rows="3" placeholder="Message" required></textarea>
-                    <button type="submit">Send</button>
-                </form>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p><i>Don't copy guys! All rights Reserved @2024</i></p>
-    
-        </div>
-        <button id="back-to-top" class="back-to-top">↑</button>
-    </footer>
-
-    <script>
-        // Navbar functionality
-        const hamburger = document.querySelector('.hamburger');
-        const navUl = document.querySelector('nav ul');
-
-        hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('close');
-            navUl.classList.toggle('show');
-        });
-
-        window.addEventListener('scroll', () => {
-            const backToTopButton = document.getElementById('back-to-top');
-            if (window.scrollY > 300) {
-                backToTopButton.classList.add('show');
-            } else {
-                backToTopButton.classList.remove('show');
-            }
-        });
-
-        document.getElementById('back-to-top').addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-    </script>
-</body>
-</html> -->
-
-
-
-
-
-
-
-
-
-
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light" data-accent="green">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Achievements - Murad</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome for icons -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <style>
-        /* Custom styles for cards and hover effects */
-        .card img {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-        }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title id="dynamic-title">Loading Story Details...</title> <!-- Dynamic Title -->
 
-        .card-body {
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            flex-grow: 1;
-        }
+  <!-- Bootstrap + Icons + Fonts (Consistent) -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;700&display=swap" rel="stylesheet">
 
-        .card:hover {
-            transform: scale(1.01);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
+  <style>
+    /* ----------------- THEME & ACCENT VARIABLES (Consistent) ----------------- */
+    :root{
+      --bg: #f4f7fb; --card-bg: #ffffff; --muted: #596a75;
+      --primary: #20c997; --primary-700:#179b77;
+      --glass: rgba(255,255,255,0.6); --shadow: 0 10px 30px rgba(16,24,40,0.08);
+      --radius: 14px; --accent-shadow: 0 12px 30px rgba(32,201,151,0.14);
+      --nav-height: 64px; --max-content-width: 960px; /* Max width for readability */
+    }
+    [data-theme="dark"]{
+      --bg: #0b1220; --card-bg: #0f1b28; --muted: #b6cad6;
+      --primary: #43d9b2; --primary-700:#2fbf9a;
+      --glass: rgba(255,255,255,0.03); --shadow: 0 12px 40px rgba(0,0,0,0.7);
+      --accent-shadow: 0 12px 30px rgba(67,217,178,0.08);
+    }
+    [data-accent="green"] { --primary: #20c997; --primary-700: #179b77; --accent-shadow: 0 12px 30px rgba(32,201,151,0.14); }
+    [data-accent="yellow"] { --primary: #f1c40f; --primary-700: #d4a70b; --accent-shadow: 0 12px 30px rgba(241,196,15,0.12); }
+    [data-accent="red"] { --primary: #e74c3c; --primary-700: #c0382b; --accent-shadow: 0 12px 30px rgba(231,76,60,0.12); }
 
-        @media (min-width: 768px) {
-            .blog-container {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
+    html,body{height:auto; min-height: 100%;}
+    body{
+      margin:0; font-family:'Comfortaa',sans-serif;
+      background:var(--bg); color:var(--muted);
+      transition: background .35s ease, color .35s ease;
+      padding-top: var(--nav-height);
+      padding-bottom: 60px; /* Space for quote bar */
+    }
+    .container-xl{ max-width: var(--max-content-width); }
+    .shadow-soft{ box-shadow: var(--shadow); }
+    .glass{ background: var(--glass); border-radius: 10px; }
 
-            .blog-container .card {
-                flex: 1 1 calc(33.333% - 20px);
-                margin: 10px;
-            }
-        }
+    /* NAVBAR (Consistent) */
+    .navbar-custom{ height: var(--nav-height); background: linear-gradient(90deg, rgba(0,0,0,0.04), rgba(255,255,255,0.02)); backdrop-filter: blur(6px); box-shadow: 0 6px 18px rgba(0,0,0,0.06); }
+    .logo-img { height: 40px; width: auto; object-fit: contain; border-radius: 50%; border: 2px solid var(--primary); transition: border-color 0.3s ease; }
+    .nav-link{ color:var(--muted) !important; padding:8px 14px; border-radius:8px; font-weight:600; }
+    .nav-link:hover{ background: rgba(0,0,0,0.04); color:var(--primary) !important; transform: translateY(-3px); }
+    .accent-palette { display:flex; gap:8px; align-items:center; }
+    .accent-dot { width:18px; height:18px; border-radius:50%; cursor:pointer; border:2px solid rgba(255,255,255,0.9); box-shadow: 0 2px 6px rgba(0,0,0,0.12); }
+    .accent-dot[aria-checked="true"] { transform: scale(1.15); box-shadow: 0 6px 18px rgba(0,0,0,0.15); }
+    @media (max-width: 991.98px) { .navbar-collapse.show { background: var(--card-bg); padding: 16px; border-radius: var(--radius); margin-top: 8px; box-shadow: var(--shadow); display: block; } .navbar-collapse.show .navbar-nav .nav-link { padding: 10px 12px; } }
 
-        @media (max-width: 767px) {
-            .blog-container {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-            }
+    /* --- FULL POST LAYOUT --- */
+    .post-container { background: var(--card-bg); border-radius: var(--radius); box-shadow: var(--shadow); margin-top: 30px; margin-bottom: 30px; overflow: hidden; }
+    .hero-image-container { height: 400px; position: relative; background-size: cover; background-position: center; background-color: var(--glass); }
+    .hero-image-container::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 60%; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); }
+    .hero-content { position: absolute; bottom: 0; left: 0; right: 0; padding: 30px 40px; color: white; z-index: 1; }
+    .hero-content h1 { font-size: 2.5rem; font-weight: 700; color: white !important; text-shadow: 0 2px 5px rgba(0,0,0,0.5); margin-bottom: 8px; display: flex; align-items: center; gap: 10px;}
+    .post-meta { font-size: 0.9rem; opacity: 0.85; }
+    .post-meta span { margin-right: 15px; display: inline-flex; align-items: center; }
+    .post-meta i { margin-right: 5px; opacity: 0.7; }
+    .post-body { padding: 30px 40px; }
+    @media (max-width: 768px) { .hero-image-container { height: 300px; } .hero-content { padding: 20px; } .hero-content h1 { font-size: 1.8rem; } .post-body { padding: 20px; } }
+    #mainContent > p:first-of-type::first-letter { font-size: 4rem; font-weight: bold; color: var(--primary); float: left; margin: 0 10px 0 0; line-height: 0.8; }
+    .post-body p { line-height: 1.7; margin-bottom: 1.5rem; font-size: 1rem; }
+    .post-body h2, .post-body h3 { color: var(--primary-700) !important; margin-top: 2rem; margin-bottom: 1rem; }
+    [data-theme="dark"] .post-body h2, [data-theme="dark"] .post-body h3 { color: var(--primary) !important; }
+    .post-body blockquote { border-left: 4px solid var(--primary); padding-left: 15px; margin: 1.5rem 0; font-style: italic; color: var(--muted); opacity: 0.9; }
+    .post-actions { display: flex; align-items: center; justify-content: space-between; padding: 15px 40px; border-top: 1px solid var(--glass); }
+    .like-btn { background: none; border: none; color: var(--muted); cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 1rem; padding: 8px 12px; border-radius: 50px; transition: all 0.2s ease; }
+    .like-btn:hover { background: var(--glass); color: var(--primary); }
+    .like-btn .fa-heart { font-size: 1.2rem; }
+    .like-btn.liked { color: var(--primary); }
+    .share-btn { background: none; border: none; color: var(--muted); cursor: pointer; padding: 8px 12px; border-radius: 50px; display: flex; align-items: center; gap: 8px; font-size: 1rem; transition: all 0.2s ease; }
+    .share-btn:hover { background: var(--glass); color: var(--primary); }
+    .share-btn i { font-size: 1.1rem; }
 
-            .blog-container .card {
-                width: calc(100% - 20px);
-                max-width: none;
-                margin: 10px 0;
-            }
-        }
+    /* Sidebar Cards */
+    .sidebar-card { background: var(--glass); border-radius: var(--radius); padding: 20px; margin-bottom: 25px; }
+    .sidebar-card h3 { font-size: 1.1rem; color: var(--primary-700) !important; margin-bottom: 15px; }
+    [data-theme="dark"] .sidebar-card h3 { color: var(--primary) !important; }
 
-        /* Initial styles for the share icon box */
-        .share-icons {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 50px;
-            cursor: pointer;
-            background-color: transparent;
-            border-radius: 25px;
-            width: 50px;
-            overflow: hidden;
-            transition: width 0.5s ease, border-radius 0.5s ease;
-            margin: 0 auto; /* Center align the box */
-        }
+    /* Story Info Card */
+    .story-info-card ul { list-style: none; padding-left: 0; font-size: 0.9rem; }
+    .story-info-card li { margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+    .story-info-card i { color: var(--primary); width: 16px; text-align: center; }
+    .story-info-card strong { font-weight: 600; color: var(--muted); opacity: 0.8; }
 
-        /* Hide the share icons initially */
-        .share-icons__item {
-            opacity: 0;
-            transform: scale(0.5);
-            transition: opacity 0.3s ease, transform 0.3s ease;
-            padding: 0 10px;
-        }
+    /* Mood Card */
+    .mood-card .mood-icon { font-size: 2.5rem; display: block; text-align: center; margin-bottom: 10px; color: var(--primary); }
+    .mood-card .mood-text { font-weight: 600; text-align: center; font-size: 0.95rem; }
 
-        /* Expand the box and reveal the icons when hovering */
-        .share-icons:hover {
-            width: 200px; /* Expand width to show all share icons */
-            border-radius: 25px; /* Keep border radius when expanded */
-        }
+    /* Related Reading Card */
+    .related-reading-list a { display: block; margin-bottom: 8px; color: var(--primary); font-weight: 600; text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+    .related-reading-list a:hover { color: var(--primary-700); }
+    .related-reading-list i { margin-right: 6px; opacity: 0.8; }
 
-        .share-icons:hover .share-icons__item {
-            opacity: 1; /* Make icons visible */
-            transform: scale(1); /* Bring icons into view */
-        }
+    /* Inspiration Corner (Gemini) Card */
+    .inspiration-card { background: linear-gradient(135deg, var(--primary-700), var(--primary)); color: #fff; box-shadow: var(--accent-shadow); }
+    .inspiration-card h5 { color: #fff !important; }
+    .inspiration-card p { opacity: 0.9; }
+    .inspiration-card button { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4); color: #fff; }
+    .inspiration-card button:hover { background: rgba(255,255,255,0.3); }
+    #inspirationTipLoading { display: none; font-weight: 600; }
 
-        /* Hide the main share icon when hovering */
-        .share-icons:hover .share-icon-main {
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
+    /* Author Bio */
+    .author-bio { display: flex; align-items: center; gap: 15px; background: var(--glass); padding: 20px; border-radius: var(--radius); margin-top: 30px; }
+    .author-bio img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
+    .author-bio p { font-size: 0.9rem; margin-bottom: 0; }
+    .author-bio strong { color: var(--primary-700); }
+    [data-theme="dark"] .author-bio strong { color: var(--primary); }
 
-        /* Hover effect on individual icons */
-        .share-icons__item a:hover i {
-            color: #03a9f4;
-            transform: scale(1.2);
-            transition: color 0.3s ease, transform 0.3s ease;
-        }
+    /* Related Posts */
+    .related-posts { margin-top: 40px; padding-top: 30px; border-top: 1px solid var(--glass); }
+    .related-posts h2 { font-size: 1.5rem; text-align: center; margin-bottom: 25px; color: var(--primary-700) !important; }
+    [data-theme="dark"] .related-posts h2 { color: var(--primary) !important; }
+    .blog-card-v2 { display: flex; flex-direction: column; background: var(--glass); backdrop-filter: blur(10px); border: 1px solid var(--glass); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; transition: all 0.3s cubic-bezier(.17,.67,.26,1.24); }
+    .blog-card-v2:hover { transform: perspective(1000px) translateY(-8px) rotateX(3deg); box-shadow: var(--accent-shadow); border-color: var(--primary); }
+    .blog-card-v2-image { height: 180px; position: relative; background-size: cover; background-position: center; overflow: hidden; background-color: var(--glass);}
+    .blog-card-v2-tag { position: absolute; top: 12px; left: 12px; background: var(--glass); backdrop-filter: blur(5px); color: var(--muted); padding: 4px 10px; border-radius: 50px; font-size: 0.75rem; font-weight: 700; border: 1px solid var(--glass); }
+    .blog-card-v2-content { padding: 16px; display: flex; flex-direction: column; flex-grow: 1; }
+    .blog-card-v2-meta { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--muted); margin-bottom: 8px; }
+    .blog-card-v2-title { font-size: 1.15rem; color: var(--primary-700); font-weight: 700; margin-bottom: 8px; }
+    [data-theme="dark"] .blog-card-v2-title { color: var(--primary); }
+    .blog-card-v2-excerpt { font-size: 0.9rem; flex-grow: 1; margin-bottom: 12px; }
+    .blog-card-v2-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--glass); padding-top: 12px; }
 
-        /* Style the main share icon that is always visible initially */
-        .share-icon-main {
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            right: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10; /* Make sure it's on top */
-            transition: opacity 0.3s ease;
-        }
+    /* Comment Section */
+    .comment-section { margin-top: 40px; padding-top: 30px; border-top: 1px solid var(--glass); }
+    .comment-section h2 { font-size: 1.5rem; text-align: center; margin-bottom: 25px; color: var(--primary-700) !important; }
+    [data-theme="dark"] .comment-section h2 { color: var(--primary) !important; }
+    #comment-form .form-control { background: var(--glass); border-color: transparent; color: var(--muted); margin-bottom: 10px; }
+    #comment-form .form-control::placeholder { color: var(--muted); opacity: 0.7; }
+    #comment-list .list-group-item { background: var(--glass); border-color: transparent; margin-bottom: 10px; border-radius: 8px; }
+    #comment-list h5 { font-size: 1rem; color: var(--primary-700); font-weight: 600; }
+    [data-theme="dark"] #comment-list h5 { color: var(--primary); }
+    #comment-list p { font-size: 0.9rem; margin-bottom: 0; }
+    #comment-list small.text-muted { font-size: 0.8rem; display: block; margin-top: 5px;}
 
-        /* General button styles */
-        .btn {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            transition: background-color 0.3s, transform 0.3s;
-        }
+    /* AI Summary Section */
+    .ai-summary-section { margin-top: 30px; padding: 20px; background: var(--glass); border-radius: var(--radius); }
+    .ai-summary-section h3 { font-size: 1.1rem; color: var(--primary-700) !important; margin-bottom: 10px; }
+    [data-theme="dark"] .ai-summary-section h3 { color: var(--primary) !important; }
+    #aiSummaryContent { font-size: 0.9rem; font-style: italic; opacity: 0.9; display: none; margin-top: 10px; }
+    #aiSummaryLoading { display: none; font-weight: 600; font-size: 0.9rem; }
 
-        /* Specific button colors */
-        .btn-primary {
-            background-color: #5f125b;
-            color: white;
-        }
+    /* Reading Progress Bar */
+    #readingProgress { position: fixed; top: var(--nav-height); left: 0; height: 4px; background: var(--primary); width: 0%; z-index: 1001; transition: width 0.1s linear; }
 
-        .btn-secondary {
-            background-color: #6c757d;
-            color: white;
-        }
+    /* Floating Elements */
+    .fab{ position:fixed; bottom:28px; right:28px; width:64px; height:64px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:var(--primary); color:#fff; box-shadow:0 20px 40px rgba(0,0,0,0.18); cursor:pointer; z-index: 999; }
+    @media(max-width: 768px) { .fab { bottom: 80px; } }
+    footer { background: transparent; color: var(--muted); padding: 40px 15px; margin-top: 60px; }
+    footer h5 { color: var(--primary); }
+    footer .form-control { background: var(--card-bg); border-color: var(--glass); color: var(--muted); }
+    footer .form-control::placeholder { color: var(--muted); opacity: 0.7; }
+    #toastNotification { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); background: var(--primary-700); color: #fff; padding: 14px 22px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); transition: bottom 0.5s cubic-bezier(.17,.67,.26,1.24); z-index: 1000; font-weight: 600; }
+    #toastNotification.show { bottom: 20px; }
+    #toastNotification.error { background: #e74c3c; }
+    #quoteCard { position: fixed; bottom: 20px; right: 20px; max-width: 280px; background: var(--glass); backdrop-filter: blur(8px); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); z-index: 998; transition: all 0.4s ease; opacity: 0.95; }
+    #quoteCard p { margin-bottom: 0.25rem; font-size: 0.9rem; color: var(--muted); font-weight: 500; transition: opacity 0.5s ease; }
+    #quoteCard small { font-size: 0.8rem; color: var(--primary); font-weight: 700; display: block; text-align: right; transition: opacity 0.5s ease; }
+    @media(max-width: 768px) { #quoteCard { left: 0; right: 0; bottom: 0; max-width: 100%; border-radius: 12px 12px 0 0; padding: 12px 16px; text-align: center; } #quoteCard small { text-align: center; } #toastNotification.show { bottom: 70px; } }
 
-        .btn-success {
-            background-color: #28a745;
-            color: white;
-        }
-
-        .btn-danger {
-            background-color: #dc3545;
-            color: white;
-        }
-
-        /* Hover effects for buttons */
-        .btn:hover {
-            transform: scale(1.05);
-            filter: brightness(1.1);
-        }
-
-        /* Hover effects for specific buttons */
-        .btn-primary:hover {
-            background-color: #d6178a;
-        }
-
-        .btn-secondary:hover {
-            background-color: #5a6268;
-        }
-
-        .btn-success:hover {
-            background-color: #218838;
-        }
-
-        .btn-danger:hover {
-            background-color: #c82333;
-        }
-
-        /* General box styles */
-        .box {
-            background-color: #f0f0f0;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: box-shadow 0.3s, transform 0.3s;
-        }
-
-        /* Hover effect for boxes */
-        .box:hover {
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-            transform: translateY(-5px);
-        }
-
-        /* Styling for boxes with hover-dependent color change */
-        .box-color-change {
-            background-color: #ffffff;
-            border: 1px solid #dddddd;
-            transition: background-color 0.3s, border-color 0.3s;
-        }
-
-        /* Hover effect for color-changing boxes */
-        .box-color-change:hover {
-            background-color: #f7f7f7;
-            border-color: #cccccc;
-        }
-
-        /* Primary Navbar Styles */
-        .navbar {
-            background-color: #1b0bac; /* Background color for primary navbar */
-            padding: 10px 20px;
-            border-radius: 5px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s;
-        }
-
-        /* Specific hover effects for primary navigation links */
-        .navbar-nav .nav-item .nav-link {
-            color: #000000; /* Default text color for nav links */
-            transition: color 0.3s;
-        }
-
-        .navbar-nav .nav-item .nav-link:hover {
-            color: #d6178a; /* Hover color for nav links */
-            text-decoration: underline;
-        }
-        /* Ensure the main content starts after the navbar */
-body {
-    padding-top: 70px; /* Adjust this value to match your navbar height */
-}
-
-/* Fix the navbar to the top and ensure proper stacking context */
-.navbar {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1000; /* Ensures it stays on top of other content */
-}
-
-/* Ensure the toggle switch aligns properly */
-.navbar-toggler {
-    display: flex;
-    align-items: center;
-    padding: 0.25rem 0.75rem;
-}
-    </style>
+     /* Print Styles */
+    @media print {
+        body { padding-top: 0; background: #fff; color: #000; font-size: 10pt; }
+        .navbar-custom, .accent-palette, #themeSwitch, #scrollTopFab, #quoteCard, #toastNotification, footer, .post-actions, .comment-section, .related-posts, .ai-summary-section, #readingProgress, .sidebar-card { display: none !important; } /* Hide sidebar */
+        .post-container { box-shadow: none; border: none; padding: 0; margin: 0; max-width: 100%; border-radius: 0; }
+        .hero-image-container { height: 200px; }
+        .hero-content h1 { font-size: 1.8rem; color: #333 !important; text-shadow: none; }
+        .hero-content { background: none; color: #555; position: static; padding: 10px 0; }
+        .post-body { padding: 0; }
+        .row > .col-lg-8 { width: 100% !important; max-width: 100% !important; flex: 0 0 100% !important; } /* Make main content full width */
+        .post-body p:first-of-type::first-letter { font-size: 3rem; }
+        .post-body h2, .post-body h3 { color: #333 !important; }
+        blockquote { border-left-color: #ccc; color: #555; }
+        a { color: #333; text-decoration: none; }
+        a[href^="http"]:after { content: " (" attr(href) ")"; font-size: 0.8em; }
+        .like-btn, .share-btn { display: none; }
+        #photoGalleryCarousel { display: none; } /* Hide carousel for print */
+    }
+  </style>
 </head>
+
 <body>
-    <header class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-        <div class="container">
-            <a href="index.html">
-                <img src="images/logo.png" alt="Logo" style="height: 60px; transition: transform 0.3s ease, opacity 0.3s ease;" onmouseover="this.style.transform='scale(1.5)'; this.style.opacity='0.8';" onmouseout="this.style.transform='scale(1)'; this.style.opacity='1';" ontouchstart="this.style.transform='scale(1.5)'; this.style.opacity='0.8';" ontouchend="this.style.transform='scale(1)'; this.style.opacity='1';">
-            </a>
-            
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="projects.html">Projects</a></li>
-                    <li class="nav-item"><a class="nav-link" href="storytelling.html">Storytelling Blog</a></li>
-                    <li class="nav-item"><a class="nav-link" href="athletic.html">Athletic Blog</a></li>
-                    <li class="nav-item"><a class="nav-link" href="achievements.html">Achievements</a></li>
-                    <li class="nav-item"><a class="nav-link" href="about.html">CV</a></li>
-                    <li class="nav-item">
-                        <div class="container">
-                            <label class="switch" style="position: relative; display: inline-block; width: 60px; height: 30px;">
-                                <!-- The Checkbox -->
-                                <input id="toggle" type="checkbox" style="opacity: 0; width: 0; height: 0;" 
-                                       onclick="
-                                           this.nextElementSibling.nextElementSibling.style.transform=this.checked ? 'translateX(30px)' : 'translateX(0)';
-                                           this.nextElementSibling.style.backgroundColor=this.checked ? '#000000' : '#ffffff';
-                                           document.body.style.background=this.checked ? '#000000' : '#f4f4f4';
-                                           localStorage.setItem('theme', this.checked ? 'night' : 'day');"> <!-- Save theme in localStorage -->
+  <!-- Reading Progress Bar -->
+  <div id="readingProgress"></div>
 
-                                <!-- The Slider (Capsule Background) -->
-                                <span style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; 
-                                      background-color: #c6c6c6; border-radius: 30px; 
-                                      transition: background-color .4s; cursor: pointer;"></span>
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg fixed-top navbar-custom">
+    <div class="container-xl d-flex align-items-center justify-content-between"> <div class="d-flex align-items-center"> <a class="navbar-brand d-flex align-items-center" href="index.html"> <img src="images/logo.png" alt="Murad Logo" class="logo-img" onerror="this.onerror=null; this.style.display='none'; document.getElementById('logoFallback').style.display='block';"> <div class="logo-text" id="logoFallback" style="display:none;">Murad</div> </a> <small class="ml-3 dev-note d-none d-md-inline">Details</small> </div> <div class="d-flex align-items-center"> <div class="accent-palette mr-3" role="tablist" aria-label="Accent color"> <div class="accent-dot" data-accent="green" title="Green" style="background:#20c997" aria-checked="true"></div> <div class="accent-dot" data-accent="yellow" title="Yellow" style="background:#f1c40f"></div> <div class="accent-dot" data-accent="red" title="Red" style="background:#e74c3c"></div> </div> <div class="d-flex align-items-center mr-2"> <i id="toggleIcon" class="fas fa-sun mr-2" style="color:var(--primary)"></i> <label style="display:inline-block;cursor:pointer"> <input id="themeSwitch" type="checkbox" style="display:none" aria-label="Toggle dark mode"> <div id="switchVisual" style="width:44px;height:24px;background:rgba(0,0,0,0.06);border-radius:14px;position:relative;"> <div id="switchDot" style="width:18px;height:18px;border-radius:50%;background:#fff;position:absolute;left:3px;top:3px;box-shadow:0 4px 10px rgba(0,0,0,0.12);"></div> </div> </label> </div> <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"> <span class="t-icon navbar-toggler-icon" id="hamburgerSvg"></span> </button> </div> <div class="collapse navbar-collapse justify-content-end" id="navbarNav"> <ul class="navbar-nav align-items-center"> <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li> <li class="nav-item"><a class="nav-link" href="athletic.html">Athletics</a></li> <li class="nav-item"><a class="nav-link" href="storytelling.html">Storytelling</a></li> <li class="nav-item"><a class="nav-link" href="projects.html">Projects</a></li> <li class="nav-item"><a class="nav-link" href="achievements.html">Achievements</a></li> <li class="nav-item"><a class="nav-link" href="about.html">Resume</a></li> </ul> </div> </div>
+  </nav>
 
-                                <!-- The Circle/Knob inside the slider -->
-                                <span style="position: absolute; width: 30px; height: 30px; background: white; 
-                                      border-radius: 50%; top: 0; left: 0; 
-                                      box-shadow: 0 2px 5px rgba(0,0,0,.2); 
-                                      transition: transform .4s;"></span>
-                            </label>
-                        </div>
-                    </li>
-                </ul>
+  <!-- Main Post Container -->
+  <div class="container-xl post-container">
+
+    <!-- Hero Image & Content -->
+    <div id="heroContainer" class="hero-image-container" style="background-image: url('https://placehold.co/1200x400/eee/aaa?text=Loading...')">
+      <div class="hero-content">
+        <h1 id="postTitle"><i id="activityIcon" class="fas fa-feather-alt mr-2"></i>Loading Story Title...</h1> <!-- Updated Icon -->
+        <div class="post-meta">
+          <span id="postDate"><i class="fas fa-calendar-alt"></i> Loading Date...</span>
+          <span id="postReadTime"><i class="fas fa-clock"></i> ... min read</span>
+          <span id="postTag"><i class="fas fa-tag"></i> <a href="storytelling.html" id="tagLink" style="color: inherit; text-decoration: none;">Loading Tag...</a></span> <!-- Link to storytelling page -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Post Body & Sidebar Content -->
+    <div class="post-body">
+        <div class="row">
+            <!-- Main Content Column -->
+            <div class="col-lg-8">
+                <div id="mainContent"> <p>Loading story details...</p> </div>
+
+                 <!-- Photo Gallery/Carousel (If applicable) -->
+                 <div id="photoGalleryCarousel" class="carousel slide" data-ride="carousel" style="display: none;">
+                     <h3 style="color: var(--primary-700) !important;">Related Images</h3>
+                     <ol class="carousel-indicators" id="galleryIndicators"></ol>
+                     <div class="carousel-inner" id="galleryInner"></div>
+                     <a class="carousel-control-prev" href="#photoGalleryCarousel" role="button" data-slide="prev"><span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="sr-only">Previous</span></a>
+                     <a class="carousel-control-next" href="#photoGalleryCarousel" role="button" data-slide="next"><span class="carousel-control-next-icon" aria-hidden="true"></span><span class="sr-only">Next</span></a>
+                 </div>
+
+                 <!-- AI Summary Section -->
+                 <div class="ai-summary-section"> <h3><i class="fas fa-robot mr-1"></i> Quick Summary</h3> <button id="getAiSummaryBtn" class="btn btn-sm btn-outline-primary">Generate Summary</button> <div id="aiSummaryLoading">Generating...</div> <div id="aiSummaryContent"></div> </div>
+
+                 <!-- Author Bio (Updated Prefix) -->
+                 <div class="author-bio"> <img src="images/profile.jpg" alt="Murad Hossain"> <div> <strong>Author: Murad Hossain</strong> <p>Engineer, researcher, and endurance athlete sharing reflections and narratives.</p> </div> </div>
+
+                 <!-- Post Navigation -->
+                 <nav class="post-navigation">
+                     <a href="#" id="prevPostLink" class="nav-link-prev nav-link-disabled"><i class="fas fa-arrow-left"></i> <div><span>Previous Story</span><span id="prevPostTitle"></span></div></a>
+                     <a href="#" id="nextPostLink" class="nav-link-next nav-link-disabled"><div><span>Next Story</span><span id="nextPostTitle"></span></div> <i class="fas fa-arrow-right"></i></a>
+                 </nav>
+            </div>
+
+            <!-- Sidebar Column (Storytelling Specific Cards) -->
+            <div class="col-lg-4">
+                 <!-- Story Info Card -->
+                 <div class="sidebar-card story-info-card">
+                    <h3><i class="fas fa-info-circle mr-1"></i> Story Info</h3>
+                    <ul id="storyInfoList">
+                        <li><i class="fas fa-pen-nib"></i><strong>Genre:</strong> <span id="infoGenre">Loading...</span></li>
+                        <li><i class="fas fa-palette"></i><strong>Mood:</strong> <span id="infoMood">Loading...</span></li>
+                        <li><i class="fas fa-book-open"></i><strong>Length:</strong> <span id="infoLength">~ ... words</span></li>
+                    </ul>
+                 </div>
+
+                 <!-- Inspiration Corner (Gemini) Card -->
+                 <div id="inspirationCard" class="sidebar-card inspiration-card"> <!-- Use sidebar-card style -->
+                    <h5><i class="fas fa-lightbulb mr-1"></i> Inspiration Corner</h5>
+                    <p id="inspirationTipContent">Loading prompt...</p>
+                    <div id="inspirationTipLoading">Loading...</div>
+                    <button id="getInspirationTipBtn" class="btn btn-sm">Get New Prompt</button>
+                 </div>
+
+                 <!-- Mood Card -->
+                 <div class="sidebar-card mood-card">
+                    <h3><i class="fas fa-smile-beam mr-1"></i> Mood</h3>
+                    <span class="mood-icon" id="moodIcon">🤔</span> <!-- Default -->
+                    <span class="mood-text" id="moodText">Reflective</span> <!-- Default -->
+                 </div>
+
+                 <!-- Related Reading Card -->
+                 <div class="sidebar-card related-reading-card" id="relatedReadingCard" style="display: none;"> <!-- Hide if no links -->
+                     <h3><i class="fas fa-book mr-1"></i> Related Reading</h3>
+                     <div class="related-reading-list" id="relatedReadingList">
+                         <!-- Links injected here -->
+                     </div>
+                 </div>
+
             </div>
         </div>
-    </header>
+    </div>
 
-    <!-- Main Content -->
-    <main class="container mt-5">
-        <section id="full-post" class="mb-5"></section>
+    <!-- Like & Share Actions -->
+    <div class="post-actions"> <button class="like-btn" id="likeBtn" data-id=""> <i class="far fa-heart"></i> <span class="like-count">0</span> Likes </button> <button class="share-btn" id="shareBtn" data-url="" data-title="" data-text=""> <i class="fas fa-share-alt"></i> Share </button> </div>
+  </div>
 
-        <!-- Comment Section -->
-        <section id="comment-section">
-            <h2 class="text-center bg-danger text-white py-2 rounded" style="display: inline-block; padding: 0.5em 1em; background-color: yellow; color: black;">Comments</h2>
-            <form id="comment-form" class="mb-4">
-                <div class="form-group">
-                    <input type="text" class="form-control" id="comment-author" placeholder="Your Name" required>
-                </div>
-                <div class="form-group">
-                    <textarea class="form-control" id="comment-content" rows="3" placeholder="Your Comment" required></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">
-                    <span id="comment-submit-text">Submit Comment</span>
-                    <span id="comment-submit-spinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
-                </button>
-            </form>
-            <div id="confirmation-message" class="alert alert-success" role="alert" style="display: none;">
-                Your comment has been added successfully!
-            </div>
-            <div id="comment-list" class="list-group mt-4"></div>
-        </section>
+   <!-- Related Posts -->
+   <section class="container-xl related-posts"> <h2><i class="fas fa-stream mr-1"></i> Related Stories</h2> <div id="relatedPostsGrid" class="row"> <!-- Skeletons --> <div class="col-lg-4 col-md-6 mb-4"><div class="blog-card-v2 skeleton-card h-100"><div class="skeleton-image"></div><div class="blog-card-v2-content"><div class="skeleton-line" style="width: 60%;"></div><div class="skeleton-line" style="width: 90%;"></div><div class="skeleton-line" style="width: 100%; height: 20px; margin-top: 10px;"></div><div class="blog-card-v2-footer" style="border: none; padding-top: 10px;"><div class="skeleton-line" style="width: 50px; height: 30px;"></div><div class="skeleton-line" style="width: 100px; height: 30px;"></div></div></div></div></div> <div class="col-lg-4 col-md-6 mb-4"><div class="blog-card-v2 skeleton-card h-100"><div class="skeleton-image"></div><div class="blog-card-v2-content"><div class="skeleton-line" style="width: 60%;"></div><div class="skeleton-line" style="width: 90%;"></div><div class="skeleton-line" style="width: 100%; height: 20px; margin-top: 10px;"></div><div class="blog-card-v2-footer" style="border: none; padding-top: 10px;"><div class="skeleton-line" style="width: 50px; height: 30px;"></div><div class="skeleton-line" style="width: 100px; height: 30px;"></div></div></div></div></div> <div class="col-lg-4 col-md-6 mb-4"><div class="blog-card-v2 skeleton-card h-100"><div class="skeleton-image"></div><div class="blog-card-v2-content"><div class="skeleton-line" style="width: 60%;"></div><div class="skeleton-line" style="width: 90%;"></div><div class="skeleton-line" style="width: 100%; height: 20px; margin-top: 10px;"></div><div class="blog-card-v2-footer" style="border: none; padding-top: 10px;"><div class="skeleton-line" style="width: 50px; height: 30px;"></div><div class="skeleton-line" style="width: 100px; height: 30px;"></div></div></div></div></div> </div> </section>
 
-        <!-- Other Relevant Posts Section -->
-        <section id="other-posts" class="other-posts-container">
-            <h2 class="text-center bg-danger text-white py-2 rounded" style="display: inline-block; padding: 0.5em 1em; background-color: yellow; color: black;">Relevant Posts</h2>
+   <!-- Comment Section -->
+   <section class="container-xl comment-section"> <h2><i class="fas fa-comments mr-1"></i> Comments <span id="commentCount" style="font-size: 1rem; color: var(--muted); font-weight: 500;">(0)</span></h2> <div style="max-width: 700px; margin: auto;"> <form id="comment-form" class="mb-4"> <div class="form-group"><input type="text" class="form-control" id="comment-author" placeholder="Your Name" required></div> <div class="form-group"><textarea class="form-control" id="comment-content" rows="3" placeholder="Your Comment" required></textarea></div> <button type="submit" class="btn btn-primary"> <span id="comment-submit-text">Submit Comment</span> <span id="comment-submit-spinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span> </button> </form> <div id="confirmation-message" class="alert alert-success" role="alert" style="display: none;">Comment added!</div> <div id="comment-list" class="list-group mt-4"> <li class="list-group-item">Loading comments...</li> </div> </div> </section>
 
-            <div id="other-posts-grid" class="row"></div>
-        </section>
-    </main>
+  
+  <!-- Footer -->
+<footer id="contact">
+  <div class="container-xl">
+    <div class="row">
+      <!-- Left: Contact Form -->
+      <div class="col-md-6">
+        <h5>Contact me</h5>
+        <form action="https://formspree.io/f/mwpkvrvr" method="POST" id="mainContact">
+          <input class="form-control mb-2" name="name" id="cname" placeholder="Name" required>
+          <input class="form-control mb-2" name="email" id="cemail" placeholder="Email" type="email" required>
+          <textarea class="form-control mb-2" name="message" id="cmsg" rows="3"
+            placeholder="Your message, story idea, or volunteer interest..." required></textarea>
+          <button class="btn btn-primary" type="submit">Send Message</button>
+        </form>
+      </div>
 
-    <!-- Footer -->
-    <footer class="bg-dark text-white p-4">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 text-center text-md-left">
-                    <p>Connect with me:</p>
-                    <div class="social-icons d-flex justify-content-center justify-content-md-start">
-                        <a href="mailto:muradcu42@gmail.com" class="d-flex justify-content-center align-items-center m-2 bg-secondary rounded-circle" style="width: 40px; height: 40px; transition: transform 0.3s;">
-                            <img src="images/mail-icon.png" alt="Mail" style="width: 100%; height: 100%;">
-                        </a>
-                        <a href="https://www.facebook.com/murad4231" class="d-flex justify-content-center align-items-center m-2 bg-secondary rounded-circle" style="width: 40px; height: 40px; transition: transform 0.3s;">
-                            <img src="images/facebook-icon.png" alt="Facebook" style="width: 100%; height: 100%;">
-                        </a>
-                        <a href="https://www.linkedin.com/in/muradhossain42" class="d-flex justify-content-center align-items-center m-2 bg-secondary rounded-circle" style="width: 40px; height: 40px; transition: transform 0.3s;">
-                            <img src="images/linkedin-icon.png" alt="LinkedIn" style="width: 100%; height: 100%;">
-                        </a>
-                        <a href="https://www.youtube.com/@muradhossain5116" class="d-flex justify-content-center align-items-center m-2 bg-secondary rounded-circle" style="width: 40px; height: 40px; transition: transform 0.3s;">
-                            <img src="images/youtube-icon.png" alt="YouTube" style="width: 80%; height: 80%;">
-                        </a>
-                        <a href="https://www.strava.com" class="d-flex justify-content-center align-items-center m-2 bg-secondary rounded-circle" style="width: 40px; height: 40px; transition: transform 0.3s;">
-                            <img src="images/strava-icon.png" alt="Strava" style="width: 100%; height: 100%;">
-                        </a>
-                    </div>
-                    <p>Address: Dhaka, Bangladesh</p>
-                </div>
-                <div class="col-md-6">
-                    <form action="https://formspree.io/f/xvoejldb" method="POST" class="text-center text-md-right">
-                        <input type="text" id="name" name="name" class="form-control mb-2" placeholder="Name" required style="transition: transform 0.3s;">
-                        <input type="email" id="email" name="email" class="form-control mb-2" placeholder="Email" required style="transition: transform 0.3s;">
-                        <textarea id="message" name="message" rows="3" class="form-control mb-2" placeholder="Message" required style="transition: transform 0.3s;"></textarea>
-                        <button type="submit" class="btn btn-primary" style="padding: 10px 20px; font-size: 16px; cursor: pointer; transition: background-color 0.3s, transform 0.3s; background-color: #5f125b; color: white; border: none; border-radius: 5px;">Send</button>
-                    </form>
-                </div>
-            </div>
-            <div class="footer-bottom text-center mt-4">
-                <p><i>Don't copy guys! All rights Reserved @2024</i></p>
-                <a href="admin.html" class="text-white" style="color: #e91e63; text-decoration: none;">Admin</a>
-            </div>
-            <button id="back-to-top" class="btn btn-secondary rounded-circle" style="display: none; position: fixed; bottom: 20px; right: 20px; background-color: #333; color: white; padding: 10px 15px; border: none; border-radius: 5px; font-size: 1.5rem; cursor: pointer; transition: background-color 0.3s, transform 0.3s;">↑</button>
+      <!-- Right: Social Links -->
+      <div class="col-md-6 text-right d-none d-md-block">
+        <h5>Connect Socially</h5>
+        <div style="font-size:1.2rem; gap:10px; display:inline-flex; align-items:center;">
+          <a href="https://www.facebook.com/murad4231" target="_blank" class="text-decoration-none text-muted">
+            <i class="bi bi-facebook"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/muradhossain42" target="_blank" class="text-decoration-none text-muted">
+            <i class="bi bi-linkedin"></i>
+          </a>
+          <a href="mailto:muradcu42@gmail.com" class="text-decoration-none text-muted">
+            <i class="bi bi-envelope"></i>
+          </a>
         </div>
-    </footer>
+        <p class="mt-3 dev-note">Address: Lakshmipur, Bangladesh</p>
+        <p class="mt-2 dev-note">#TrihardMurad</p>
+      </div>
+    </div>
 
-    <style>
-        .social-icons a:hover {
-            transform: scale(1.2);
+    <!-- Footer bottom -->
+    <div class="text-center mt-4 dev-note">
+      <a href="admin.html" style="text-decoration: none; color: inherit;" title="Admin Section">&copy; 2025</a>
+      Murad Hossain — Built with personal Story.
+    </div>
+  </div>
+</footer>
+ <!-- FLOATING ELEMENTS (Consistent) -->
+  <div id="quoteCard"> <p id="quoteText">Loading...</p> <small id="quoteAuthor"></small> </div>
+  <div id="toastNotification"></div>
+  <div class="fab" id="scrollTopFab" title="Scroll to top" style="display: none;"> <i class="fas fa-arrow-up"></i> </div>
+
+  <!-- Firebase + App Logic -->
+  <script type="module">
+    // Firebase Imports
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+    import { getFirestore, doc, getDoc, collection, getDocs, addDoc, query, limit, where, updateDoc, increment, orderBy, serverTimestamp, getCountFromServer } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+
+    // Firebase config
+    const firebaseConfig = { apiKey: "AIzaSyBnDhuKL60HNcX40JI9zQ6YIZDr1hbMZHc", authDomain: "trihardmurad.firebaseapp.com", projectId: "trihardmurad", storageBucket: "trihardmurad.appspot.com", messagingSenderId: "146538214416", appId: "1:146538214416:web:0d7ad5834eb432c385c695", measurementId: "G-GQNJV0VQQQ" };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const POSTS_COLLECTION = "storytellingPosts"; // UPDATED Collection
+
+    // Global State & Elements
+    let currentPostData = null;
+    const postId = new URLSearchParams(window.location.search).get('id');
+    const likedPostsStoreKey = 'storytellingLikes'; // UPDATED Key
+
+    const heroContainer = document.getElementById('heroContainer');
+    const postTitleEl = document.getElementById('postTitle');
+    const postDateEl = document.getElementById('postDate');
+    const postReadTimeEl = document.getElementById('postReadTime');
+    const postTagEl = document.getElementById('postTag');
+    const mainContentEl = document.getElementById('mainContent');
+    const likeBtn = document.getElementById('likeBtn');
+    const likeCountSpan = likeBtn.querySelector('.like-count');
+    const shareBtn = document.getElementById('shareBtn');
+    const relatedPostsGrid = document.getElementById('relatedPostsGrid');
+    const commentForm = document.getElementById('comment-form');
+    const commentListEl = document.getElementById('comment-list');
+    const readingProgressBar = document.getElementById('readingProgress');
+    const getAiSummaryBtn = document.getElementById('getAiSummaryBtn');
+    const aiSummaryContentEl = document.getElementById('aiSummaryContent');
+    const aiSummaryLoadingEl = document.getElementById('aiSummaryLoading');
+    const galleryIndicators = document.getElementById('galleryIndicators');
+    const galleryInner = document.getElementById('galleryInner');
+    const prevPostLink = document.getElementById('prevPostLink');
+    const nextPostLink = document.getElementById('nextPostLink');
+    const prevPostTitle = document.getElementById('prevPostTitle');
+    const nextPostTitle = document.getElementById('nextPostTitle');
+    const tagLink = document.getElementById('tagLink');
+    const commentCountSpan = document.getElementById('commentCount');
+    const activityIconEl = document.getElementById('activityIcon');
+
+    // Sidebar elements - Storytelling specific
+    const infoGenreEl = document.getElementById('infoGenre');
+    const infoMoodEl = document.getElementById('infoMood');
+    const infoLengthEl = document.getElementById('infoLength');
+    const moodIconEl = document.getElementById('moodIcon');
+    const moodTextEl = document.getElementById('moodText');
+    const relatedReadingCardEl = document.getElementById('relatedReadingCard');
+    const relatedReadingListEl = document.getElementById('relatedReadingList');
+    const inspirationContentEl = document.getElementById('inspirationTipContent');
+    const inspirationLoadingEl = document.getElementById('inspirationTipLoading');
+    const getInspirationTipBtn = document.getElementById('getInspirationTipBtn');
+
+
+    // Helper Functions
+    const calculateReadingTime = (text = '') => { const w = text.replace(/<[^>]*>/g, ' ').split(/\s+/).length; return Math.ceil(w / 200) || 1; };
+    const formatFirestoreTimestamp = (timestamp) => { return timestamp?.toDate ? timestamp.toDate().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '---'; };
+    const getWordCount = (text = '') => text.replace(/<[^>]*>/g, ' ').split(/\s+/).filter(Boolean).length; // Filter empty strings
+
+    // Toast Notification
+    const toastEl = document.getElementById('toastNotification'); let toastTimeout; function showToast(msg, isError=false){ clearTimeout(toastTimeout); toastEl.textContent=msg; isError?toastEl.classList.add('error'):toastEl.classList.remove('error'); toastEl.classList.add('show'); toastTimeout=setTimeout(()=>toastEl.classList.remove('show'),3000); }
+
+    // Like Button Logic
+    const likedPostsStore = { key: likedPostsStoreKey, getAll: () => JSON.parse(localStorage.getItem(likedPostsStore.key)) || {}, has: (id) => !!likedPostsStore.getAll()[id], add: (id) => { let l = likedPostsStore.getAll(); l[id] = true; localStorage.setItem(likedPostsStore.key, JSON.stringify(l)); }, remove: (id) => { let l = likedPostsStore.getAll(); delete l[id]; localStorage.setItem(likedPostsStore.key, JSON.stringify(l)); } };
+    function updateLikeButtonUI(postId, count) { if (!likeBtn) return; likeCountSpan.textContent = count || 0; likeBtn.dataset.id = postId; if (likedPostsStore.has(postId)) { likeBtn.classList.add('liked'); likeBtn.querySelector('.fa-heart').classList.replace('far', 'fas'); } else { likeBtn.classList.remove('liked'); likeBtn.querySelector('.fa-heart').classList.replace('fas', 'far'); } }
+    async function handleLikeClick() { if (!currentPostData || !postId || likedPostsStore.has(postId)) { if(currentPostData) showToast("Already liked!"); return; } likedPostsStore.add(postId); const newCount = (currentPostData.likeCount || 0) + 1; updateLikeButtonUI(postId, newCount); currentPostData.likeCount = newCount; try { const postRef = doc(db, POSTS_COLLECTION, postId); await updateDoc(postRef, { likeCount: increment(1) }); } catch (err) { console.error("Like error:", err); likedPostsStore.remove(postId); currentPostData.likeCount--; updateLikeButtonUI(postId, currentPostData.likeCount); showToast("Like failed.", true); } }
+    if(likeBtn) likeBtn.addEventListener('click', handleLikeClick);
+
+    // Unified Share Logic
+    function updateShareButton(post) { if (!shareBtn || !post) return; const fullpostUrl = `${location.pathname}?id=${encodeURIComponent(postId)}`; const title = post.title || 'Check out this story'; const text = (post.content || '').replace(/<[^>]*>/g, '').slice(0, 150) + "..."; shareBtn.dataset.url = fullpostUrl; shareBtn.dataset.title = title; shareBtn.dataset.text = text; }
+    if(shareBtn) shareBtn.addEventListener('click', async () => { const url = location.origin + shareBtn.dataset.url; const title = shareBtn.dataset.title; const text = shareBtn.dataset.text; if (navigator.share) { try { await navigator.share({ title, text, url }); } catch (err) {} } else { try { const ta = document.createElement('textarea'); ta.value = url; ta.style.position='absolute'; ta.style.left='-9999px'; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); showToast('Link copied!'); } catch (err) { showToast('Copy failed.', true); } } });
+
+    // Reading Progress Bar Logic
+    function updateProgressBar() { if (!mainContentEl || !readingProgressBar) return; const navHeightString = getComputedStyle(document.documentElement).getPropertyValue('--nav-height').trim(); const navHeight = parseFloat(navHeightString) || 64; const contentHeight = mainContentEl.offsetHeight; const windowHeight = window.innerHeight; const contentTop = mainContentEl.offsetTop; const scrollY = window.scrollY; const scrollRelativeToContent = scrollY - contentTop + navHeight; const scrollableHeight = contentHeight - (windowHeight * 0.8); let progress = 0; if (scrollableHeight > 0 && scrollRelativeToContent > 0) { progress = Math.min(100, Math.max(0, (scrollRelativeToContent / scrollableHeight) * 100)); } else if (scrollRelativeToContent >= scrollableHeight) { progress = 100; } readingProgressBar.style.width = `${progress}%`; }
+    window.addEventListener('scroll', updateProgressBar); window.addEventListener('resize', updateProgressBar);
+
+     // --- Update Story Icon ---
+    function updateStoryIcon(tag) {
+        let iconClass = 'fa-feather-alt'; // Default for story
+        const lowerTag = (tag || '').toLowerCase();
+        if (lowerTag.includes('poetry')) iconClass = 'fa-pen-fancy';
+        else if (lowerTag.includes('reflection')) iconClass = 'fa-brain';
+        else if (lowerTag.includes('life lesson')) iconClass = 'fa-seedling';
+        else if (lowerTag.includes('short story')) iconClass = 'fa-book-open';
+        if (activityIconEl) activityIconEl.className = `fas ${iconClass} mr-2`;
+    }
+
+    // --- Populate Story Info Sidebar Card ---
+    function populateStoryInfo(post) {
+        if(infoGenreEl) infoGenreEl.textContent = post.tag || 'General';
+        if(infoMoodEl) infoMoodEl.textContent = post.mood || 'Not Specified'; // Assumes 'mood' field
+        if(infoLengthEl) infoLengthEl.textContent = `~ ${getWordCount(post.content)} words`;
+
+        // Update Mood Card based on 'mood' field
+        if (moodIconEl && moodTextEl && post.mood) {
+             const mood = post.mood.toLowerCase();
+             let icon = '🤔'; // Default: Reflective
+             if (mood.includes('happy') || mood.includes('joyful') || mood.includes('uplifting')) icon = '😊';
+             else if (mood.includes('sad') || mood.includes('melancholy')) icon = '😔';
+             else if (mood.includes('inspiring') || mood.includes('motivational')) icon = '✨';
+             else if (mood.includes('tense') || mood.includes('suspenseful')) icon = '😨';
+             else if (mood.includes('calm') || mood.includes('peaceful')) icon = '😌';
+             moodIconEl.textContent = icon;
+             moodTextEl.textContent = post.mood;
+        } else if (moodTextEl) {
+             moodTextEl.textContent = 'Reflective'; // Default mood text
+             moodIconEl.textContent = '🤔'; // Default mood icon
         }
+    }
 
-        .form-control:hover {
-            transform: scale(1.05);
+    // --- Populate Related Reading Links ---
+    function populateRelatedReading(linksObject) { // Expects { "Book Title": "url", "Article": "url" }
+        if (!relatedReadingCardEl || !relatedReadingListEl || !linksObject || Object.keys(linksObject).length === 0) {
+            if(relatedReadingCardEl) relatedReadingCardEl.style.display = 'none';
+            return;
         }
+        relatedReadingCardEl.style.display = 'block';
+        relatedReadingListEl.innerHTML = Object.entries(linksObject).map(([name, url]) => {
+            let icon = 'fa-book-reader'; // Default
+            if (name.toLowerCase().includes('article')) icon = 'fa-newspaper';
+             else if (url.includes('wikipedia')) icon = 'fa-wikipedia-w'; // Example: Specific icon for source
+            return `<a href="${url}" target="_blank"><i class="fas ${icon}"></i> ${name}</a>`;
+        }).join('');
+    }
 
-        .btn:hover {
-            transform: scale(1.1);
-        }
-    </style>
 
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    // --- Populate Photo Gallery ---
+    function populateGallery(imageUrls) { /* ... same code ... */
+        if (!galleryIndicators || !galleryInner || !imageUrls || imageUrls.length === 0) { if(document.getElementById('photoGalleryCarousel')) document.getElementById('photoGalleryCarousel').style.display = 'none'; return; } if(document.getElementById('photoGalleryCarousel')) document.getElementById('photoGalleryCarousel').style.display = 'block'; galleryIndicators.innerHTML = ''; galleryInner.innerHTML = ''; imageUrls.forEach((url, index) => { const ind = document.createElement('li'); ind.dataset.target = '#photoGalleryCarousel'; ind.dataset.slideTo = index; if (index === 0) ind.classList.add('active'); galleryIndicators.appendChild(ind); const item = document.createElement('div'); item.className = `carousel-item ${index === 0 ? 'active' : ''}`; item.innerHTML = `<img src="${url}" class="d-block w-100" alt="Story image ${index + 1}" onerror="this.onerror=null; this.src='https://placehold.co/800x300/eee/aaa?text=Image+Error';">`; galleryInner.appendChild(item); });
+    }
 
-    <!-- Firebase SDK and Custom Script -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, doc, getDoc, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyBnDhuKL60HNcX40JI9zQ6YIZDr1hbMZHc",
-            authDomain: "trihardmurad.firebaseapp.com",
-            projectId: "trihardmurad",
-            storageBucket: "trihardmurad.appspot.com",
-            messagingSenderId: "146538214416",
-            appId: "1:146538214416:web:0d7ad5834eb432c385c695",
-            measurementId: "G-GQNJV0VQQQ"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        document.addEventListener("DOMContentLoaded", async () => {
-            // Fetch and display the blog post
-            const urlParams = new URLSearchParams(window.location.search);
-            const postId = urlParams.get('id');
-            const postRef = doc(db, "storytellingPosts", postId);
+    // Load Post Content (Modified for Storytelling)
+    async function loadPost() {
+        if (!postId) { mainContentEl.innerHTML = '<p class="text-danger">Error: Story ID not found.</p>'; document.title = "Error"; return; }
+        try {
+            const postRef = doc(db, POSTS_COLLECTION, postId);
             const postSnap = await getDoc(postRef);
-
             if (postSnap.exists()) {
-                const post = postSnap.data();
-                document.getElementById('full-post').innerHTML = `
-                    <div class="full-post-card card mb-4">
-                        <h2 class="card-header">${post.title}</h2>
-                        <div class="card-body">
-                            <div class="mb-2 text-muted">
-                                <span class="tag badge badge-secondary">#${post.tag}</span>
-                                <span class="date">${new Date(post.date).toLocaleDateString()}</span>
-                            </div>
-                            <img src="${post.imageUrl}" alt="${post.title}" class="card-img-top">
-                            <p class="image-caption text-muted"><i>${post.imageCaption}</i></p>
-                            <p class="card-text">${post.content}</p>
-                        </div>
-                    </div>
-                `;
-            } else {
-                document.getElementById('full-post').innerHTML = '<p>No such post!</p>';
-            }
+                currentPostData = { id: postSnap.id, ...postSnap.data() };
+                document.title = currentPostData.title || "Story Details";
+                heroContainer.style.backgroundImage = `url('${currentPostData.imageUrl || 'https://placehold.co/1200x400/eee/aaa?text=Story'}')`;
+                postTitleEl.textContent = currentPostData.title || 'Untitled Story';
+                postDateEl.innerHTML = `<i class="fas fa-calendar-alt"></i> ${formatFirestoreTimestamp(currentPostData.date)}`;
+                postReadTimeEl.innerHTML = `<i class="fas fa-clock"></i> ${calculateReadingTime(currentPostData.content)} min read`;
+                postTagEl.innerHTML = `<i class="fas fa-tag"></i> <a href="storytelling.html?tag=${encodeURIComponent(currentPostData.tag || 'General')}" id="tagLink" style="color: inherit; text-decoration: none;">${currentPostData.tag || 'General'}</a>`;
+                updateStoryIcon(currentPostData.tag); // Update icon
+                let contentHTML = currentPostData.content || '<p>No details available.</p>';
+                if (!contentHTML.startsWith('<p>') && !contentHTML.startsWith('<h') && !contentHTML.startsWith('<block')) { contentHTML = `<p>${contentHTML}</p>`; }
+                mainContentEl.innerHTML = contentHTML;
 
-            // Fetch and display other relevant blog posts
-            const blogPostsRef = collection(db, "storytellingPosts");
-            const blogPostsSnap = await getDocs(blogPostsRef);
-            const blogPosts = blogPostsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                // Populate Sidebar
+                populateStoryInfo(currentPostData);
+                populateRelatedReading(currentPostData.relatedReading); // Expects object field { "Title": "url" }
 
-            const otherPostsContainer = document.getElementById('other-posts-grid');
-            otherPostsContainer.innerHTML = ''; // Clear the container for new content
+                populateGallery(currentPostData.galleryImages);
 
-            blogPosts.forEach(post => {
-                if (post.id !== postId) {
-                    const postElement = document.createElement('div');
-                    postElement.classList.add('col-md-4', 'mb-4', 'blog-card');
-                    
-                    // Create the card content
-                    postElement.innerHTML = 
-                        `<div class="card h-100" style="position: relative; overflow: hidden;">
-                            <img src="${post.imageUrl}" class="card-img-top" alt="${post.title}">
-                            <div class="card-body">
-                                <div class="mb-2 text-muted">
-                                    <span class="tag badge badge-secondary">#${post.tag}</span>
-                                    <p class="date">${new Date(post.date).toLocaleDateString()}</p>
-                                </div>
-                                <h5 class="card-title" style="color: black;">${post.title}</h5>
-                                <p class="card-text" style="color: black;">${post.content.substring(0, 100)}...</p>
-                            </div>
-                            <ul class="share-icons" style="display: flex; justify-content: space-between; position: absolute; bottom: 10px; width: 100%; padding: 0 10px; margin: 0; list-style-type: none; box-shadow: inset 0 -6px 10px -8px rgba(0, 0, 0, 0.3), inset 0 6px 10px -8px rgba(0, 0, 0, 0.3); cursor: pointer;">
-                                <!-- Main share icon indicator in the center -->
-                                <li class="share-icon-main" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.5;">
-                                    <i class="fas fa-share-alt" style="font-size: 2em; color: black;"></i>
-                                </li>
-                                <!-- WhatsApp share icon -->
-                                <li class="share-icons__item" style="margin: 0 5px; padding: 0.75rem;">
-                                    <a href="https://api.whatsapp.com/send?text=${encodeURIComponent(post.title)}%20${encodeURIComponent(window.location.href)}" target="_blank" style="color: black;">
-                                        <i class="fab fa-whatsapp" style="font-size: 1.5em;"></i>
-                                    </a>
-                                </li>
-                                <!-- Facebook share icon -->
-                                <li class="share-icons__item" style="margin: 0 5px; padding: 0.75rem;">
-                                    <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}" target="_blank" style="color: black;">
-                                        <i class="fab fa-facebook" style="font-size: 1.5em;"></i>
-                                    </a>
-                               
-                               
-                                <!-- Copy Link Address icon -->
-                                <li class="share-icons__item" style="margin: 0 5px; padding: 0.75rem;">
-                                    <a href="#" onclick="navigator.clipboard.writeText(window.location.href); alert('Link copied to clipboard!');" style="color: black;">
-                                        <i class="fas fa-copy" style="font-size: 1.5em;"></i>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>`;
+                updateLikeButtonUI(postId, currentPostData.likeCount || 0);
+                updateShareButton(currentPostData);
+                loadComments(postId);
+                loadRelatedPosts(currentPostData.tag, postId);
+                loadPostNavigation(currentPostData.date);
+                setTimeout(updateProgressBar, 100);
+            } else { mainContentEl.innerHTML = '<p class="text-danger">Error: Story not found.</p>'; document.title = "Error"; }
+        } catch (error) { console.error("Load post error:", error); mainContentEl.innerHTML = '<p class="text-danger">Error loading content.</p>'; document.title = "Error"; }
+    }
 
-                    // Event listener for the share icons container
-                    const shareIconsContainer = postElement.querySelector('.share-icons');
-                    const shareIconsItems = shareIconsContainer.querySelectorAll('.share-icons__item');
-                    const mainIcon = shareIconsContainer.querySelector('.share-icon-main');
-
-                    // Toggle share icons on click
-                    shareIconsContainer.addEventListener('click', event => {
-                        event.stopPropagation(); // Prevent the event from propagating to the full post page
-
-                        const isExpanded = mainIcon.style.opacity === "0"; // Check if the icons are already expanded
-
-                        if (isExpanded) {
-                            // Collapse the icons
-                            shareIconsItems.forEach(icon => {
-                                icon.style.display = 'none';
-                            });
-                            mainIcon.style.opacity = "0.5"; // Show the main icon
-                        } else {
-                            // Expand the icons
-                            shareIconsItems.forEach(icon => {
-                                icon.style.display = 'flex'; // Show the icons
-                            });
-                            mainIcon.style.opacity = "0"; // Hide the main icon
-                        }
-                    });
-
-                    // Add an event listener to prevent the click event from propagating to the full post link
-                    postElement.addEventListener('click', event => {
-                        if (!event.target.closest('.share-icons')) { // Check if the click is outside of the share icons
-                            window.location.href = `storytelling-fullpost.html?id=${post.id}`; // Redirect to the full post
-                        }
-                    });
-
-                    otherPostsContainer.appendChild(postElement); // Append the post element to the container
+    // Load Related Posts (Increased to 6, correct URL)
+    async function loadRelatedPosts(tag, currentId) {
+        relatedPostsGrid.innerHTML = '';
+        try {
+            const q = query(collection(db, POSTS_COLLECTION), orderBy("date", "desc"), limit(7));
+            const snap = await getDocs(q);
+            let count = 0;
+            snap.docs.forEach(doc => {
+                if (doc.id !== currentId && count < 6) {
+                    const post = { id: doc.id, ...doc.data() };
+                    const title=post.title||''; const excerpt=(post.content||'').replace(/<[^>]*>/g,'').slice(0,80); const img=post.imageUrl||'https://placehold.co/800x400/eee/aaa?text=Related'; const date=formatFirestoreTimestamp(post.date); const url=`storytelling-fullpost.html?id=${encodeURIComponent(post.id)}`; const likes=post.likeCount||0; const liked=likedPostsStore.has(post.id); const icon=liked?'fas':'far'; const readT=calculateReadingTime(post.content); const readTStr=`${readT} min read`; const wrap=document.createElement('div'); wrap.className='col-lg-4 col-md-6 mb-4'; wrap.innerHTML=`<article class="blog-card-v2 h-100"><div class="blog-card-v2-image" style="background-image: url('${img}');"><span class="blog-card-v2-tag">#${post.tag||'General'}</span></div><div class="blog-card-v2-content"><div class="blog-card-v2-meta"><span>${date}</span><span><i class="fas fa-clock" style="opacity: 0.7; margin-right: 4px;"></i>${readTStr}</span></div><h6 class="blog-card-v2-title">${title}</h6><p class="blog-card-v2-excerpt">${excerpt}...</p><div class="blog-card-v2-footer"><button class="like-btn ${liked?'liked':''}" data-id="${post.id}" onclick="handleRelatedLikeClick(this)"><i class="${icon} fa-heart"></i> <span class="like-count">${likes}</span></button><a class="btn btn-sm btn-outline-primary" href="${url}">Read More</a></div></div></article>`; relatedPostsGrid.appendChild(wrap);
+                    count++;
                 }
             });
+            if (count === 0) { relatedPostsGrid.innerHTML = '<p class="col-12 text-center text-muted">No recent stories found.</p>'; }
+        } catch (error) { console.error("Error loading related stories:", error); relatedPostsGrid.innerHTML = '<p class="col-12 text-center text-danger">Could not load related stories.</p>'; }
+    }
+    window.handleRelatedLikeClick = async function(buttonElement) { /* ... same like logic ... */ const id=buttonElement.dataset.id; if(!id||likedPostsStore.has(id)){if(id)showToast("Already liked!");return;} likedPostsStore.add(id); buttonElement.classList.add('liked'); buttonElement.querySelector('.fa-heart').classList.replace('far','fas'); const span=buttonElement.querySelector('.like-count'); const count=parseInt(span.textContent,10); span.textContent=count+1; try { const ref=doc(db,POSTS_COLLECTION,id); await updateDoc(ref,{likeCount:increment(1)}); } catch(err){ console.error("Rel like error:",err); likedPostsStore.remove(id); buttonElement.classList.remove('liked'); buttonElement.querySelector('.fa-heart').classList.replace('fas','far'); span.textContent=count; showToast("Like failed.",true); } }
+
+    // --- Load Post Navigation (Correct URL) ---
+    async function loadPostNavigation(currentPostDate) {
+        if (!currentPostDate) return;
+        try {
+            const prevQuery = query(collection(db, POSTS_COLLECTION), where("date", "<", currentPostDate), orderBy("date", "desc"), limit(1));
+            const prevSnap = await getDocs(prevQuery);
+            if (!prevSnap.empty) { const p = { id: prevSnap.docs[0].id, ...prevSnap.docs[0].data() }; prevPostLink.href = `storytelling-fullpost.html?id=${p.id}`; prevPostTitle.textContent = p.title.slice(0, 30) + (p.title.length > 30 ? '...' : ''); prevPostLink.classList.remove('nav-link-disabled'); }
+            else { prevPostLink.classList.add('nav-link-disabled'); prevPostTitle.textContent = 'No Older Story'; }
+            const nextQuery = query(collection(db, POSTS_COLLECTION), where("date", ">", currentPostDate), orderBy("date", "asc"), limit(1));
+            const nextSnap = await getDocs(nextQuery);
+            if (!nextSnap.empty) { const n = { id: nextSnap.docs[0].id, ...nextSnap.docs[0].data() }; nextPostLink.href = `storytelling-fullpost.html?id=${n.id}`; nextPostTitle.textContent = n.title.slice(0, 30) + (n.title.length > 30 ? '...' : ''); nextPostLink.classList.remove('nav-link-disabled'); }
+            else { nextPostLink.classList.add('nav-link-disabled'); nextPostTitle.textContent = 'No Newer Story'; }
+        } catch (error) { console.error("Nav error:", error); prevPostLink.classList.add('nav-link-disabled'); prevPostTitle.textContent = 'Error'; nextPostLink.classList.add('nav-link-disabled'); nextPostTitle.textContent = 'Error'; }
+    }
+
+    // --- Load Comments (Added Count Update) ---
+    async function loadComments(postId) { /* ... same code ... */ commentListEl.innerHTML='<li class="list-group-item">Loading...</li>'; commentCountSpan.textContent = '(...)'; try { const ref=collection(db,POSTS_COLLECTION,postId,"comments"); const q=query(ref,orderBy("date","desc")); const snap=await getDocs(q); const countQ=query(ref); const countSnap=await getCountFromServer(countQ); const count=countSnap.data().count; commentCountSpan.textContent=`(${count})`; commentListEl.innerHTML=''; if(snap.empty){commentListEl.innerHTML='<li class="list-group-item text-muted">Be the first!</li>';} else { snap.docs.forEach(d=>{ const c=d.data(); const el=document.createElement('li'); el.className='list-group-item'; el.innerHTML=`<h5>${c.author||'Anon'}</h5><p>${c.content||''}</p><small class="text-muted">${formatFirestoreTimestamp(c.date)}</small>`; commentListEl.appendChild(el); }); }} catch(e){ console.error("Comment load error:",e); commentListEl.innerHTML='<li class="list-group-item text-danger">Could not load.</li>'; commentCountSpan.textContent='(Error)'; } }
+
+    // Comment Form Submission (Consistent)
+    commentForm.addEventListener('submit', async (e) => { /* ... same code ... */ e.preventDefault(); const authorInput=document.getElementById('comment-author'); const contentInput=document.getElementById('comment-content'); const submitBtn=commentForm.querySelector('button[type="submit"]'); const submitText=document.getElementById('comment-submit-text'); const submitSpinner=document.getElementById('comment-submit-spinner'); const confirmationMsg=document.getElementById('confirmation-message'); const author=authorInput.value.trim(); const content=contentInput.value.trim(); if(!author||!content){showToast("Name & comment required.",true);return;} submitText.style.display='none'; submitSpinner.style.display='inline-block'; submitBtn.disabled=true; try { const ref=collection(db,POSTS_COLLECTION,postId,"comments"); await addDoc(ref,{author,content,date:serverTimestamp()}); commentForm.reset(); confirmationMsg.style.display='block'; setTimeout(()=>confirmationMsg.style.display='none',3000); loadComments(postId); } catch(error){ console.error("Comment submit error:",error); showToast("Failed to submit.",true); } finally { submitText.style.display='inline-block'; submitSpinner.style.display='none'; submitBtn.disabled=false; } });
+
+    // --- Gemini API for Inspiration Corner ---
+    const geminiApiKey = ""; const geminiApiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${geminiApiKey}`; const geminiSystemPromptInspiration = "You are a creative muse. Provide a concise and evocative writing prompt (for poetry, short stories, or reflection) in 1-2 sentences. Be inspiring. Do not use greetings or markdown.";
+    async function fetchWithRetry(url, options, retries = 3, delay = 1000) { /* ... same */ for(let i=0;i<retries;i++){ try { const r = await fetch(url,options); if(r.ok) return r.json(); if(r.status >= 400 && r.status < 500) throw new Error(`Client error: ${r.status}`); } catch(e){} await new Promise(res => setTimeout(res, delay)); delay*=2; } throw new Error('API fetch failed.'); }
+    async function callGeminiApiForInspiration(userPrompt) { const payload={contents:[{parts:[{text:userPrompt}]}],systemInstruction:{parts:[{text:geminiSystemPromptInspiration}]},}; const options={method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}; const result=await fetchWithRetry(geminiApiUrl,options); const candidate=result.candidates?.[0]; if(candidate?.content?.parts?.[0]?.text){return candidate.content.parts[0].text;} else{throw new Error('Invalid API inspiration response.');}}
+    async function handleGetInspirationTip() { if (!inspirationContentEl || !inspirationLoadingEl || !getInspirationTipBtn) return; getInspirationTipBtn.disabled = true; inspirationLoadingEl.style.display = 'block'; inspirationContentEl.style.display = 'none'; try { const prompt = await callGeminiApiForInspiration("Give me a new writing prompt."); inspirationContentEl.textContent = prompt.trim(); } catch (err) { inspirationContentEl.textContent = 'Write about the color blue without using the word "blue".'; } finally { getInspirationTipBtn.disabled = false; inspirationLoadingEl.style.display = 'none'; inspirationContentEl.style.display = 'block'; } }
+    if(getInspirationTipBtn) getInspirationTipBtn.addEventListener('click', handleGetInspirationTip);
+
+     // --- Gemini API for AI Summary (Consistent) ---
+    const geminiSystemPromptSummary = "You are a helpful assistant. Summarize the following story, poem, or reflection concisely in 2-3 bullet points, highlighting the key themes or message. Do not add greetings or introductory phrases."; // Adapted Prompt
+    async function callGeminiApiForSummary(textToSummarize) { const payload={contents:[{parts:[{text:`Summarize this: ${textToSummarize}`}]}],systemInstruction:{parts:[{text:geminiSystemPromptSummary}]},}; const options={method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}; const result=await fetchWithRetry(geminiApiUrl,options); const candidate=result.candidates?.[0]; if(candidate?.content?.parts?.[0]?.text){return candidate.content.parts[0].text;} else{throw new Error('Invalid API summary response.');}}
+    async function handleGetAiSummary() { if(!currentPostData||!currentPostData.content){showToast("Cannot summarize.",true);return;} getAiSummaryBtn.style.display='none'; aiSummaryLoadingEl.style.display='block'; aiSummaryContentEl.style.display='none'; try { const tempDiv=document.createElement('div'); tempDiv.innerHTML=currentPostData.content; const plainText=tempDiv.textContent||tempDiv.innerText||""; const summary=await callGeminiApiForSummary(plainText.slice(0,4000)); let formattedSummary=summary.trim(); if(!formattedSummary.startsWith('*')&&!formattedSummary.startsWith('-')&&formattedSummary.includes('\n')){formattedSummary=formattedSummary.split('\n').map(l=>`• ${l.trim()}`).join('<br>');} else if(!formattedSummary.startsWith('*')&&!formattedSummary.startsWith('-')){formattedSummary=`• ${formattedSummary}`;} else {formattedSummary=formattedSummary.replace(/\n/g,'<br>');} aiSummaryContentEl.innerHTML=formattedSummary; aiSummaryContentEl.style.display='block'; } catch(err){ console.error("AI Summary Error:",err); aiSummaryContentEl.textContent='Summary unavailable.'; aiSummaryContentEl.style.display='block'; } finally { aiSummaryLoadingEl.style.display='none'; } }
+    if(getAiSummaryBtn) getAiSummaryBtn.addEventListener('click', handleGetAiSummary);
+
+    // --- Theme & Accent (Consistent) ---
+    const accentDots = document.querySelectorAll('.accent-dot');
+    function setAccent(key){ document.documentElement.setAttribute('data-accent', key); localStorage.setItem('site-accent', key); updateThemeStyles(); accentDots.forEach(d=>d.setAttribute('aria-checked', d.dataset.accent === key)); drawHamburger(); }
+    function updateThemeStyles(){ const comp=getComputedStyle(document.documentElement); const p=comp.getPropertyValue('--primary').trim(); const logo=document.querySelector('.logo-img'); if(logo) logo.style.borderColor = p; }
+    accentDots.forEach(dot=>dot.addEventListener('click',()=>setAccent(dot.dataset.accent))); const themeSwitch=document.getElementById('themeSwitch'); const switchVisual=document.getElementById('switchVisual'); const switchDot=document.getElementById('switchDot'); const toggleIcon=document.getElementById('toggleIcon');
+    function setTheme(t){ document.documentElement.setAttribute('data-theme', t); localStorage.setItem('site-theme', t); if(t === 'dark'){ if(switchDot) switchDot.style.left='23px'; if(toggleIcon) toggleIcon.className='fas fa-moon mr-2'; } else { if(switchDot) switchDot.style.left='3px'; if(toggleIcon) toggleIcon.className='fas fa-sun mr-2'; } updateThemeStyles(); }
+    const storedTheme=localStorage.getItem('site-theme')||'light'; setTheme(storedTheme); const storedAccent=localStorage.getItem('site-accent')||'green'; setAccent(storedAccent);
+    if(switchVisual) switchVisual.addEventListener('click',()=>setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark'));
+    function drawHamburger(){ const accent=getComputedStyle(document.documentElement).getPropertyValue('--primary').trim()||'#20c997'; const svg=`data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath stroke='${encodeURIComponent(accent)}' stroke-width='2' d='M3 6h18M3 12h18M3 18h18' stroke-linecap='round'/%3E%3C/svg%3E`; const el=document.getElementById('hamburgerSvg'); if(el){ el.style.backgroundImage=`url("${svg}")`; el.style.backgroundSize='20px 20px'; }} drawHamburger(); window.addEventListener('resize', drawHamburger);
+
+    // --- Floating Quote (Storytelling Focused) ---
+    const quotes = [ { text: "Tell the story that's been growing in you.", author: "Maya Angelou" }, { text: "Write what should not be forgotten.", author: "Isabel Allende" }, { text: "A writer only begins a book. A reader finishes it.", author: "Samuel Johnson" }, { text: "Start writing, no matter what.", author: "Louis L'Amour" }, { text: "Fill your paper with the breathings of your heart.", author: "W. Wordsworth" } ];
+    const quoteTextEl = document.getElementById('quoteText'); const quoteAuthorEl = document.getElementById('quoteAuthor'); let quoteIndex = 0; function updateQuote(){ if(!quoteTextEl||!quoteAuthorEl) return; quoteTextEl.style.opacity='0'; quoteAuthorEl.style.opacity='0'; setTimeout(()=>{let i=quoteIndex; while(i===quoteIndex) i=Math.floor(Math.random()*quotes.length); quoteIndex=i; quoteTextEl.textContent=`"${quotes[quoteIndex].text}"`; quoteAuthorEl.textContent=`— ${quotes[quoteIndex].author}`; quoteTextEl.style.opacity='1'; quoteAuthorEl.style.opacity='1';}, 500); } updateQuote(); setInterval(updateQuote, 8000);
+
+    // --- Scroll-to-Top FAB (Consistent) ---
+    const scrollTopFab = document.getElementById('scrollTopFab'); if(scrollTopFab){ window.addEventListener('scroll',()=>{ const show=document.body.scrollTop > 100 || document.documentElement.scrollTop > 100; scrollTopFab.style.display=show?'flex':'none'; scrollTopFab.style.opacity=show?'1':'0'; }); scrollTopFab.addEventListener('click',()=>window.scrollTo({top:0, behavior:'smooth'})); }
+
+    // --- Page Transitions (Consistent) ---
+    document.querySelectorAll('a.nav-link, a[href$=".html"]').forEach(a=>{ a.addEventListener('click',(ev)=>{ const href=a.getAttribute('href'); if(!href||href.startsWith('http')||href.startsWith('mailto:')||href.startsWith('#')||a.getAttribute('target')==='_blank') return; ev.preventDefault(); document.documentElement.classList.add('page-fade-out'); setTimeout(()=>location.href=href, 320); }); });
+
+    // --- Contact Form Logic (Footer Only) ---
+    window.handleContact = async function(e, formId){ e.preventDefault(); const form = document.getElementById(formId); if (!form) return; const btn = form.querySelector('button[type="submit"]'); const originalText = btn.textContent; btn.disabled = true; btn.textContent = 'Sending...'; try { let name = form.querySelector('#cname').value; let email = form.querySelector('#cemail').value; let message = form.querySelector('#cmsg').value; await addDoc(collection(db,'contacts'), { name, email, message, source: formId, createdAt: new Date().toISOString() }); showToast('Thanks! Message sent.'); form.reset(); } catch(err){ showToast('Send failed.',true); } finally { btn.disabled = false; btn.textContent = originalText; } };
+    const footerForm = document.getElementById('mainContact'); if (footerForm) footerForm.addEventListener('submit', (e) => handleContact(e, 'mainContact'));
 
 
-            // Add Bootstrap's row class to ensure proper alignment and spacing
-            otherPostsContainer.classList.add('row'); // Ensure the container has Bootstrap's row class
+    // --- Initial Load ---
+    loadPost(); // Call main load function
 
-            // Function to adjust the card heights to be equal
-            const adjustCardHeights = () => {
-                const cards = document.querySelectorAll('.card.h-100');
-                let maxHeight = 0;
+  </script>
 
-                // Reset heights
-                cards.forEach(card => {
-                    card.style.height = 'auto';
-                });
+  <!-- Bootstrap JS (Consistent) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 
-                // Find the maximum height
-                cards.forEach(card => {
-                    if (card.offsetHeight > maxHeight) {
-                        maxHeight = card.offsetHeight;
-                    }
-                });
-
-                // Set all cards to the maximum height
-                cards.forEach(card => {
-                    card.style.height = `${maxHeight}px`;
-                });
-            };
-
-            // Adjust card heights on load
-            adjustCardHeights();
-
-            // Adjust card heights on window resize
-            window.addEventListener('resize', adjustCardHeights);
-
-            // Fetch and display comments
-            const commentsRef = collection(db, "storytellingPosts", postId, "comments");
-            const commentsSnap = await getDocs(commentsRef);
-            const comments = commentsSnap.docs.map(doc => doc.data());
-
-            const commentList = document.getElementById('comment-list');
-            comments.forEach(comment => {
-                const commentElement = document.createElement('div');
-                commentElement.classList.add('list-group-item');
-                commentElement.innerHTML = `
-                    <h5>${comment.author}</h5>
-                    <p>${comment.content}</p>
-                `;
-                commentList.appendChild(commentElement);
-            });
-
-            // Handle new comment submission
-            document.getElementById('comment-form').addEventListener('submit', async (e) => {
-                e.preventDefault(); // Prevent the default form submission behavior
-                
-                const submitButton = document.querySelector('#comment-form button[type="submit"]');
-                const submitText = document.getElementById('comment-submit-text');
-                const submitSpinner = document.getElementById('comment-submit-spinner');
-                const confirmationMessage = document.getElementById('confirmation-message');
-
-                // Show loading spinner and hide submit text
-                submitText.style.display = 'none';
-                submitSpinner.style.display = 'inline-block';
-
-                const author = document.getElementById('comment-author').value;
-                const content = document.getElementById('comment-content').value;
-
-                try {
-                    // Add the comment to the Firestore collection
-                    await addDoc(commentsRef, {
-                        author,
-                        content,
-                        date: new Date()
-                    });
-
-                    // Show confirmation message
-                    confirmationMessage.style.display = 'block';
-                    setTimeout(() => {
-                        confirmationMessage.style.display = 'none';
-                    }, 3000);
-
-                    // Clear the form
-                    document.getElementById('comment-form').reset();
-
-                    // Append the new comment to the list
-                    const newCommentElement = document.createElement('div');
-                    newCommentElement.classList.add('list-group-item');
-                    newCommentElement.innerHTML = `
-                        <h5>${author}</h5>
-                        <p>${content}</p>
-                    `;
-                    commentList.appendChild(newCommentElement);
-
-                } catch (error) {
-                    console.error('Error adding comment: ', error);
-                } finally {
-                    // Hide loading spinner and show submit text
-                    submitText.style.display = 'inline';
-                    submitSpinner.style.display = 'none';
-                }
-            });
-        });
-
-        // Navbar functionality
-        document.addEventListener('DOMContentLoaded', () => {
-            const hamburger = document.querySelector('.navbar-toggler');
-            const navUl = document.querySelector('#navbarNav');
-
-            hamburger.addEventListener('click', (event) => {
-                event.stopPropagation();  // Prevent event from bubbling up
-                navUl.classList.toggle('show');
-                if (navUl.classList.contains('show')) {
-                    navUl.style.display = 'flex';  // Show the mobile menu
-                } else {
-                    navUl.style.display = 'none';  // Hide the mobile menu
-                }
-            });
-
-            document.addEventListener('click', (event) => {
-                if (!navUl.contains(event.target) && !hamburger.contains(event.target)) {
-                    navUl.classList.remove('show');
-                    navUl.style.display = 'none';  // Hide the mobile menu when clicking outside
-                }
-            });
-
-            // Back to top button functionality
-            window.addEventListener('scroll', () => {
-                const backToTopButton = document.getElementById('back-to-top');
-                if (window.scrollY > 300) {
-                    backToTopButton.classList.add('show');
-                    backToTopButton.style.display = 'block';
-                } else {
-                    backToTopButton.classList.remove('show');
-                    backToTopButton.style.display = 'none';
-                }
-            });
-
-            document.getElementById('back-to-top').addEventListener('click', () => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
-
-            // Apply the saved theme on page load
-            const savedTheme = localStorage.getItem('theme') || 'day';
-            document.body.style.background = savedTheme === 'night' ? '#000000' : '#f4f4f4';
-            document.getElementById('toggle').checked = savedTheme === 'night';
-        });
-
-    </script>
 </body>
 </html>
+
