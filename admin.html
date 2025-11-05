@@ -1,373 +1,657 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" data-theme="light" data-accent="green">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Page - Blog Management</title>
+    <title>Admin Panel - Murad</title>
+    <!-- Bootstrap & Font Awesome -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;700&display=swap">
 
     <!-- Summernote CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css" rel="stylesheet">
 
     <style>
+        /* --- THEME VARIABLES (Consistent) --- */
+        :root{
+          --bg: #f4f7fb; --card-bg: #ffffff; --muted: #596a75; --text-color: #34495e;
+          --primary: #20c997; --primary-700:#179b77;
+          --glass: rgba(255,255,255,0.6); --shadow: 0 10px 30px rgba(16,24,40,0.08);
+          --radius: 14px; --accent-shadow: 0 12px 30px rgba(32,201,151,0.14);
+        }
+        [data-theme="dark"]{
+          --bg: #0b1220; --card-bg: #0f1b28; --muted: #b6cad6; --text-color: #ecf0f1;
+          --primary: #43d9b2; --primary-700:#2fbf9a;
+          --glass: rgba(255,255,255,0.03); --shadow: 0 12px 40px rgba(0,0,0,0.7);
+          --accent-shadow: 0 12px 30px rgba(67,217,178,0.08);
+        }
+        [data-accent="green"] { --primary: #20c997; --primary-700: #179b77; --accent-shadow: 0 12px 30px rgba(32,201,151,0.14); }
+        [data-accent="yellow"] { --primary: #f1c40f; --primary-700: #d4a70b; --accent-shadow: 0 12px 30px rgba(241,196,15,0.12); }
+        [data-accent="red"] { --primary: #e74c3c; --primary-700: #c0382b; --accent-shadow: 0 12px 30px rgba(231,76,60,0.12); }
+
+        /* General Styles */
         body {
-            background-color: #f4f4f4;
-            font-family: Arial, sans-serif;
+            font-family: 'Comfortaa', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding-top: 20px;
+            transition: background-color 0.3s, color 0.3s;
         }
 
-        #loginSection,
-        #adminSection {
-            max-width: 600px;
-            margin: 50px auto;
-            display: none;
-        }
+        /* Admin Layout */
+        #loginSection, #adminSection { max-width: 900px; margin: 40px auto; display: none; }
+        #adminSection.active { display: block; }
+        .section-title { color: var(--primary-700) !important; font-weight: bold; font-size: 1.8em; margin-bottom: 20px; }
+        [data-theme="dark"] .section-title { color: var(--primary) !important; }
 
-        #adminSection.active {
-            display: block;
-        }
-
-        .section-divider {
-            border-top: 2px solid #ddd;
-            margin: 30px 0;
-        }
-
+        /* Card Styling (Consistent) */
         .form-card {
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-bottom: 20px;
-            transition: transform 0.3s, box-shadow 0.3s;
+            background-color: var(--card-bg); border-radius: var(--radius); box-shadow: var(--shadow);
+            padding: 30px; margin-bottom: 30px; border: none;
         }
+        .form-card h2, .form-card h3 { color: var(--primary-700); font-weight: bold; font-size: 1.5em; margin-bottom: 15px;}
+        [data-theme="dark"] .form-card h2, [data-theme="dark"] .form-card h3 { color: var(--primary); }
+        .form-group label { font-weight: 600; color: var(--muted); opacity: 0.9; margin-bottom: .3rem; font-size: 0.9rem;}
+        .form-control, .custom-select, .note-editor.note-frame, .note-editing-area .note-editable {
+            background-color: var(--glass); border-color: transparent; color: var(--muted); border-radius: 8px;
+        }
+        .form-control:focus, .custom-select:focus { background-color: var(--glass); border-color: var(--primary); color: var(--muted); box-shadow: 0 0 0 0.2rem rgba(var(--primary-rgb, 32, 201, 151), 0.25); }
+        .form-control::placeholder { color: var(--muted); opacity: 0.7; }
+        .custom-file-label { background-color: var(--glass); border-color: transparent; color: var(--muted); }
+        .custom-file-input:focus ~ .custom-file-label { border-color: var(--primary); box-shadow: 0 0 0 0.2rem rgba(var(--primary-rgb, 32, 201, 151), 0.25); }
+        [data-theme="dark"] .form-control, [data-theme="dark"] .custom-select, [data-theme="dark"] .custom-file-label, [data-theme="dark"] .note-editing-area .note-editable { color: var(--text-color); }
 
-        .form-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.15);
-        }
+        /* Button Styling */
+        .btn-primary, .btn-success, .btn-danger { border: none; font-weight: bold; border-radius: 50px; padding: 10px 25px; transition: all 0.3s ease; }
+        .btn-primary, .btn-success { background-color: var(--primary); }
+        .btn-primary:hover, .btn-success:hover { background-color: var(--primary-700); transform: translateY(-2px); box-shadow: var(--accent-shadow); }
+        .btn-danger { background-color: #e74c3c; }
+        .btn-danger:hover { background-color: #c0382b; }
 
-        .form-card h2 {
-            color: #1b0bac;
-            font-weight: bold;
-            font-size: 1.5em;
-        }
+        /* Category Specific Sections */
+        .category-fields { display: none; margin-top: 20px; padding-top: 20px; border-top: 1px dashed var(--glass); }
+        .category-fields.active { display: block; }
+        .category-fields h4 { font-size: 1.1rem; color: var(--primary); margin-bottom: 15px; font-weight: 600; }
 
-        .btn-primary,
-        .btn-success {
-            background-color: #5f125b;
-            border: none;
-            transition: background-color 0.3s;
-        }
+        /* Image Preview */
+        #coverPreviewContainer, #galleryPreviewContainer { margin-top: 10px; }
+        #coverPreview, #galleryPreviews { max-width: 100%; max-height: 200px; border-radius: 8px; margin-bottom: 10px; }
+        #galleryPreviews img { max-width: 100px; max-height: 100px; border-radius: 8px; margin: 5px; border: 1px solid var(--glass); }
 
-        .btn-primary:hover,
-        .btn-success:hover {
-            background-color: #3e0843;
-        }
+        /* Key-Value Pair Input */
+        .key-value-pair { display: flex; gap: 10px; margin-bottom: 10px; }
+        .key-value-pair input { flex: 1; }
+        .key-value-container small { display: block; margin-bottom: 10px; opacity: 0.8; }
+
+        /* Summernote Styling */
+        .note-editor.note-frame { border-radius: 8px; }
+        .note-toolbar { background: var(--glass) !important; border-bottom: 1px solid var(--glass) !important; border-radius: 8px 8px 0 0;}
+        .note-statusbar { border-top: 1px solid var(--glass) !important; background: var(--glass) !important; border-radius: 0 0 8px 8px; }
+        .note-editable { min-height: 250px; } /* Ensure enough writing space */
+         [data-theme="dark"] .note-editor, [data-theme="dark"] .note-toolbar, [data-theme="dark"] .note-statusbar { border-color: rgba(255,255,255,0.1) !important; }
+         [data-theme="dark"] .note-editable { background-color: var(--card-bg) !important; color: var(--text-color) !important; }
+         [data-theme="dark"] .note-btn { color: var(--muted) !important; background-color: transparent !important; }
+         [data-theme="dark"] .note-btn:hover { background-color: var(--glass) !important; }
+         [data-theme="dark"] .note-dropdown-menu { background-color: var(--card-bg) !important; }
+         [data-theme="dark"] .note-dropdown-menu .dropdown-item { color: var(--text-color) !important; }
+         [data-theme="dark"] .note-dropdown-menu .dropdown-item:hover { background-color: var(--glass) !important; }
+
     </style>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
         import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyBnDhuKL60HNcX40JI9zQ6YIZDr1hbMZHc",
-            authDomain: "trihardmurad.firebaseapp.com",
-            projectId: "trihardmurad",
-            storageBucket: "trihardmurad.appspot.com",
-            messagingSenderId: "146538214416",
-            appId: "1:146538214416:web:0d7ad5834eb432c385c695",
-            measurementId: "G-GQNJV0VQQQ"
-        };
-
+        // Firebase Configuration
+        const firebaseConfig = { apiKey: "AIzaSyBnDhuKL60HNcX40JI9zQ6YIZDr1hbMZHc", authDomain: "trihardmurad.firebaseapp.com", projectId: "trihardmurad", storageBucket: "trihardmurad.appspot.com", messagingSenderId: "146538214416", appId: "1:146538214416:web:0d7ad5834eb432c385c695", measurementId: "G-GQNJV0VQQQ" };
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
         const storage = getStorage(app);
 
+        // --- Auth State ---
         onAuthStateChanged(auth, (user) => {
             const loginSection = document.getElementById('loginSection');
             const adminSection = document.getElementById('adminSection');
             if (user) {
-                loginSection.style.display = 'none';
-                adminSection.classList.add('active');
+                if (loginSection) loginSection.style.display = 'none';
+                if (adminSection) adminSection.classList.add('active');
             } else {
-                loginSection.style.display = 'block';
-                adminSection.classList.remove('active');
+                if (loginSection) loginSection.style.display = 'block';
+                if (adminSection) adminSection.classList.remove('active');
             }
         });
 
+        // --- DOM Ready ---
         document.addEventListener("DOMContentLoaded", () => {
+
+            // Initialize Summernote
+            $('#blogContent').summernote({ height: 250, minHeight: 150 });
+
+            // --- Login/Logout Handlers ---
             const loginButton = document.getElementById('loginButton');
-            loginButton.addEventListener('click', async () => {
-                const email = document.getElementById('loginEmail').value;
-                const password = document.getElementById('loginPassword').value;
-                try {
-                    await signInWithEmailAndPassword(auth, email, password);
-                    alert("Login successful!");
-                } catch (error) {
-                    alert("Error logging in: " + error.message);
-                }
+            if (loginButton) loginButton.addEventListener('click', async () => { /* ... same login logic ... */
+                const email = document.getElementById('loginEmail').value; const password = document.getElementById('loginPassword').value; try { await signInWithEmailAndPassword(auth, email, password); showToast("Login successful!"); } catch (error) { showToast("Login failed: " + error.message, true); }
             });
-
             const logoutButton = document.getElementById('logoutButton');
-            logoutButton.addEventListener('click', async () => {
-                await signOut(auth);
-                alert("Logged out successfully.");
+            if (logoutButton) logoutButton.addEventListener('click', async () => { /* ... same logout logic ... */
+                await signOut(auth); showToast("Logged out.");
             });
 
-            document.getElementById('addBlogButton').addEventListener('click', async () => {
+            // --- Category Field Visibility ---
+            const categorySelect = document.getElementById('blogCategory');
+            const allCategoryFields = document.querySelectorAll('.category-fields');
+            if(categorySelect) {
+                categorySelect.addEventListener('change', () => {
+                    const selectedCategory = categorySelect.value; // e.g., "athleticPosts"
+                    allCategoryFields.forEach(fieldSection => {
+                        // Show section if its ID matches the pattern #fields-<category_name>
+                        if (fieldSection.id === `fields-${selectedCategory}`) {
+                            fieldSection.classList.add('active');
+                        } else {
+                            fieldSection.classList.remove('active');
+                        }
+                    });
+                });
+                // Trigger change on load to show default fields
+                categorySelect.dispatchEvent(new Event('change'));
+            }
+
+             // --- Image Preview Logic ---
+             const coverImageInput = document.getElementById('blogImage');
+             const coverPreview = document.getElementById('coverPreview');
+             const coverPreviewContainer = document.getElementById('coverPreviewContainer');
+             if(coverImageInput && coverPreview && coverPreviewContainer) {
+                 coverImageInput.addEventListener('change', (event) => {
+                    const file = event.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            coverPreview.src = e.target.result;
+                            coverPreviewContainer.style.display = 'block';
+                        }
+                        reader.readAsDataURL(file);
+                    } else {
+                        coverPreviewContainer.style.display = 'none';
+                    }
+                 });
+             }
+
+             const galleryImageInput = document.getElementById('galleryImages');
+             const galleryPreviewContainer = document.getElementById('galleryPreviewContainer');
+             const galleryPreviews = document.getElementById('galleryPreviews');
+             if(galleryImageInput && galleryPreviews && galleryPreviewContainer) {
+                 galleryImageInput.addEventListener('change', (event) => {
+                    const files = event.target.files;
+                    galleryPreviews.innerHTML = ''; // Clear previous previews
+                    if (files.length > 0) {
+                        galleryPreviewContainer.style.display = 'block';
+                        Array.from(files).forEach(file => {
+                             const reader = new FileReader();
+                             reader.onload = function(e) {
+                                const img = document.createElement('img');
+                                img.src = e.target.result;
+                                img.alt = "Gallery preview";
+                                galleryPreviews.appendChild(img);
+                             }
+                             reader.readAsDataURL(file);
+                        });
+                    } else {
+                         galleryPreviewContainer.style.display = 'none';
+                    }
+                 });
+             }
+
+
+            // --- Add/Remove Key-Value Pair Logic ---
+            function setupKeyValueListeners(containerId, addButtonId) {
+                const container = document.getElementById(containerId);
+                const addButton = document.getElementById(addButtonId);
+                if (!container || !addButton) return;
+
+                const addPair = () => {
+                    const div = document.createElement('div');
+                    div.className = 'key-value-pair';
+                    div.innerHTML = `
+                        <input type="text" class="form-control form-control-sm kv-key" placeholder="Name (e.g., GitHub)">
+                        <input type="url" class="form-control form-control-sm kv-value" placeholder="URL">
+                        <button type="button" class="btn btn-sm btn-outline-danger remove-kv-btn">&times;</button>
+                    `;
+                    container.appendChild(div);
+                };
+
+                addButton.addEventListener('click', addPair);
+                container.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('remove-kv-btn')) {
+                        e.target.closest('.key-value-pair').remove();
+                    }
+                });
+                // Add one pair initially for convenience
+                // addPair();
+            }
+            setupKeyValueListeners('projectLinksContainer', 'addProjectLinkBtn');
+            setupKeyValueListeners('achievementLinksContainer', 'addAchievementLinkBtn');
+            setupKeyValueListeners('storyReadingContainer', 'addStoryReadingBtn');
+
+            // --- Helper to Collect Key-Value Pairs ---
+            function getKeyValuePairs(containerId) {
+                const container = document.getElementById(containerId);
+                if (!container) return null;
+                const pairs = {};
+                container.querySelectorAll('.key-value-pair').forEach(pairDiv => {
+                    const keyInput = pairDiv.querySelector('.kv-key');
+                    const valueInput = pairDiv.querySelector('.kv-value');
+                    const key = keyInput ? keyInput.value.trim() : null;
+                    const value = valueInput ? valueInput.value.trim() : null;
+                    if (key && value) {
+                        pairs[key] = value;
+                    }
+                });
+                return Object.keys(pairs).length > 0 ? pairs : null; // Return null if empty
+            }
+
+            // --- Helper to Collect Comma Separated Values ---
+            function getCommaSeparatedList(inputId) {
+                const input = document.getElementById(inputId);
+                if (!input || !input.value) return null;
+                return input.value.split(',').map(item => item.trim()).filter(Boolean); // Trim and remove empty items
+            }
+
+             // --- Upload Single Image Helper ---
+             async function uploadSingleImage(file, pathPrefix) {
+                 if (!file) return null;
+                 const storageRef = ref(storage, `${pathPrefix}/${Date.now()}_${file.name}`);
+                 await uploadBytes(storageRef, file);
+                 return getDownloadURL(storageRef);
+             }
+
+             // --- Upload Multiple Images Helper ---
+             async function uploadMultipleImages(files, pathPrefix) {
+                 if (!files || files.length === 0) return null;
+                 const uploadPromises = Array.from(files).map(file => {
+                    const storageRef = ref(storage, `${pathPrefix}/${Date.now()}_${file.name}`);
+                    return uploadBytes(storageRef, file).then(snapshot => getDownloadURL(snapshot.ref));
+                 });
+                 return Promise.all(uploadPromises);
+             }
+
+
+            // --- Blog Post Submission ---
+            const addBlogButton = document.getElementById('addBlogButton');
+            if (addBlogButton) addBlogButton.addEventListener('click', async () => {
+                addBlogButton.disabled = true;
+                addBlogButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Publishing...';
+
+                // --- Common Fields ---
                 const title = document.getElementById('blogTitle').value;
                 const content = $('#blogContent').summernote('code');
-                const category = document.getElementById('blogCategory').value;
+                const category = document.getElementById('blogCategory').value; // Collection Name
                 const tag = document.getElementById('blogTag').value;
                 const authorName = document.getElementById('authorName').value;
-                const image = document.getElementById('blogImage').files[0];
+                const coverImageFile = document.getElementById('blogImage').files[0];
+                const galleryImageFiles = document.getElementById('galleryImages').files;
 
-                if (title && content && category && tag && authorName && image) {
-                    try {
-                        const storageRef = ref(storage, `blogImages/${image.name}`);
-                        await uploadBytes(storageRef, image);
-                        const imageUrl = await getDownloadURL(storageRef);
+                 // --- Category Specific Fields ---
+                 let categoryData = {};
 
-                        await addDoc(collection(db, category), {
-                            title,
-                            content,
-                            tag,
-                            author: authorName,
-                            imageUrl,
-                            date: new Date().toISOString()
-                        });
-                        alert('Blog post added successfully!');
-                    } catch (error) {
-                        console.error("Error adding blog post:", error);
-                        alert("Error adding blog post: " + error.message);
-                    }
-                } else {
-                    alert("Please fill in all fields.");
+                 switch (category) {
+                    case 'athleticPosts':
+                        categoryData = {
+                            distance: document.getElementById('athleticDistance').value || null,
+                            time: document.getElementById('athleticTime').value || null,
+                            pace: document.getElementById('athleticPace').value || null,
+                            elevation: document.getElementById('athleticElevation').value || null,
+                            gear: document.getElementById('athleticGear').value || null,
+                            weather: document.getElementById('athleticWeather').value || null,
+                            intensity: document.getElementById('athleticIntensity').value || null,
+                            trainingFocus: document.getElementById('athleticFocus').value || null,
+                            stravaUrl: document.getElementById('athleticStravaUrl').value || null,
+                            mapUrl: document.getElementById('athleticMapUrl').value || null,
+                            // hrZones - simplified example, might need better input UI
+                            hrZones: {
+                                z1: document.getElementById('hrZ1').value || null,
+                                z2: document.getElementById('hrZ2').value || null,
+                                z3: document.getElementById('hrZ3').value || null,
+                                z4: document.getElementById('hrZ4').value || null,
+                                z5: document.getElementById('hrZ5').value || null,
+                            }
+                        };
+                        // Filter out null HR zones
+                        categoryData.hrZones = Object.fromEntries(Object.entries(categoryData.hrZones).filter(([_, v]) => v != null));
+                        if(Object.keys(categoryData.hrZones).length === 0) categoryData.hrZones = null;
+                        break;
+                    case 'storytellingPosts':
+                        categoryData = {
+                            mood: document.getElementById('storyMood').value || null,
+                            relatedReading: getKeyValuePairs('storyReadingContainer')
+                        };
+                        break;
+                    case 'projectsPosts':
+                         categoryData = {
+                             status: document.getElementById('projectStatus').value || null,
+                             techStack: getCommaSeparatedList('projectTechStack'),
+                             links: getKeyValuePairs('projectLinksContainer')
+                         };
+                         break;
+                    case 'achievementsPosts':
+                        categoryData = {
+                            locationOrg: document.getElementById('achievementLocationOrg').value || null,
+                            skills: getCommaSeparatedList('achievementSkills'),
+                            links: getKeyValuePairs('achievementLinksContainer')
+                        };
+                        break;
+                 }
+
+
+                // Basic Validation
+                if (!title || !content || !category || !tag || !authorName || !coverImageFile) {
+                    showToast("Please fill in all required common fields (Title, Content, Category, Tag, Author, Cover Image).", true);
+                    addBlogButton.disabled = false;
+                    addBlogButton.innerHTML = '<i class="fas fa-upload mr-2"></i> Publish Post';
+                    return;
+                }
+
+                try {
+                    // Upload Cover Image
+                    const imageUrl = await uploadSingleImage(coverImageFile, 'blogCoverImages');
+                    if (!imageUrl) throw new Error("Cover image upload failed.");
+
+                    // Upload Gallery Images
+                    const galleryImageUrls = await uploadMultipleImages(galleryImageFiles, 'blogGalleryImages');
+
+                    // Prepare Firestore Data
+                    const postData = {
+                        title,
+                        content,
+                        tag,
+                        author: authorName,
+                        imageUrl, // Cover Image URL
+                        galleryImages: galleryImageUrls || null, // Array of Gallery URLs or null
+                        date: serverTimestamp(), // Use server timestamp for consistency
+                        likeCount: 0, // Initialize like count
+                        ...categoryData // Add category-specific data
+                    };
+
+                     // Filter out any null/undefined values before saving
+                     const finalPostData = Object.fromEntries(Object.entries(postData).filter(([_, v]) => v != null));
+
+
+                    // Add Post to Firestore
+                    await addDoc(collection(db, category), finalPostData);
+
+                    showToast('Blog post added successfully!');
+                    // Clear form fields
+                    document.getElementById('blogForm').reset();
+                    $('#blogContent').summernote('code', '');
+                    if(coverPreviewContainer) coverPreviewContainer.style.display = 'none';
+                    if(galleryPreviewContainer) galleryPreviewContainer.style.display = 'none';
+                    // Clear key-value pairs manually if needed
+                     document.getElementById('projectLinksContainer').innerHTML = '';
+                     document.getElementById('achievementLinksContainer').innerHTML = '';
+                     document.getElementById('storyReadingContainer').innerHTML = '';
+
+                } catch (error) {
+                    console.error("Error adding blog post:", error);
+                    showToast("Error adding blog post: " + error.message, true);
+                } finally {
+                     addBlogButton.disabled = false;
+                     addBlogButton.innerHTML = '<i class="fas fa-upload mr-2"></i> Publish Post';
                 }
             });
         });
+
+        // --- Toast Function (Global Scope for Auth) ---
+        function showToast(message, isError = false) {
+             const container = document.getElementById('toastContainer'); // Assuming you add this div
+             if (!container) { // Fallback to alert if container doesn't exist yet
+                 alert(message);
+                 return;
+             }
+             const toast = document.createElement('div');
+             toast.className = `alert ${isError ? 'alert-danger' : 'alert-success'}`;
+             toast.style.position = 'fixed';
+             toast.style.top = '20px';
+             toast.style.right = '20px';
+             toast.style.zIndex = '1050';
+             toast.textContent = message;
+             container.appendChild(toast);
+             setTimeout(() => { toast.remove(); }, 3000);
+         }
+         // Add a placeholder for toasts if not already in HTML
+         if (!document.getElementById('toastContainer')) {
+             const toastDiv = document.createElement('div');
+             toastDiv.id = 'toastContainer';
+             toastDiv.style.position = 'fixed';
+             toastDiv.style.top = '10px';
+             toastDiv.style.right = '10px';
+             toastDiv.style.zIndex = '1060';
+             document.body.appendChild(toastDiv);
+         }
+
+         // Set RGB Variable initially and on theme change
+         function setPrimaryRgbVariable() {
+            try {
+                const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
+                if (primaryColor.startsWith('#')) {
+                    const r = parseInt(primaryColor.substring(1, 3), 16);
+                    const g = parseInt(primaryColor.substring(3, 5), 16);
+                    const b = parseInt(primaryColor.substring(5, 7), 16);
+                    document.documentElement.style.setProperty('--primary-rgb', `${r}, ${g}, ${b}`);
+                } else if (primaryColor.startsWith('rgb')) {
+                    const match = primaryColor.match(/rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/);
+                    if (match) {
+                        document.documentElement.style.setProperty('--primary-rgb', `${match[1]}, ${match[2]}, ${match[3]}`);
+                    }
+                }
+            } catch (e) {
+                console.warn("Could not parse primary color for RGB variable.");
+                document.documentElement.style.setProperty('--primary-rgb', `32, 201, 151`); // Fallback Green
+            }
+         }
+         document.addEventListener('DOMContentLoaded', setPrimaryRgbVariable);
+         // Consider adding listeners if theme/accent can change dynamically on this page
+
     </script>
 </head>
 
 <body>
-   <!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<!-- Navbar --> 
-<nav class="navbar navbar-expand-lg fixed-top" style="background: linear-gradient(135deg, #163142, #1f4e5a); padding: 10px 15px;">
-    <a class="navbar-brand d-flex align-items-center" href="index.html" style="font-family: 'Arial Black', sans-serif; text-decoration: none;">
-        
+    <div class="container">
 
-        <div style="display: inline-block; overflow: hidden;">
-            <img 
-                src="images/logo.png" 
-                alt="Logo" 
-                style="width: 50px; height: auto; transition: transform 0.3s ease; border: 2px solid #41b3a3; border-radius: 50%;" 
-                onmouseover="this.style.transform='scale(1.5)'" 
-                onmouseout="this.style.transform='scale(1)'" 
-                onclick="scaleOnMobile(this)"
-            >
-        </div>
-        
-        
-        <script>
-            function scaleOnMobile(element) {
-                // Apply the scale effect when clicked on mobile
-                if (window.innerWidth <= 768) { // Mobile width threshold
-                    element.style.transform = 'scale(1.5)';
-                    setTimeout(() => {
-                        element.style.transform = 'scale(1)'; // Reset after some time
-                    }, 500); // Duration of scaling effect in milliseconds
-                }
-            }
-        </script>
-        
+        <!-- Toast Container -->
+        <div id="toastContainer"></div>
 
+        <!-- Login Section -->
+        <section id="loginSection" class="card form-card">
+            <h2 class="section-title text-center">Administrator Login</h2>
+            <div class="form-group">
+                <label for="loginEmail">Email:</label>
+                <input type="email" id="loginEmail" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="loginPassword">Password:</label>
+                <input type="password" id="loginPassword" class="form-control" required>
+            </div>
+            <button id="loginButton" class="btn btn-primary btn-block">Login</button>
+        </section>
 
+        <!-- Admin Content Section -->
+        <section id="adminSection">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="section-title mb-0">Content Dashboard</h1>
+                <button id="logoutButton" class="btn btn-danger btn-sm">Logout</button>
+            </div>
 
-     
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style="border: none; outline: none;">
-        <div class="toggler-icon" style="display: flex; flex-direction: column; justify-content: space-between; height: 18px; width: 25px;">
-            <span class="line" style="height: 2px; width: 100%; background-color: #41b3a3; transition: transform 0.3s, opacity 0.3s;"></span>
-            <span class="line" style="height: 2px; width: 100%; background-color: #41b3a3; transition: transform 0.3s;"></span>
-            <span class="line" style="height: 2px; width: 100%; background-color: #41b3a3; transition: transform 0.3s, opacity 0.3s;"></span>
-        </div>
-    </button>
-    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-        <ul class="navbar-nav" id="navUl" style="text-align: right;">
-            <li class="nav-item">
-                <a class="nav-link" href="index.html" style="color: #ffffff; font-weight: bold; padding: 5px 15px; border: 1px solid #41b3a3; border-radius: 5px; margin: 5px; text-decoration: none; transition: all 0.3s ease;" 
-                   onmouseover="this.style.backgroundColor='#41b3a3'; this.style.color='#163142';" 
-                   onmouseout="this.style.backgroundColor='transparent'; this.style.color='#ffffff';">Home</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="storytelling.html" style="color: #ffffff; font-weight: bold; padding: 5px 15px; border: 1px solid #41b3a3; border-radius: 5px; margin: 5px; text-decoration: none; transition: all 0.3s ease;" 
-                   onmouseover="this.style.backgroundColor='#41b3a3'; this.style.color='#163142';" 
-                   onmouseout="this.style.backgroundColor='transparent'; this.style.color='#ffffff';">Storytelling</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="athletic.html" style="color: #ffffff; font-weight: bold; padding: 5px 15px; border: 1px solid #41b3a3; border-radius: 5px; margin: 5px; text-decoration: none; transition: all 0.3s ease;" 
-                   onmouseover="this.style.backgroundColor='#41b3a3'; this.style.color='#163142';" 
-                   onmouseout="this.style.backgroundColor='transparent'; this.style.color='#ffffff';">Athletic</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="achievements.html" style="color: #ffffff; font-weight: bold; padding: 5px 15px; border: 1px solid #41b3a3; border-radius: 5px; margin: 5px; text-decoration: none; transition: all 0.3s ease;" 
-                   onmouseover="this.style.backgroundColor='#41b3a3'; this.style.color='#163142';" 
-                   onmouseout="this.style.backgroundColor='transparent'; this.style.color='#ffffff';">Achievements</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="projects.html" style="color: #ffffff; font-weight: bold; padding: 5px 15px; border: 1px solid #41b3a3; border-radius: 5px; margin: 5px; text-decoration: none; transition: all 0.3s ease;" 
-                   onmouseover="this.style.backgroundColor='#41b3a3'; this.style.color='#163142';" 
-                   onmouseout="this.style.backgroundColor='transparent'; this.style.color='#ffffff';">Projects</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="about.html" style="color: #ffffff; font-weight: bold; padding: 5px 15px; border: 1px solid #41b3a3; border-radius: 5px; margin: 5px; text-decoration: none; transition: all 0.3s ease;" 
-                   onmouseover="this.style.backgroundColor='#41b3a3'; this.style.color='#163142';" 
-                   onmouseout="this.style.backgroundColor='transparent'; this.style.color='#ffffff';">Resume</a>
-            </li>
-        </ul>
-    </div>
-</nav>
-
-<!-- jQuery and Bootstrap JS (required for Navbar toggle functionality) -->
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const navbarToggler = document.querySelector('.navbar-toggler');
-        const navbarMenu = document.querySelector('#navbarNav');
-        const lines = navbarToggler.querySelectorAll('.line');
-
-        // Toggle menu open/close
-        navbarToggler.addEventListener('click', function () {
-            const isExpanded = navbarMenu.classList.contains('show');
-
-            if (isExpanded) {
-                closeMenu();
-            } else {
-                openMenu();
-            }
-        });
-
-        // Close menu on outside click
-        document.addEventListener('click', function (event) {
-            if (!navbarToggler.contains(event.target) && !navbarMenu.contains(event.target)) {
-                if (navbarMenu.classList.contains('show')) {
-                    closeMenu();
-                }
-            }
-        });
-
-        // Open menu function
-        function openMenu() {
-            navbarMenu.classList.add('show');
-            lines[0].style.transform = 'rotate(45deg)';
-            lines[0].style.position = 'relative';
-            lines[0].style.top = '6px';
-
-            lines[1].style.opacity = '0';
-
-            lines[2].style.transform = 'rotate(-45deg)';
-            lines[2].style.position = 'relative';
-            lines[2].style.top = '-6px';
-        }
-
-        // Close menu function
-        function closeMenu() {
-            navbarMenu.classList.remove('show');
-            lines[0].style.transform = 'rotate(0)';
-            lines[0].style.position = 'relative';
-            lines[0].style.top = '0';
-
-            lines[1].style.opacity = '1';
-
-            lines[2].style.transform = 'rotate(0)';
-            lines[2].style.position = 'relative';
-            lines[2].style.top = '0';
-        }
-    });
-</script>
-
-
-    <section id="loginSection" class="container my-5 card p-4 shadow-lg">
-        <h3 class="text-center">Admin Login</h3>
-        <div class="form-group">
-            <label for="loginEmail">Email</label>
-            <input type="email" id="loginEmail" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="loginPassword">Password</label>
-            <input type="password" id="loginPassword" class="form-control" required>
-        </div>
-        <button id="loginButton" class="btn btn-primary btn-block">Login</button>
-    </section>
-
-    <section id="adminSection" class="container my-5">
-        <button id="logoutButton" class="btn btn-danger mb-3">Logout</button>
-
-        <section class="container my-5">
+            <!-- Blog Post Management Form -->
             <div class="form-card">
-                <h2 class="section-title text-center">Blog Post Management</h2>
+                <h2><i class="fas fa-plus-circle mr-2"></i>Add New Post</h2>
                 <form id="blogForm">
+
+                    <!-- Common Fields -->
                     <div class="form-group">
                         <label for="blogTitle">Title:</label>
-                        <input type="text" id="blogTitle" class="form-control" placeholder="Enter blog title" required>
+                        <input type="text" id="blogTitle" class="form-control" placeholder="Enter post title" required>
                     </div>
-
                     <div class="form-group">
                         <label for="blogContent">Content:</label>
-                        <textarea id="blogContent" class="form-control summernote" rows="5" placeholder="Enter blog content" required></textarea>
+                        <textarea id="blogContent" class="form-control summernote" rows="10" placeholder="Enter main content (use formatting tools)" required></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="blogCategory">Category:</label>
+                            <select id="blogCategory" class="custom-select" required>
+                                <option value="" disabled selected>Select Category...</option>
+                                <option value="athleticPosts">Athletic</option>
+                                <option value="storytellingPosts">Storytelling</option>
+                                <option value="projectsPosts">Projects</option>
+                                <option value="achievementsPosts">Achievements</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="blogTag">Primary Tag/Genre:</label>
+                            <input type="text" id="blogTag" class="form-control" placeholder="e.g., Running, Poetry, Research, Academic" required>
+                        </div>
+                    </div>
+                     <div class="row">
+                         <div class="col-md-6 form-group">
+                             <label for="authorName">Author Name:</label>
+                             <input type="text" id="authorName" class="form-control" value="Murad Hossain" required>
+                         </div>
+                         <div class="col-md-6 form-group">
+                            <label for="blogImage">Cover Image:</label>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="blogImage" accept="image/*" required>
+                                <label class="custom-file-label" for="blogImage">Choose file...</label>
+                            </div>
+                            <div id="coverPreviewContainer" style="display: none;"><img id="coverPreview" alt="Cover Preview" /></div>
+                        </div>
+                     </div>
+                     <div class="form-group">
+                        <label for="galleryImages">Gallery Images (Optional, Multiple):</label>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="galleryImages" accept="image/*" multiple>
+                            <label class="custom-file-label" for="galleryImages">Choose files...</label>
+                        </div>
+                         <div id="galleryPreviewContainer" style="display: none;">
+                            <small class="text-muted">Previews:</small>
+                            <div id="galleryPreviews"></div>
+                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="blogCategory">Category:</label>
-                        <select id="blogCategory" class="form-control">
-                            <option value="storytellingPosts">Storytelling</option>
-                            <option value="athleticPosts">Athletic</option>
-                            <option value="achievementsPosts">Achievements</option>
-                            <option value="projectsPosts">Projects</option>
-                        </select>
+                    <hr style="border-color: var(--glass); margin: 30px 0;">
+
+                    <!-- Athletic Specific Fields -->
+                    <div id="fields-athleticPosts" class="category-fields">
+                        <h4><i class="fas fa-running mr-2"></i>Athletic Details (Optional)</h4>
+                        <div class="row">
+                            <div class="col-md-3 form-group"><label for="athleticDistance">Distance (e.g., 10km):</label><input type="text" id="athleticDistance" class="form-control"></div>
+                            <div class="col-md-3 form-group"><label for="athleticTime">Time (e.g., 45:15):</label><input type="text" id="athleticTime" class="form-control"></div>
+                            <div class="col-md-3 form-group"><label for="athleticPace">Pace (e.g., 4:31/km):</label><input type="text" id="athleticPace" class="form-control"></div>
+                            <div class="col-md-3 form-group"><label for="athleticElevation">Elevation (e.g., 150m):</label><input type="text" id="athleticElevation" class="form-control"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group"><label for="athleticGear">Gear:</label><input type="text" id="athleticGear" class="form-control" placeholder="Shoes, Watch etc."></div>
+                            <div class="col-md-6 form-group"><label for="athleticWeather">Weather:</label><input type="text" id="athleticWeather" class="form-control" placeholder="e.g., 28°C, Sunny"></div>
+                        </div>
+                         <div class="row">
+                            <div class="col-md-6 form-group"><label for="athleticIntensity">Intensity (e.g., 7/10):</label><input type="text" id="athleticIntensity" class="form-control"></div>
+                            <div class="col-md-6 form-group"><label for="athleticFocus">Training Focus:</label><input type="text" id="athleticFocus" class="form-control" placeholder="e.g., Aerobic base building"></div>
+                         </div>
+                         <div class="row">
+                            <div class="col-md-6 form-group"><label for="athleticStravaUrl">Strava Activity URL:</label><input type="url" id="athleticStravaUrl" class="form-control"></div>
+                             <div class="col-md-6 form-group"><label for="athleticMapUrl">Map URL (e.g., Google Maps):</label><input type="url" id="athleticMapUrl" class="form-control"></div>
+                         </div>
+                         <h6>HR Zones (Time, e.g., 45:30)</h6>
+                         <div class="row">
+                            <div class="col form-group"><label for="hrZ1" style="font-size: 0.8rem;">Z1:</label><input type="text" id="hrZ1" class="form-control form-control-sm"></div>
+                            <div class="col form-group"><label for="hrZ2" style="font-size: 0.8rem;">Z2:</label><input type="text" id="hrZ2" class="form-control form-control-sm"></div>
+                            <div class="col form-group"><label for="hrZ3" style="font-size: 0.8rem;">Z3:</label><input type="text" id="hrZ3" class="form-control form-control-sm"></div>
+                            <div class="col form-group"><label for="hrZ4" style="font-size: 0.8rem;">Z4:</label><input type="text" id="hrZ4" class="form-control form-control-sm"></div>
+                            <div class="col form-group"><label for="hrZ5" style="font-size: 0.8rem;">Z5:</label><input type="text" id="hrZ5" class="form-control form-control-sm"></div>
+                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="blogTag">Tag:</label>
-                        <input type="text" id="blogTag" class="form-control" placeholder="Enter tag" required>
+                    <!-- Storytelling Specific Fields -->
+                    <div id="fields-storytellingPosts" class="category-fields">
+                        <h4><i class="fas fa-feather-alt mr-2"></i>Storytelling Details (Optional)</h4>
+                        <div class="form-group">
+                            <label for="storyMood">Mood:</label>
+                            <input type="text" id="storyMood" class="form-control" placeholder="e.g., Reflective, Uplifting, Melancholy">
+                        </div>
+                        <div class="form-group key-value-container">
+                            <label>Related Reading Links:</label>
+                             <small class="text-muted">Add links to books, articles, etc., that inspired or relate to this story.</small>
+                            <div id="storyReadingContainer">
+                                <!-- Key-value pairs will be added here -->
+                            </div>
+                            <button type="button" id="addStoryReadingBtn" class="btn btn-sm btn-outline-secondary mt-2">+ Add Link</button>
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="authorName">Author Name:</label>
-                        <input type="text" id="authorName" class="form-control" placeholder="Enter author name" required>
+                    <!-- Projects Specific Fields -->
+                    <div id="fields-projectsPosts" class="category-fields">
+                         <h4><i class="fas fa-lightbulb mr-2"></i>Project Details (Optional)</h4>
+                         <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="projectStatus">Status:</label>
+                                <select id="projectStatus" class="custom-select">
+                                    <option value="Ongoing">Ongoing</option>
+                                    <option value="Completed">Completed</option>
+                                    <option value="Planning">Planning</option>
+                                    <option value="On Hold">On Hold</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="projectTechStack">Tech Stack / Tools (Comma-separated):</label>
+                                <input type="text" id="projectTechStack" class="form-control" placeholder="e.g., Python, Firebase, SEM">
+                            </div>
+                         </div>
+                         <div class="form-group key-value-container">
+                             <label>Key Project Links:</label>
+                             <small class="text-muted">Add links like GitHub repo, live demo, research paper, etc.</small>
+                             <div id="projectLinksContainer"></div>
+                             <button type="button" id="addProjectLinkBtn" class="btn btn-sm btn-outline-secondary mt-2">+ Add Link</button>
+                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="blogImage">Blog Image:</label>
-                        <input type="file" id="blogImage" class="form-control-file" accept="image/*" required>
+                    <!-- Achievements Specific Fields -->
+                    <div id="fields-achievementsPosts" class="category-fields">
+                        <h4><i class="fas fa-trophy mr-2"></i>Achievement Details (Optional)</h4>
+                         <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label for="achievementLocationOrg">Location / Organization:</label>
+                                <input type="text" id="achievementLocationOrg" class="form-control" placeholder="e.g., University of Chittagong, Dhaka Marathon">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="achievementSkills">Skills Demonstrated (Comma-separated):</label>
+                                <input type="text" id="achievementSkills" class="form-control" placeholder="e.g., Leadership, Data Analysis, Resilience">
+                            </div>
+                         </div>
+                         <div class="form-group key-value-container">
+                             <label>Related Links:</label>
+                             <small class="text-muted">Add links like certificate URL, event results page, news article, etc.</small>
+                             <div id="achievementLinksContainer"></div>
+                             <button type="button" id="addAchievementLinkBtn" class="btn btn-sm btn-outline-secondary mt-2">+ Add Link</button>
+                         </div>
                     </div>
 
-                    <button type="button" id="addBlogButton" class="btn btn-success btn-block">Add Blog Post</button>
+                    <!-- Submit Button -->
+                    <button type="button" id="addBlogButton" class="btn btn-success btn-block mt-4">
+                        <i class="fas fa-upload mr-2"></i> Publish Post
+                    </button>
                 </form>
             </div>
         </section>
+    </div>
 
-        <!-- jQuery, Bootstrap JS, and Summernote JS -->
-        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
+    <!-- jQuery, Popper.js, Bootstrap JS, Summernote JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
 
-        <script>
-            $(document).ready(function () {
-                $('.summernote').summernote({
-                    height: 200,
-                });
-            });
-        </script>
-    </section>
 </body>
-
 </html>

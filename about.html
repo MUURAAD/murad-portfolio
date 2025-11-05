@@ -1,534 +1,633 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" data-theme="light" data-accent="green">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About - Murad Hossain</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <style>
-        /* General styles */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-            padding-top: 70px; /* Adjust to match navbar height */
-        }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Resume - Murad Hossain</title>
 
-        /* Navbar styles */
-        .navbar {
-            background-color: #1b0bac;
-            padding: 10px 20px;
-            border-radius: 5px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-        }
-
-        .navbar-nav .nav-item .nav-link {
-            color: #000000;
-            transition: color 0.3s;
-        }
-
-        .navbar-nav .nav-item .nav-link:hover {
-            color: #d6178a;
-            text-decoration: underline;
-        }
-
-        /* Main content styles */
-        .main-content {
-            background: #fff;
-            padding: 20px;
-            margin: 20px auto;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            width: 80%;
-            max-width: 1000px;
-        }
-
-        h1, h2, h3 {
-            color: #333;
-        }
-
-        table {
-            width: 100%;
-            margin: 20px 0;
-            border-collapse: collapse;
-        }
-
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-
-        th, td {
-            padding: 12px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #333;
-            color: white;
-        }
-
-        td a {
-            color: #333;
-            text-decoration: none;
-        }
-
-        td a:hover {
-            color: #77aaff;
-        }
-
-        /* Footer styles */
-        footer {
-            background: #333;
-            color: #fff;
-            text-align: center;
-            padding: 20px 0;
-            margin-top: 40px;
-        }
-
-        .social-icons a:hover {
-            transform: scale(1.2);
-            transition: transform 0.3s ease;
-        }
-
-        .form-control:hover {
-            transform: scale(1.05);
-            transition: transform 0.3s ease;
-        }
-
-        .btn:hover {
-            transform: scale(1.1);
-            transition: transform 0.3s ease;
-        }
-
-        /* Back to top button */
-        #back-to-top {
-            display: none;
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #333;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.3s;
-        }
+  <!-- Bootstrap + Icons + Fonts -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;700&display=swap" rel="stylesheet">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- QR Code Generator -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 
 
+  <style>
+    /* ----------------- THEME & ACCENT VARIABLES (Consistent) ----------------- */
+    :root{
+      --bg: #f4f7fb; --card-bg: #ffffff; --muted: #596a75;
+      --primary: #20c997; --primary-700:#179b77;
+      --glass: rgba(255,255,255,0.6); --shadow: 0 10px 30px rgba(16,24,40,0.08);
+      --radius: 14px; --accent-shadow: 0 12px 30px rgba(32,201,151,0.14);
+      --nav-height: 64px; --max-content-width: 960px; /* Adjusted max width for CV */
+    }
+    [data-theme="dark"]{
+      --bg: #0b1220; --card-bg: #0f1b28; --muted: #b6cad6;
+      --primary: #43d9b2; --primary-700:#2fbf9a;
+      --glass: rgba(255,255,255,0.03); --shadow: 0 12px 40px rgba(0,0,0,0.7);
+      --accent-shadow: 0 12px 30px rgba(67,217,178,0.08);
+    }
+    [data-accent="green"] { --primary: #20c997; --primary-700: #179b77; --accent-shadow: 0 12px 30px rgba(32,201,151,0.14); }
+    [data-accent="yellow"] { --primary: #f1c40f; --primary-700: #d4a70b; --accent-shadow: 0 12px 30px rgba(241,196,15,0.12); }
+    [data-accent="red"] { --primary: #e74c3c; --primary-700: #c0382b; --accent-shadow: 0 12px 30px rgba(231,76,60,0.12); }
 
-        .main-content {
-        background: #fff;
-        padding: 20px;
-        margin: 20px auto;
-        border-radius: 10px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        width: 80%;
-        max-width: 1000px;
-        font-size: 1rem; /* Default font size */
+    html,body{height:auto; min-height: 100%;} /* Allow body height to grow */
+    body{
+      margin:0; font-family:'Comfortaa',sans-serif;
+      background:var(--bg); color:var(--muted);
+      transition: background .35s ease, color .35s ease;
+      padding-top: var(--nav-height);
+      padding-bottom: 60px; /* Space for quote bar */
+    }
+    .container-xl{ max-width: var(--max-content-width); } /* Use new max width */
+    .shadow-soft{ box-shadow: var(--shadow); }
+    .glass{ background: var(--glass); border-radius: 10px; }
+
+    /* NAVBAR (Consistent) */
+    .navbar-custom{ /* ... same styles ... */
+      height: var(--nav-height); background: linear-gradient(90deg, rgba(0,0,0,0.04), rgba(255,255,255,0.02));
+      backdrop-filter: blur(6px); box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+    }
+    .logo-img { /* ... same styles ... */
+      height: 40px; width: auto; object-fit: contain; border-radius: 50%; border: 2px solid var(--primary); transition: border-color 0.3s ease;
+    }
+    .nav-link{ /* ... same styles ... */
+      color:var(--muted) !important; padding:8px 14px; border-radius:8px; font-weight:600;
+    }
+    .nav-link:hover{ background: rgba(0,0,0,0.04); color:var(--primary) !important; transform: translateY(-3px); }
+    .accent-palette { /* ... same styles ... */ display:flex; gap:8px; align-items:center; }
+    .accent-dot { /* ... same styles ... */
+      width:18px; height:18px; border-radius:50%; cursor:pointer; border:2px solid rgba(255,255,255,0.9); box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+    }
+    .accent-dot[aria-checked="true"] { transform: scale(1.15); box-shadow: 0 6px 18px rgba(0,0,0,0.15); }
+    @media (max-width: 991.98px) { /* ... same styles ... */
+        .navbar-collapse.show { background: var(--card-bg); padding: 16px; border-radius: var(--radius); margin-top: 8px; box-shadow: var(--shadow); display: block; }
+        .navbar-collapse.show .navbar-nav .nav-link { padding: 10px 12px; }
     }
 
-    table {
-        width: 100%;
-        margin: 20px 0;
-        border-collapse: collapse;
+    /* --- NEW COMPACT CV LAYOUT --- */
+    .cv-container {
+        background: var(--card-bg);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 30px 40px; /* More padding */
+        margin-top: 30px;
+        margin-bottom: 30px;
     }
-
-    table, th, td {
-        border: 1px solid #ddd;
-    }
-
-    th, td {
-        padding: 12px;
-        text-align: left;
-    }
-
-    th {
-        background-color: #333;
-        color: white;
-    }
-
-    td a {
-        color: #333;
-        text-decoration: none;
-    }
-
-    td a:hover {
-        color: #77aaff;
-    }
-
-    /* Media query for tablets and smaller screens */
     @media (max-width: 768px) {
-        .main-content {
-            width: 90%; /* Increase width for smaller screens */
-            margin: 10px auto; /* Adjust margins */
-            padding: 15px; /* Adjust padding */
-            font-size: 0.9rem; /* Slightly reduce font size */
-        }
-
-        th, td {
-            padding: 8px; /* Reduce padding */
-            font-size: 0.9rem; /* Reduce text size */
-        }
-
-        table {
-            font-size: 0.9rem; /* Reduce font size for tables */
-        }
+        .cv-container { padding: 20px; }
     }
 
-    /* Media query for mobile devices */
-    @media (max-width: 480px) {
-        .main-content {
-            width: 95%; /* Increase width for small mobile screens */
-            margin: 5px auto; /* Reduce margins */
-            padding: 10px; /* Reduce padding */
-            font-size: 0.8rem; /* Further reduce font size */
-        }
+    /* --- NEW: Feature 1 - Enhanced Header --- */
+    .cv-header {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+        margin-bottom: 30px;
+        padding-bottom: 30px;
+        border-bottom: 1px solid var(--glass);
+    }
+     @media (max-width: 768px) {
+        .cv-header { flex-direction: column; text-align: center; gap: 15px; }
+    }
+    .cv-photo {
+        width: 130px; height: 130px; border-radius: 50%; object-fit: cover;
+        border: 4px solid var(--primary); box-shadow: var(--accent-shadow);
+        flex-shrink: 0;
+    }
+    .cv-header-info h1 { font-size: 2rem; color: var(--primary-700) !important; margin-bottom: 5px; }
+    [data-theme="dark"] .cv-header-info h1 { color: var(--primary) !important; }
+    .cv-header-info .lead { font-size: 1.1rem; margin-bottom: 15px; font-weight: 500; }
+    .contact-icons { display: flex; flex-wrap: wrap; gap: 15px; font-size: 0.9rem; }
+    .contact-icons a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .contact-icons a:hover { color: var(--primary); }
+    .contact-icons i { margin-right: 5px; width: 16px; text-align: center; } /* Align icons */
 
-        th, td {
-            padding: 6px; /* Further reduce padding */
-            font-size: 0.8rem; /* Further reduce text size */
-        }
+    /* --- NEW: Feature 2 - Section Styling --- */
+    .cv-section { margin-bottom: 35px; }
+    .cv-section h2 {
+        color: var(--primary-700) !important; font-size: 1.4rem; font-weight: 700;
+        margin-bottom: 20px; padding-bottom: 8px; border-bottom: 2px solid var(--primary);
+        display: inline-block; /* Keep border tight */
+        opacity: 0; /* For animation */
+        transform: translateY(20px); /* For animation */
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .cv-section h2.visible { opacity: 1; transform: translateY(0); } /* Animation state */
+    [data-theme="dark"] .cv-section h2 { color: var(--primary) !important; border-bottom-color: var(--primary); }
+    .cv-section h3 { font-size: 1.1rem; font-weight: 600; color: var(--muted); margin-top: 15px; margin-bottom: 8px; }
 
-        table {
-            font-size: 0.8rem; /* Further reduce font size for tables */
-        }
+    /* --- NEW: Feature 3 - Compact Timeline --- */
+    .compact-timeline { position: relative; padding-left: 25px; }
+    .compact-timeline::before {
+        content: ''; position: absolute; top: 5px; left: 5px; bottom: 5px;
+        width: 2px; background-color: var(--glass);
+    }
+    .timeline-item { position: relative; margin-bottom: 18px; transition: background-color 0.2s ease; padding: 5px 0; border-radius: 4px; }
+    /* Feature 18: Microinteraction on hover */
+    .timeline-item:hover { background-color: rgba(var(--primary-rgb, 32, 201, 151), 0.05); } /* Use RGB variable */
+    .timeline-item::before { /* Dot on the timeline */
+        content: ''; position: absolute; left: -20px; top: 8px; transform: translateX(-50%);
+        width: 12px; height: 12px; border-radius: 50%; background: var(--primary);
+        box-shadow: 0 0 0 3px var(--card-bg);
+    }
+    .timeline-item h4 { font-size: 1.05rem; font-weight: 700; color: var(--primary-700); margin-bottom: 2px; }
+    [data-theme="dark"] .timeline-item h4 { color: var(--primary); }
+    .timeline-item .institution { font-size: 0.9rem; font-style: italic; display: block; margin-bottom: 4px; }
+    .timeline-item .date-location { font-size: 0.8rem; color: var(--muted); opacity: 0.8; margin-bottom: 6px; }
+    .timeline-item ul { padding-left: 18px; font-size: 0.9rem; margin-bottom: 0; }
+
+    /* --- NEW: Feature 4 - Grouped Skills with Icons --- */
+    .skills-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+    }
+    .skill-category h3 { font-size: 1rem; font-weight: 600; color: var(--primary-700); margin-bottom: 10px; }
+    [data-theme="dark"] .skill-category h3 { color: var(--primary); }
+    .skill-list { list-style: none; padding-left: 0; }
+    .skill-list li {
+        display: flex; align-items: center; gap: 8px;
+        margin-bottom: 8px; font-size: 0.9rem;
+        transition: transform 0.2s ease;
+    }
+     /* Feature 18: Microinteraction on hover */
+    .skill-list li:hover { transform: translateX(5px); }
+    .skill-list i { color: var(--primary); width: 16px; text-align: center; }
+
+    /* --- Publications List (Compact) --- */
+    .publications-list li { margin-bottom: 8px; font-size: 0.9rem; line-height: 1.5; }
+    .publications-list strong { color: var(--primary-700); }
+    [data-theme="dark"] .publications-list strong { color: var(--primary); }
+
+    /* --- NEW: Feature 5 - Certifications Section --- */
+    .certifications-list { display: flex; flex-wrap: wrap; gap: 10px; }
+    .certification-badge {
+        display: inline-flex; align-items: center; gap: 6px;
+        background: var(--glass); border: 1px solid var(--glass);
+        padding: 6px 12px; border-radius: 50px; font-size: 0.85rem; font-weight: 500;
+        transition: all 0.2s ease;
+    }
+    .certification-badge:hover { background: var(--primary); color: white; border-color: var(--primary); }
+    .certification-badge i { opacity: 0.8; }
+
+    /* --- NEW: Feature 6 - Awards/Recognition --- */
+    .awards-list li { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 0.9rem; }
+    .awards-list i { color: var(--primary); font-size: 1.1rem; }
+
+    /* --- NEW: Feature 7 - Language Skills (Simplified) --- */
+    .languages-list { list-style: none; padding-left: 0; }
+    .languages-list li { margin-bottom: 5px; font-size: 0.9rem; }
+    .languages-list span { font-weight: 600; color: var(--primary-700); margin-left: 5px; }
+    [data-theme="dark"] .languages-list span { color: var(--primary); }
+
+    /* --- NEW: Feature 8 - QR Code --- */
+    #qrcode { display: flex; justify-content: center; margin-top: 20px; }
+    #qrcode canvas, #qrcode img { border-radius: 8px; border: 1px solid var(--glass); }
+
+    /* --- Feature 10: Interests (Text List) --- */
+    .interests-list-text { list-style: none; padding-left: 0; columns: 2; gap: 15px; font-size: 0.9rem; }
+     @media (max-width: 576px) { .interests-list-text { columns: 1; } }
+
+    /* --- References Note --- */
+    .references-note { font-style: italic; font-size: 0.85rem; text-align: center; margin-top: 20px; }
+
+    /* --- Personal Philosophy Snippet --- */
+    .philosophy-snippet {
+        background: var(--glass); padding: 15px; border-radius: 8px; text-align: center;
+        font-style: italic; font-size: 0.95rem; margin-top: 20px;
+        border-left: 4px solid var(--primary);
     }
 
+    /* --- Last Updated Timestamp --- */
+    .last-updated { font-size: 0.75rem; text-align: center; opacity: 0.7; margin-top: 30px; }
 
-    </style>
+    /* Download Button (Prominent) */
+    .download-button-container { text-align: center; margin: 30px 0 10px; }
+    .download-cv-btn {
+        background: var(--primary); color: white; font-weight: bold;
+        padding: 12px 25px; border-radius: 50px; text-decoration: none;
+        display: inline-flex; align-items: center; gap: 8px;
+        transition: all 0.3s ease; box-shadow: var(--accent-shadow);
+    }
+    .download-cv-btn:hover { background: var(--primary-700); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(var(--primary-rgb, 32, 201, 151), 0.3); color: white; }
+
+
+    /* Floating Elements (Consistent) */
+    .fab, #quoteCard, #toastNotification { /* ... same base styles ... */ }
+    /* ... specific positioning and appearance styles remain the same ... */
+    .fab{ position:fixed; bottom:28px; right:28px; width:64px; height:64px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:var(--primary); color:#fff; box-shadow:0 20px 40px rgba(0,0,0,0.18); cursor:pointer; z-index: 999; }
+    @media(max-width: 768px) { .fab { bottom: 80px; } }
+    footer { background: transparent; color: var(--muted); padding: 40px 15px; margin-top: 60px; }
+    footer h5 { color: var(--primary); }
+    footer .form-control { background: var(--card-bg); border-color: var(--glass); color: var(--muted); }
+    footer .form-control::placeholder { color: var(--muted); opacity: 0.7; }
+    #toastNotification { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); background: var(--primary-700); color: #fff; padding: 14px 22px; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); transition: bottom 0.5s cubic-bezier(.17,.67,.26,1.24); z-index: 1000; font-weight: 600; }
+    #toastNotification.show { bottom: 20px; }
+    #toastNotification.error { background: #e74c3c; }
+    #quoteCard { position: fixed; bottom: 20px; right: 20px; max-width: 280px; background: var(--glass); backdrop-filter: blur(8px); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); z-index: 998; transition: all 0.4s ease; opacity: 0.95; }
+    #quoteCard p { margin-bottom: 0.25rem; font-size: 0.9rem; color: var(--muted); font-weight: 500; transition: opacity 0.5s ease; }
+    #quoteCard small { font-size: 0.8rem; color: var(--primary); font-weight: 700; display: block; text-align: right; transition: opacity 0.5s ease; }
+    @media(max-width: 768px) { #quoteCard { left: 0; right: 0; bottom: 0; max-width: 100%; border-radius: 12px 12px 0 0; padding: 12px 16px; text-align: center; } #quoteCard small { text-align: center; } #toastNotification.show { bottom: 70px; } }
+
+    /* --- NEW: Feature 12 - Print Styles --- */
+    @media print {
+        body { padding-top: 0; background: #fff; color: #000; font-size: 10pt; }
+        .navbar-custom, .accent-palette, #themeSwitch, #scrollTopFab, #quoteCard, #toastNotification, footer, .download-button-container { display: none !important; }
+        .cv-container { box-shadow: none; border: none; padding: 0; margin: 0; max-width: 100%; border-radius: 0; }
+        .cv-header { border-bottom: 1px solid #ccc; padding-bottom: 15px; margin-bottom: 15px; }
+        .cv-photo { width: 100px; height: 100px; border-width: 2px; border-color: #ccc; }
+        .cv-section { box-shadow: none; border: none; padding: 15px 0; margin-bottom: 15px; }
+        .cv-section h2 { font-size: 1.2rem; border-bottom: 1px solid #999; color: #333 !important; }
+        .timeline::before { background-color: #eee; left: 4px; }
+        .timeline-icon { background: #999; box-shadow: 0 0 0 3px #fff; width: 10px; height: 10px; left: -1px; }
+        .timeline-item h4, .timeline-item .institution { color: #333 !important; }
+        .skills-grid { grid-template-columns: 1fr 1fr; } /* Adjust columns for print */
+        .skill-list li i { color: #555; }
+        a { color: #333; text-decoration: none; }
+        a[href^="http"]:after { content: " (" attr(href) ")"; font-size: 0.8em; } /* Show URLs */
+        .project-card, .certification-badge { background: #f8f8f8; border: 1px solid #eee; }
+        .project-card h4 { color: #333 !important; }
+        .publications-list strong { color: #333 !important; }
+        .awards-list i { color: #555; }
+        .languages-list span { color: #333 !important; }
+        #skillsChartContainer, #qrcode { display: none; } /* Hide dynamic elements */
+        .philosophy-snippet { background: #f8f8f8; border-left-color: #999; }
+        .last-updated { display: block; }
+    }
+
+  </style>
 </head>
 
 <body>
 
-   <!-- Navbar -->
-<nav class="navbar navbar-expand-lg fixed-top" style="background: linear-gradient(135deg, #163142, #1f4e5a); padding: 15px;">
-    <a class="navbar-brand d-flex align-items-center" href="index.html" style="color: #41b3a3; font-weight: bold; font-family: 'Arial Black', sans-serif; font-size: 1.5em; text-decoration: none;">
-        <img src="images/logo.png" alt="Logo" style="height: 40px; width: auto;">
-        <span class="ml-2">Murad</span>
-    </a>
-    <button class="navbar-toggler" id="hamburger" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style="border: none; outline: none;">
-        <span class="navbar-toggler-icon" style="
-            background-image: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 30 30\' fill=\'none\'%3E%3Cpath stroke=\'#41b3a3\' stroke-width=\'2\' d=\'M4 7h22M4 15h22M4 23h22\'/%3E%3C/svg%3E');">
-        </span>
-    </button>
-    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-        <ul class="navbar-nav" id="navUl" style="text-align: right;">
-            <li class="nav-item">
-                <a class="nav-link" href="index.html" style="color: #ffffff; font-weight: bold; padding: 10px 20px; border: 1px solid #41b3a3; border-radius: 5px; margin: 5px; text-decoration: none; transition: all 0.3s ease;" 
-                   onmouseover="this.style.backgroundColor='#41b3a3'; this.style.color='#163142';" 
-                   onmouseout="this.style.backgroundColor='transparent'; this.style.color='#ffffff';">Home</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="storytelling.html" style="color: #ffffff; font-weight: bold; padding: 10px 20px; border: 1px solid #41b3a3; border-radius: 5px; margin: 5px; text-decoration: none; transition: all 0.3s ease;" 
-                   onmouseover="this.style.backgroundColor='#41b3a3'; this.style.color='#163142';" 
-                   onmouseout="this.style.backgroundColor='transparent'; this.style.color='#ffffff';">Storytelling</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="athletic.html" style="color: #ffffff; font-weight: bold; padding: 10px 20px; border: 1px solid #41b3a3; border-radius: 5px; margin: 5px; text-decoration: none; transition: all 0.3s ease;" 
-                   onmouseover="this.style.backgroundColor='#41b3a3'; this.style.color='#163142';" 
-                   onmouseout="this.style.backgroundColor='transparent'; this.style.color='#ffffff';">Athletic</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="achievements.html" style="color: #ffffff; font-weight: bold; padding: 10px 20px; border: 1px solid #41b3a3; border-radius: 5px; margin: 5px; text-decoration: none; transition: all 0.3s ease;" 
-                   onmouseover="this.style.backgroundColor='#41b3a3'; this.style.color='#163142';" 
-                   onmouseout="this.style.backgroundColor='transparent'; this.style.color='#ffffff';">Achievements</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="about.html" style="color: #ffffff; font-weight: bold; padding: 10px 20px; border: 1px solid #41b3a3; border-radius: 5px; margin: 5px; text-decoration: none; transition: all 0.3s ease;" 
-                   onmouseover="this.style.backgroundColor='#41b3a3'; this.style.color='#163142';" 
-                   onmouseout="this.style.backgroundColor='transparent'; this.style.color='#ffffff';">Resume</a>
-            </li>
+  <!-- NAVBAR (Consistent) -->
+  <nav class="navbar navbar-expand-lg fixed-top navbar-custom">
+    <div class="container-xl d-flex align-items-center justify-content-between">
+      <div class="d-flex align-items-center"> <a class="navbar-brand d-flex align-items-center" href="index.html"> <img src="images/logo.png" alt="Murad Logo" class="logo-img" onerror="this.onerror=null; this.style.display='none'; document.getElementById('logoFallback').style.display='block';"> <div class="logo-text" id="logoFallback" style="display:none;">Murad</div> </a> <small class="ml-3 dev-note d-none d-md-inline">Profile</small> </div>
+      <div class="d-flex align-items-center"> <div class="accent-palette mr-3" role="tablist" aria-label="Accent color"> <div class="accent-dot" data-accent="green" title="Green" style="background:#20c997" aria-checked="true"></div> <div class="accent-dot" data-accent="yellow" title="Yellow" style="background:#f1c40f"></div> <div class="accent-dot" data-accent="red" title="Red" style="background:#e74c3c"></div> </div> <div class="d-flex align-items-center mr-2"> <i id="toggleIcon" class="fas fa-sun mr-2" style="color:var(--primary)"></i> <label style="display:inline-block;cursor:pointer"> <input id="themeSwitch" type="checkbox" style="display:none" aria-label="Toggle dark mode"> <div id="switchVisual" style="width:44px;height:24px;background:rgba(0,0,0,0.06);border-radius:14px;position:relative;"> <div id="switchDot" style="width:18px;height:18px;border-radius:50%;background:#fff;position:absolute;left:3px;top:3px;box-shadow:0 4px 10px rgba(0,0,0,0.12);"></div> </div> </label> </div> <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"> <span class="t-icon navbar-toggler-icon" id="hamburgerSvg"></span> </button> </div>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav"> <ul class="navbar-nav align-items-center"> <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li> <li class="nav-item"><a class="nav-link" href="athletic.html">Athletics</a></li> <li class="nav-item"><a class="nav-link" href="storytelling.html">Storytelling</a></li> <li class="nav-item"><a class="nav-link" href="projects.html">Projects</a></li> <li class="nav-item"><a class="nav-link" href="achievements.html">Achievements</a></li> <li class="nav-item"><a class="nav-link" href="about.html">Resume</a></li> </ul> </div>
+    </div>
+  </nav>
+
+  <!-- Main CV Container -->
+  <div class="container-xl cv-container">
+
+    <!-- Feature 1: Enhanced Header -->
+    <header class="cv-header">
+        <img src="images/profile.jpg" alt="Murad Hossain" class="cv-photo">
+        <div class="cv-header-info">
+            <h1>MURAD HOSSAIN</h1>
+            <p class="lead">Engineer & Researcher | Materials Science Enthusiast</p>
+            <div class="contact-icons">
+                <a href="mailto:murad.eee@std.cu.ac.bd" title="Email"><i class="fas fa-envelope"></i> murad.eee@std.cu.ac.bd</a>
+                <a href="tel:+8801709089412" title="Phone"><i class="fas fa-phone"></i> +8801709089412</a>
+                <a href="https://www.linkedin.com/in/muradhossain42" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                <a href="http://trihardmurad.com" target="_blank" title="Website"><i class="fas fa-globe"></i> trihardmurad.com</a>
+                <span><i class="fas fa-map-marker-alt"></i> Lakshmipur, Bangladesh</span>
+            </div>
+             <!-- Feature 13: Dynamic Years of Experience -->
+            <p id="yearsExperience" style="font-size: 0.9rem; margin-top: 10px; font-weight: 500;"></p>
+        </div>
+    </header>
+
+    <!-- Download Button Container -->
+    <div class="download-button-container">
+        <a href="murad_hossain_cv.pdf" class="download-cv-btn" download>
+            <i class="fas fa-file-pdf"></i> Download CV as PDF
+        </a>
+    </div>
+
+    <!-- Professional Summary -->
+    <section class="cv-section">
+      <h2 class="section-title"><i class="fas fa-user-circle"></i> Summary</h2>
+      <p>Highly motivated Engineer and Researcher with a strong background in Electrical & Electronic Engineering, specializing in materials science (ferrites, ceramics). Proven ability in research, data analysis, and product development, complemented by leadership experience and a passion for endurance sports and community building. Seeking challenging opportunities to apply technical skills and drive innovation.</p>
+      <!-- Feature 17: Personal Philosophy Snippet -->
+      <div class="philosophy-snippet">
+        "Driven by curiosity and a commitment to continuous learning, I aim to bridge the gap between material science advancements and practical applications."
+      </div>
+    </section>
+
+    <!-- Experience -->
+    <section class="cv-section">
+      <h2 class="section-title"><i class="fas fa-briefcase"></i> Experience</h2>
+      <div class="compact-timeline">
+        <div class="timeline-item">
+          <h4>Executive Engineer, Product Development</h4>
+          <span class="institution">Meghna Group Bike Division</span>
+          <div class="date-location">Aug 2025 - Present | Location</div>
+          <ul><li>Material/component research for bikes & e-vehicles.</li><li>Cross-functional team collaboration.</li></ul>
+        </div>
+        <div class="timeline-item">
+          <h4>Graduate Research Assistant</h4>
+           <span class="institution">Bangladesh Atomic Energy Center, Dhaka</span>
+          <div class="date-location">Sep 2023 - Mar 2025 | Dhaka, BD</div>
+          <ul><li>Contributed to 4 ferrite/titanate projects.</li><li>Material characterization (XRD, TEM, SEM, VSM, etc.).</li></ul>
+        </div>
+        <div class="timeline-item">
+          <h4>Co Founder & CMO</h4>
+          <span class="institution">Swojon (E-commerce)</span>
+          <div class="date-location">Apr 2023 - Present | Remote</div>
+          <ul><li>Customer data analysis for targeted marketing.</li></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Education -->
+    <section class="cv-section">
+      <h2 class="section-title"><i class="fas fa-graduation-cap"></i> Education</h2>
+       <div class="compact-timeline">
+         <div class="timeline-item">
+           <h4>MS in Electrical & Electronic Engineering</h4>
+           <span class="institution">University of Chittagong</span>
+           <div class="date-location">Sep 2023 - Jun 2025 | CGPA: 3.53/4.00</div>
+         </div>
+         <div class="timeline-item">
+           <h4>BSc in Electrical & Electronic Engineering</h4>
+           <span class="institution">University of Chittagong</span>
+           <div class="date-location">Jan 2018 - Sep 2023 | CGPA: 3.27/4.00</div>
+         </div>
+       </div>
+    </section>
+
+    <!-- Skills -->
+    <section class="cv-section">
+      <h2 class="section-title"><i class="fas fa-cogs"></i> Skills</h2>
+      <div class="skills-grid">
+          <!-- Feature 4: Grouped Skills with Icons -->
+          <div class="skill-category">
+              <h3><i class="fas fa-flask"></i> Research & Lab</h3>
+              <ul class="skill-list">
+                  <li><i class="fas fa-atom"></i> Materials Synthesis (Ferrites, Ceramics)</li>
+                  <li><i class="fas fa-chart-area"></i> Material Characterization (XRD, SEM, VSM)</li>
+                  <li><i class="fas fa-vial"></i> Experimental Design</li>
+                  <li><i class="fas fa-database"></i> Data Analysis & Visualization (OriginPro)</li>
+              </ul>
+          </div>
+          <div class="skill-category">
+              <h3><i class="fas fa-laptop-code"></i> Technical & Software</h3>
+              <ul class="skill-list">
+                  <li><i class="fas fa-calculator"></i> Simulation (Material Studio, Ansys)</li>
+                  <li><i class="fab fa-python"></i> MATLAB</li>
+                  <li><i class="fas fa-code"></i> C Programming</li>
+                  <li><i class="fab fa-html5"></i> HTML/CSS/JavaScript</li>
+                  <li><i class="fab fa-bootstrap"></i> Bootstrap</li>
+                   <!-- Feature 15: Tool Icons -->
+                  <li><i class="fas fa-file-alt"></i> LaTeX</li>
+              </ul>
+          </div>
+           <div class="skill-category">
+              <h3><i class="fas fa-user-tie"></i> Professional</h3>
+              <ul class="skill-list">
+                  <li><i class="fas fa-tasks"></i> Project Management (Google Certified)</li>
+                  <li><i class="fas fa-lightbulb"></i> Problem Solving</li>
+                  <li><i class="fas fa-comments"></i> Communication</li>
+                  <li><i class="fas fa-users"></i> Leadership & Teamwork</li>
+              </ul>
+          </div>
+           <div class="skill-category">
+              <h3><i class="fas fa-language"></i> Languages</h3>
+               <ul class="languages-list">
+                  <li>Bengali <span>(Native)</span></li>
+                  <li>English <span>(Proficient - IELTS 6.5)</span></li>
+                  <li>Hindi <span>(Conversational)</span></li>
+              </ul>
+          </div>
+      </div>
+      <!-- Skills Chart (Optional - kept for visual flair) -->
+       <div id="skillsChartContainer" style="max-width: 400px; margin: 20px auto 0;">
+          <canvas id="skillsChart"></canvas>
+       </div>
+    </section>
+
+    <!-- Publications -->
+    <section class="cv-section">
+      <h2 class="section-title"><i class="fas fa-book-open"></i> Publications & Presentations</h2>
+      <ul class="publications-list">
+        <li><strong>AIP Advances:</strong> "Synthesis and Exploration of Structural, Optical, Magnetic & Electrical Properties of Ti doped Mn-Ni-Zn Ferrite"</li>
+        <li><strong>Journal of Alloys and Compounds:</strong> "Tuning Ti on Structural, Optical & Magnetic Properties of Ba0.8Sr0.2Fe2-xTixO19..."</li>
+        <li><strong>JMSC (Under Review):</strong> "Ultrahigh Resistivity and Low-Loss Mo Doped Ni-Zn Ferrites for 5G/6G..."</li>
+        <li><strong>Ceramics Int. (Under Review):</strong> "Synthesis and Exposition of... Mn & Nb Co-doped Ba0.7Mg0.3Ti1-xMn0.95Nb0.05xO3"</li>
+        <li><strong>Presentation:</strong> "Influence of Mo-Substitution..." (41st BCS Conf., 2024)</li>
+        <li><strong>Presentation:</strong> "Properties Investigation of Mo-Substituted Ni-Zn Ferrites" (ICEI 2024)</li>
+      </ul>
+    </section>
+
+    <!-- Feature 14: Certifications -->
+     <section class="cv-section">
+        <h2 class="section-title"><i class="fas fa-certificate"></i> Certifications</h2>
+        <div class="certifications-list">
+             <span class="certification-badge"><i class="fab fa-google"></i> Google Project Management</span>
+             <span class="certification-badge"><i class="fas fa-atom"></i> SC Characterization (ASU)</span>
+             <span class="certification-badge"><i class="fas fa-calculator"></i> Density Functional Theory (ÉP)</span>
+             <span class="certification-badge"><i class="fas fa-drafting-compass"></i> Autodesk CAD/CAM/CAE</span>
+             <span class="certification-badge"><i class="fas fa-language"></i> IELTS 6.5</span>
+        </div>
+     </section>
+
+     <!-- Feature 6: Awards/Recognition -->
+      <section class="cv-section">
+        <h2 class="section-title"><i class="fas fa-award"></i> Recognition & Activities</h2>
+         <ul class="awards-list">
+            <li><i class="fas fa-users-cog"></i> General Secretary, Chittagong University Runners</li>
+            <li><i class="fas fa-user-friends"></i> Ex-Vice President, Lakshmipur Zilla Students Association</li>
+            <li><i class="fas fa-swimmer"></i> Channel Swimmer (243rd Record Holder)</li>
+            <li><i class="fas fa-running"></i> Ultra Marathon Runner (100 Km Finisher)</li>
+            <li><i class="fas fa-bicycle"></i> Triathlon Finisher (Wild 70.3)</li>
+            <li><i class="fas fa-flag-checkered"></i> Race Director (CU Runners 10K 2025)</li>
+            <li><i class="fas fa-tint"></i> Active Blood Donor</li>
         </ul>
-    </div>
-</nav>
+      </section>
 
+      <!-- Interests -->
+      <section class="cv-section">
+        <h2 class="section-title"><i class="fas fa-heart"></i> Interests</h2>
+        <ul class="interests-list-text">
+            <li>Endurance Sports (Running, Swimming, Cycling)</li>
+            <li>Materials Science Research</li>
+            <li>Web Development & Technology</li>
+            <li>Reading Non-fiction</li>
+            <li>Community Building</li>
+            <li>Volunteering</li>
+        </ul>
+      </section>
 
-    <div class="container main-content">
-        <section>
-            <h2>Personal Information</h2>
-            <table>
-                <tr>
-                    <th>Field</th>
-                    <th>Details</th>
-                </tr>
-                <tr>
-                    <td>Full Name</td>
-                    <td>Murad Hossain</td>
-                </tr>
-                <tr>
-                    <td>Address</td>
-                    <td>Chasma Hill R/A, Road: 06, Chittagong, Bangladesh</td>
-                </tr>
-                <tr>
-                    <td>Phone</td>
-                    <td>+8801709089412</td>
-                </tr>
-                <tr>
-                    <td>Email</td>
-                    <td><a href="mailto:murad.eee@std.cu.ac.bd">murad.eee@std.cu.ac.bd</a></td>
-                </tr>
-                <tr>
-                    <td>Website</td>
-                    <td><a href="http://trihardmurad.com">www.trihardmurad.com</a></td>
-                </tr>
-                <tr>
-                    <td>LinkedIn</td>
-                    <td><a href="https://www.linkedin.com/in/muradhossain42">www.linkedin.com/in/muradhossain42</a></td>
-                </tr>
-                <tr>
-                    <td>Languages</td>
-                    <td>Bangla (Native), English (Full Working Proficiency), Urdu (Limited Working), Hindi (Limited Working), Arabic (Limited Working), Chinese (Elementary)</td>
-                </tr>
-            </table>
-        </section>
+    <!-- Feature 16: References Note -->
+    <section class="cv-section text-center">
+         <p class="references-note">References available upon request.</p>
+         <!-- Feature 8: QR Code -->
+         <div id="qrcode"></div>
+          <small class="text-muted" style="font-size: 0.75rem;">Scan for LinkedIn Profile</small>
+    </section>
 
-        <section>
-            <h2>Education</h2>
-            <table>
-                <tr>
-                    <th>Degree</th>
-                    <th>Institution</th>
-                    <th>Year</th>
-                    <th>CGPA</th>
-                </tr>
-                <tr>
-                    <td>MSc. Engineering in Electrical & Electronic Engineering</td>
-                    <td>University of Chittagong</td>
-                    <td>Jun 2023 - Present</td>
-                    <td>3.58 (1st Semester)</td>
-                </tr>
-                <tr>
-                    <td>BSc. Engineering in Electrical & Electronic Engineering</td>
-                    <td>University of Chittagong</td>
-                    <td>Jan 2018 - Dec 2021</td>
-                    <td>3.27</td>
-                </tr>
-            </table>
-        </section>
-
-        <section>
-            <h2>Work Experience</h2>
-            <table>
-                <tr>
-                    <th>Position</th>
-                    <th>Company</th>
-                    <th>Duration</th>
-                    <th>Responsibilities</th>
-                </tr>
-                <tr>
-                    <td>Co-Founder & Chief Marketing Officer</td>
-                    <td>Swojon</td>
-                    <td>Jul 2023 - Present</td>
-                    <td>Sourced high-quality products, developed sales & marketing strategies, and optimized the e-commerce platform.</td>
-                </tr>
-                <tr>
-                    <td>Graduate Research Assistant</td>
-                    <td>Bangladesh Atomic Energy Center</td>
-                    <td>Sep 2023 - Present</td>
-                    <td>Developed and optimized synthesis methods for Mo Doped NiZnF, characterized materials using XRD, SEM, VSM, and explored potential applications.</td>
-                </tr>
-                <tr>
-                    <td>Co-Owner & Chief Executive</td>
-                    <td>Limitless</td>
-                    <td>Nov 2022 - May 2023</td>
-                    <td>Developed data-driven marketing strategies, integrated advanced technologies, and led cross-functional teams.</td>
-                </tr>
-                <tr>
-                    <td>Head Coach</td>
-                    <td>Chittagong University Cyclists</td>
-                    <td>Apr 2018 - Apr 2024</td>
-                    <td>Planned and implemented training programs, organized workshops, and monitored progress.</td>
-                </tr>
-                <tr>
-                    <td>Math & Physics Instructor</td>
-                    <td>Private Tutor</td>
-                    <td>Apr 2018 - Apr 2024</td>
-                    <td>Designed personalized lesson plans, transforming complex topics into engaging content.</td>
-                </tr>
-            </table>
-        </section>
-
-        <section>
-            <h2>Skills & Expertise</h2>
-            <table>
-                <tr>
-                    <th>Category</th>
-                    <th>Skills</th>
-                </tr>
-                <tr>
-                    <td>Programming</td>
-                    <td>MATLAB, C, HTML, CSS, JavaScript</td>
-                </tr>
-                <tr>
-                    <td>Simulation</td>
-                    <td>Advanced Design System (ADS), Ansys Lumerical, Cisco, Proteus, Pspice</td>
-                </tr>
-                <tr>
-                    <td>Data Visualization</td>
-                    <td>OriginPro, MatLab, Excel</td>
-                </tr>
-                <tr>
-                    <td>Paper Formatting</td>
-                    <td>LaTex, Microsoft Office, Google Docs</td>
-                </tr>
-                <tr>
-                    <td>Designing & Graphics</td>
-                    <td>Adobe Photoshop, Illustrator, Microsoft PowerPoint, Midjourney, Canva</td>
-                </tr>
-                <tr>
-                    <td>Video & Audio Editing</td>
-                    <td>Filmora, Inshot, Suno.ai, Veed.io</td>
-                </tr>
-            </table>
-        </section>
-
-        <section>
-            <h2>Certifications & Achievements</h2>
-            <table>
-                <tr>
-                    <th>Certification</th>
-                    <th>Issuing Organization</th>
-                    <th>Date</th>
-                </tr>
-                <tr>
-                    <td>Microsoft 365 Fundamentals</td>
-                    <td>Microsoft</td>
-                    <td>2023</td>
-                </tr>
-                <tr>
-                    <td>Prompt Engineering for ChatGPT</td>
-                    <td>Coursera</td>
-                    <td>2023</td>
-                </tr>
-                <tr>
-                    <td>Sports Data Analytics</td>
-                    <td>Coursera</td>
-                    <td>2023</td>
-                </tr>
-                <tr>
-                    <td>Certified Trainee</td>
-                    <td>General Electric Manufacturing Company Limited</td>
-                    <td>2022</td>
-                </tr>
-                <tr>
-                    <td>Certificate in Chinese</td>
-                    <td>University of Chittagong</td>
-                    <td>2021</td>
-                </tr>
-            </table>
-            <h3>Achievements</h3>
-            <ul>
-                <li>Bangla Channel Swimmer: 243rd swimmer in the Bangla Channel record book</li>
-                <li>Saka Hafong Summit: Summitted the highest peak in Bangladesh 2022</li>
-                <li>Ultra Marathon Runner: Completed MDU season-3 & VDHM Ultra marathon Challenge 2024</li>
-            </ul>
-        </section>
-
-        <section>
-            <h2>Voluntary Activities</h2>
-            <ul>
-                <li>Vice President of Lakshmipur Zilla Student Association, Chittagong University</li>
-                <li>Ex-Cadet at BNCC (Jan 2019 - Mar 2020)</li>
-                <li>Member & active blood donor at KONIKA</li>
-                <li>Member of Chittagong University Robotic and Innovation Club (CURI)</li>
-            </ul>
-        </section>
-
-        <section>
-            <h2>References</h2>
-            <ul>
-                <li>Dr. Jamal Uddin Ahamed - Professor, Department of EEE, University of Chittagong, Email: <a href="mailto:ahamed.jamal@cu.ac.bd">ahamed.jamal@cu.ac.bd</a></li>
-                <li>Sabuj Chowdhury - Assistant Professor, Department of EEE, University of Chittagong, Email: <a href="mailto:sabuj.apece@cu.ac.bd">sabuj.apece@cu.ac.bd</a></li>
-            </ul>
-        </section>
-    </div>
-<!-- Footer Section -->
-<footer style="background: linear-gradient(135deg, #1f4e5a, #163142); color: #fff; padding: 60px 20px; text-align: center;">
-    <!-- Join Our Community Section -->
-    <div style="max-width: 700px; margin: auto; margin-bottom: 40px;">
-        <h2 style="font-size: 2.8em; font-weight: bold; color: #ffffff; margin-bottom: 20px; text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);">Be Part of Something Extraordinary</h2>
-        <p style="font-size: 1.4em; margin-bottom: 30px; color: #a2d5d9;">Stay connected with the latest updates, exclusive content, and inspiring stories!</p>
-        
-        <form action="https://formspree.io/f/xvoejldb" method="POST" style="display: flex; flex-direction: column; align-items: center; gap: 20px;">
-            <input type="email" name="email" placeholder="Enter your email" required 
-                   style="padding: 15px; width: 80%; max-width: 500px; border-radius: 25px; border: 2px solid #fff; background-color: transparent; font-size: 1.2em; color: #fff;">
-            <button type="submit" 
-                    style="padding: 12px 30px; font-size: 1.2em; font-weight: bold; color: #ffffff; background-color: #41b3a3; border: none; border-radius: 25px; cursor: pointer; transition: all 0.3s ease;">
-                Join Us
-            </button>
-        </form>
+    <!-- Feature 20: Last Updated Timestamp -->
+    <div class="last-updated" id="lastUpdated">
+        Last updated: October 2025
     </div>
 
-    <!-- Social Media Icons -->
-    <div style="margin-top: 40px;">
-        <a href="mailto:muradcu42@gmail.com" style="color: #41b3a3; text-decoration: none; margin: 0 15px; transition: transform 0.3s;">
-            <i class="bi bi-envelope" style="font-size: 2em;"></i>
-        </a>
-        <a href="https://www.facebook.com/murad4231" target="_blank" style="color: #41b3a3; text-decoration: none; margin: 0 15px; transition: transform 0.3s;">
-            <i class="bi bi-facebook" style="font-size: 2em;"></i>
-        </a>
-        <a href="https://www.linkedin.com/in/muradhossain42" target="_blank" style="color: #41b3a3; text-decoration: none; margin: 0 15px; transition: transform 0.3s;">
-            <i class="bi bi-linkedin" style="font-size: 2em;"></i>
-        </a>
-        <a href="https://www.youtube.com/@muradhossain5116" target="_blank" style="color: #41b3a3; text-decoration: none; margin: 0 15px; transition: transform 0.3s;">
-            <i class="bi bi-youtube" style="font-size: 2em;"></i>
-        </a>
-        <a href="https://www.strava.com" target="_blank" style="color: #41b3a3; text-decoration: none; margin: 0 15px; transition: transform 0.3s;">
-            <i class="bi bi-strava" style="font-size: 2em;"></i>
-        </a>
-    </div>
+  </div> <!-- End CV Container -->
 
-    <!-- Address -->
-    <p style="margin-top: 30px; font-size: 1.2em; color: #a2d5d9;">Address: Dhaka, Bangladesh</p>
 
-    <!-- Copyright -->
-    <p style="margin-top: 20px; font-size: 1em; color: #a2d5d9;">&copy; 2024 Murad Hossain. All Rights Reserved.</p>
+  <!-- FOOTER (Consistent) -->
+  <footer>
+     <!-- ... same footer content ... -->
+     <div class="container-xl"> <div class="row"> <div class="col-md-6"><h5>Contact</h5><form id="mainContact" onsubmit="return handleContact(event, 'mainContact')"><input class="form-control mb-2" id="cname" placeholder="Name" required><input class="form-control mb-2" id="cemail" placeholder="Email" type="email" required><textarea class="form-control mb-2" id="cmsg" rows="3" placeholder="Message" required></textarea><button class="btn btn-primary">Send</button></form></div> <div class="col-md-6 text-right d-none d-md-block"><h5>Social</h5><div style="font-size:1.2rem;gap:10px;display:inline-flex;align-items:center;"><a href="https://www.facebook.com/murad4231" target="_blank" class="text-decoration-none text-muted"><i class="bi bi-facebook"></i></a> <a href="https://www.linkedin.com/in/muradhossain42" target="_blank" class="text-decoration-none text-muted"><i class="bi bi-linkedin"></i></a> <a href="mailto:muradcu42@gmail.com" class="text-decoration-none text-muted"><i class="bi bi-envelope"></i></a></div><p class="mt-3 dev-note">Address: Lakshmipur, Bangladesh</p></div> </div> <div class="text-center mt-4 dev-note"><a href="admin.html" style="text-decoration: none; color: inherit;" title="Admin Section">&copy; 2025</a> Murad Hossain — Built with modern web technologies.</div> </div>
+  </footer>
 
-    <!-- Back to Top Button -->
-    <button id="backToTop" 
-            style="position: fixed; bottom: 40px; right: 40px; padding: 12px 18px; font-size: 1.5em; font-weight: bold; color: #fff; background: rgba(0, 0, 0, 0.2); border: none; border-radius: 50%; cursor: pointer; display: none; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); transition: all 0.3s ease;">
-        ↑
-    </button>
-</footer>
+  <!-- FLOATING ELEMENTS (Consistent) -->
+  <div id="quoteCard"> <p id="quoteText">Loading...</p> <small id="quoteAuthor"></small> </div>
+  <div id="toastNotification"></div>
+  <div class="fab" id="scrollTopFab" title="Scroll to top" style="display: none;"> <i class="fas fa-arrow-up"></i> </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-         // Back to top button functionality
-         window.addEventListener('scroll', () => {
-                const backToTopButton = document.getElementById('back-to-top');
-                if (window.scrollY > 300) {
-                    backToTopButton.classList.add('show');
-                    backToTopButton.style.display = 'block';
-                } else {
-                    backToTopButton.classList.remove('show');
-                    backToTopButton.style.display = 'none';
+  <!-- Firebase + App Logic -->
+  <script type="module">
+    // Firebase (ES modules)
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+    import { getFirestore, collection, addDoc } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+
+    // Firebase config (Consistent)
+    const firebaseConfig = { /* ... same config ... */
+       apiKey: "AIzaSyBnDhuKL60HNcX40JI9zQ6YIZDr1hbMZHc", authDomain: "trihardmurad.firebaseapp.com", projectId: "trihardmurad", storageBucket: "trihardmurad.appspot.com", messagingSenderId: "146538214416", appId: "1:146538214416:web:0d7ad5834eb432c385c695", measurementId: "G-GQNJV0VQQQ"
+    };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // --- RGB Color Variable Setup ---
+    function setPrimaryRgbVariable() {
+        const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
+        // Basic hex to rgb conversion (assumes #RRGGBB format)
+        if (primaryColor.startsWith('#')) {
+            const r = parseInt(primaryColor.substring(1, 3), 16);
+            const g = parseInt(primaryColor.substring(3, 5), 16);
+            const b = parseInt(primaryColor.substring(5, 7), 16);
+            document.documentElement.style.setProperty('--primary-rgb', `${r}, ${g}, ${b}`);
+        }
+        // Add more parsing logic here if using other color formats (like rgb())
+    }
+
+
+    // --- THEME & ACCENT LOGIC (Consistent) ---
+    const accentDots = document.querySelectorAll('.accent-dot');
+    function setAccent(key){ document.documentElement.setAttribute('data-accent', key); localStorage.setItem('site-accent', key); updateThemeStyles(); accentDots.forEach(d=>d.setAttribute('aria-checked', d.dataset.accent === key)); drawHamburger(); }
+    function updateThemeStyles(){ // Combined style updates
+        setPrimaryRgbVariable(); // Set RGB variable
+        const comp=getComputedStyle(document.documentElement); const p=comp.getPropertyValue('--primary').trim();
+        const logo=document.querySelector('.logo-img'); if(logo) logo.style.borderColor = p;
+        const profilePhoto=document.querySelector('.cv-photo'); if(profilePhoto) profilePhoto.style.borderColor = p; // Updated selector
+        if (window.skillsRadarChart) { window.skillsRadarChart.destroy(); createSkillsChart(); }
+    }
+    accentDots.forEach(dot=>dot.addEventListener('click',()=>setAccent(dot.dataset.accent)));
+    const themeSwitch=document.getElementById('themeSwitch'); const switchVisual=document.getElementById('switchVisual'); const switchDot=document.getElementById('switchDot'); const toggleIcon=document.getElementById('toggleIcon');
+    function setTheme(t){ document.documentElement.setAttribute('data-theme', t); localStorage.setItem('site-theme', t); if(t === 'dark'){ switchDot.style.left='23px'; toggleIcon.className='fas fa-moon mr-2'; } else { switchDot.style.left='3px'; toggleIcon.className='fas fa-sun mr-2'; } updateThemeStyles(); }
+    const storedTheme=localStorage.getItem('site-theme')||'light'; setTheme(storedTheme); const storedAccent=localStorage.getItem('site-accent')||'green'; setAccent(storedAccent);
+    switchVisual.addEventListener('click',()=>setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark'));
+    function drawHamburger(){ const accent=getComputedStyle(document.documentElement).getPropertyValue('--primary').trim()||'#20c997'; const svg=`data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath stroke='${encodeURIComponent(accent)}' stroke-width='2' d='M3 6h18M3 12h18M3 18h18' stroke-linecap='round'/%3E%3C/svg%3E`; const el=document.getElementById('hamburgerSvg'); if(el){ el.style.backgroundImage=`url("${svg}")`; el.style.backgroundSize='20px 20px'; }} drawHamburger(); window.addEventListener('resize', drawHamburger);
+
+    // --- TOAST NOTIFICATION (Consistent) ---
+    const toastEl = document.getElementById('toastNotification'); let toastTimeout; function showToast(msg, isError=false){ clearTimeout(toastTimeout); toastEl.textContent=msg; isError?toastEl.classList.add('error'):toastEl.classList.remove('error'); toastEl.classList.add('show'); toastTimeout=setTimeout(()=>toastEl.classList.remove('show'),3000); }
+
+    // --- FOOTER & RESUME CONTACT FORMS (Consistent) ---
+    window.handleContact = async function(e, formId){
+        e.preventDefault(); const form = document.getElementById(formId); if (!form) return; const btn = form.querySelector('button[type="submit"]'); const originalText = btn.textContent; btn.disabled = true; btn.textContent = 'Sending...';
+        try { let name, email, message; if (formId === 'resumeContactForm') { name = form.querySelector('#contactName').value; email = form.querySelector('#contactEmail').value; message = form.querySelector('#contactMessage').value; } else { name = form.querySelector('#cname').value; email = form.querySelector('#cemail').value; message = form.querySelector('#cmsg').value; } await addDoc(collection(db,'contacts'), { name, email, message, source: formId, createdAt: new Date().toISOString() }); showToast('Thanks! Message sent.'); form.reset(); } catch(err){ showToast('Send failed. Try later.', true); } finally { btn.disabled = false; btn.textContent = originalText; }
+    };
+    const resumeForm = document.getElementById('resumeContactForm'); if (resumeForm) resumeForm.addEventListener('submit', (e) => handleContact(e, 'resumeContactForm'));
+    const footerForm = document.getElementById('mainContact'); if (footerForm) footerForm.addEventListener('submit', (e) => handleContact(e, 'mainContact'));
+
+    // --- SCROLL-TO-TOP FAB (Consistent) ---
+    const scrollTopFab = document.getElementById('scrollTopFab'); if(scrollTopFab){ window.addEventListener('scroll',()=>{ const show=document.body.scrollTop > 100 || document.documentElement.scrollTop > 100; scrollTopFab.style.display=show?'flex':'none'; scrollTopFab.style.opacity=show?'1':'0'; }); scrollTopFab.addEventListener('click',()=>window.scrollTo({top:0, behavior:'smooth'})); }
+
+    // --- MOTIVATIONAL QUOTE (Consistent, using general quotes) ---
+    const quotes = [ { text: "The best way to predict the future is to create it.", author: "Peter Drucker" }, { text: "Strive not to be a success, but rather to be of value.", author: "Albert Einstein" }, { text: "The mind is not a vessel to be filled, but a fire to be kindled.", author: "Plutarch" }, { text: "Do the best you can until you know better. Then when you know better, do better.", author: "Maya Angelou" } ];
+    const quoteTextEl = document.getElementById('quoteText'); const quoteAuthorEl = document.getElementById('quoteAuthor'); let quoteIndex = 0; function updateQuote(){ if(!quoteTextEl||!quoteAuthorEl) return; quoteTextEl.style.opacity='0'; quoteAuthorEl.style.opacity='0'; setTimeout(()=>{let i=quoteIndex; while(i===quoteIndex) i=Math.floor(Math.random()*quotes.length); quoteIndex=i; quoteTextEl.textContent=`"${quotes[quoteIndex].text}"`; quoteAuthorEl.textContent=`— ${quotes[quoteIndex].author}`; quoteTextEl.style.opacity='1'; quoteAuthorEl.style.opacity='1';}, 500); } updateQuote(); setInterval(updateQuote, 8000);
+
+    // --- PAGE TRANSITIONS (Consistent) ---
+    document.querySelectorAll('a.nav-link, a[href$=".html"]').forEach(a=>{ a.addEventListener('click',(ev)=>{ const href=a.getAttribute('href'); if(!href||href.startsWith('http')||href.startsWith('mailto:')||href.startsWith('#')||a.getAttribute('target')==='_blank') return; ev.preventDefault(); document.documentElement.classList.add('page-fade-out'); setTimeout(()=>location.href=href, 320); }); });
+
+    // --- Skills Radar Chart ---
+    function createSkillsChart() { /* ... same code ... */
+        const ctx = document.getElementById('skillsChart'); if (!ctx) return;
+        const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim(); const gridColor = getComputedStyle(document.documentElement).getPropertyValue('--glass').trim(); const labelColor = getComputedStyle(document.documentElement).getPropertyValue('--muted').trim();
+        window.skillsRadarChart = new Chart(ctx, { type: 'radar', data: { labels: ['Research', 'Materials Char.', 'Data Analysis', 'Problem Solving', 'Leadership', 'Web Dev', 'Communication'], datasets: [{ label: 'Proficiency', data: [90, 85, 80, 88, 75, 70, 85], backgroundColor: `${accentColor}33`, borderColor: accentColor, pointBackgroundColor: accentColor, pointBorderColor: '#fff', pointHoverBackgroundColor: '#fff', pointHoverBorderColor: accentColor }] }, options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { display: false } }, scales: { r: { angleLines: { color: gridColor }, grid: { color: gridColor }, pointLabels: { color: labelColor, font: { size: 10, family: 'Comfortaa' } }, ticks: { backdropColor: 'transparent', color: labelColor, stepSize: 25, font: { size: 9 }, callback: function(value) { return value + '%' } }, suggestedMin: 0, suggestedMax: 100 } }, elements: { line: { borderWidth: 2 }, point: { radius: 3 } } } });
+    }
+
+    // --- NEW: Feature 11 - QR Code Generation ---
+    function generateQRCode() {
+        const qrCodeElement = document.getElementById('qrcode');
+        if (!qrCodeElement || typeof QRCode === 'undefined') return; // Check if library loaded
+        qrCodeElement.innerHTML = ''; // Clear previous QR
+        new QRCode(qrCodeElement, {
+            text: "https://www.linkedin.com/in/muradhossain42", // Your LinkedIn URL
+            width: 100,
+            height: 100,
+            colorDark : getComputedStyle(document.documentElement).getPropertyValue('--muted').trim(), // Use theme color
+            colorLight : "transparent", // Use theme background
+            correctLevel : QRCode.CorrectLevel.H
+        });
+    }
+
+    // --- NEW: Feature 13 - Dynamic Years of Experience ---
+    function calculateExperience() {
+        const startDate = new Date('2023-09-01'); // Approx. start of Research Assistant role
+        const today = new Date();
+        const diffTime = Math.abs(today - startDate);
+        const diffYears = diffTime / (1000 * 60 * 60 * 24 * 365.25);
+        const yearsRounded = Math.floor(diffYears);
+        const monthsRemainder = Math.floor((diffYears - yearsRounded) * 12);
+        let experienceText = '';
+        if (yearsRounded > 0) {
+            experienceText += `${yearsRounded} year${yearsRounded > 1 ? 's' : ''}`;
+            if (monthsRemainder > 0) experienceText += ` ${monthsRemainder} month${monthsRemainder > 1 ? 's' : ''}`;
+        } else if (monthsRemainder > 0) {
+            experienceText = `${monthsRemainder} month${monthsRemainder > 1 ? 's' : ''}`;
+        } else {
+             experienceText = 'Less than a month';
+        }
+        const expElement = document.getElementById('yearsExperience');
+        if (expElement) {
+             expElement.textContent = `~ ${experienceText} of professional & research experience`;
+        }
+    }
+
+    // --- NEW: Feature 19 - Animate Sections on Scroll ---
+    function animateSections() {
+        const sections = document.querySelectorAll('.cv-section h2');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // Optional: Unobserve after animation
+                    // observer.unobserve(entry.target);
                 }
             });
+        }, { threshold: 0.1 }); // Trigger when 10% visible
 
-            document.getElementById('back-to-top').addEventListener('click', () => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+    }
 
-            // Apply the saved theme on page load
-            const savedTheme = localStorage.getItem('theme') || 'day';
-            document.body.style.background = savedTheme === 'night' ? '#000000' : '#f4f4f4';
-            document.getElementById('toggle').checked = savedTheme === 'night';
-       
 
-    </script>
+    // --- INITIALIZE PAGE ---
+    (async () => {
+      setPrimaryRgbVariable(); // Set RGB var initially
+      createSkillsChart();
+      generateQRCode();
+      calculateExperience();
+      animateSections(); // Start observing sections
+      updateThemeStyles(); // Ensure initial styles match theme/accent
+    })();
+
+  </script>
+
+  <!-- Bootstrap JS (Consistent) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
+

@@ -1,900 +1,1728 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light" data-accent="green">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Murad's Home</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;700&display=swap">
-    <style>
-        /* Global Styling */
-        body {
-            font-family: 'Comfortaa', sans-serif;
-            background-color: #fef9e7;
-            color: #333;
-            margin: 0;
-            padding: 0;
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Murad Homepage</title>
+  
+  <!-- 1. FAVICON ADDED -->
+  <link rel="icon" type="image/png" href="images/logo.png">
+
+  <!-- Bootstrap + Icons + Fonts -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+
+
+  <style>
+    /* ----------------- THEME & ACCENT VARIABLES ----------------- */
+    :root{
+      --bg: #f4f7fb; --card-bg: #ffffff; --muted: #596a75;
+      --primary: #20c997; --primary-700:#179b77;
+      --glass: rgba(255,255,255,0.6); --shadow: 0 10px 30px rgba(16,24,40,0.08);
+      --radius: 14px; --accent-shadow: 0 12px 30px rgba(32,201,151,0.14);
+      --nav-height: 64px; --max-content-width: 1180px;
+      --profile-grad-from: var(--primary); --profile-grad-to: var(--primary-700);
+    }
+
+    [data-theme="dark"]{
+      --bg: #0b1220; --card-bg: #0f1b28; --muted: #b6cad6;
+      --primary: #43d9b2; --primary-700:#2fbf9a;
+      --glass: rgba(255,255,255,0.03); --shadow: 0 12px 40px rgba(0,0,0,0.7);
+      --accent-shadow: 0 12px 30px rgba(67,217,178,0.08);
+    }
+
+    /* Traffic-light accents */
+    [data-accent="green"] { --primary: #20c997; --primary-700: #179b77; --accent-shadow: 0 12px 30px rgba(32,201,151,0.14); }
+    [data-accent="yellow"] { --primary: #f1c40f; --primary-700: #d4a70b; --accent-shadow: 0 12px 30px rgba(241,196,15,0.12); }
+    [data-accent="red"] { --primary: #e74c3c; --primary-700: #c0382b; --accent-shadow: 0 12px 30px rgba(231,76,60,0.12); }
+
+    html,body{height:100%;}
+    body{
+      margin:0; font-family:'Comfortaa',sans-serif;
+      background:var(--bg); color:var(--muted);
+      transition: background .35s ease, color .35s ease;
+      padding-top: var(--nav-height);
+      /* Add padding-bottom for mobile quote bar */
+      padding-bottom: 60px; 
+    }
+
+    /* layout utilities */
+    .container-xl{ max-width: var(--max-content-width); }
+    .shadow-soft{ box-shadow: var(--shadow); }
+    .glass{ background: var(--glass); border-radius: 10px; }
+
+    /* NAVBAR */
+    .navbar-custom{
+      height: var(--nav-height);
+      background: linear-gradient(90deg, rgba(0,0,0,0.04), rgba(255,255,255,0.02));
+      backdrop-filter: blur(6px);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+    }
+    .logo-img { /* New style for the logo image */
+      height: 40px; /* Control logo height */
+      width: auto;
+      object-fit: contain;
+      border-radius: 50%; /* Make it circular */
+      border: 2px solid var(--primary); /* Add border with accent color */
+      transition: border-color 0.3s ease; /* Smooth transition for border color */
+    }
+    .logo-text{ font-weight:800; color:var(--primary-700); font-size:1.35rem; }
+    .nav-link{ color:var(--muted) !important; padding:8px 14px; border-radius:8px; font-weight:600; }
+    .nav-link:hover{ background: rgba(0,0,0,0.04); color:var(--primary) !important; transform: translateY(-3px); }
+
+    .accent-palette { display:flex; gap:8px; align-items:center; }
+    .accent-dot {
+      width:18px; height:18px; border-radius:50%;
+      cursor:pointer; border:2px solid rgba(255,255,255,0.9);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+    }
+    .accent-dot[aria-checked="true"] { transform: scale(1.15); box-shadow: 0 6px 18px rgba(0,0,0,0.15); }
+
+    /* --- Hamburger Menu BG (Mobile) --- */
+    @media (max-width: 991.98px) { /* Bootstrap's 'lg' breakpoint */
+      .navbar-collapse.show {
+        background: var(--card-bg);
+        padding: 16px;
+        border-radius: var(--radius);
+        margin-top: 8px;
+        box-shadow: var(--shadow);
+        /* Ensure it's rendered correctly */
+        display: block; 
+      }
+      /* Optional: better spacing for links inside */
+      .navbar-collapse.show .navbar-nav .nav-link {
+        padding: 10px 12px;
+      }
+    }
+
+    /* 2. SCROLL PROGRESS BAR STYLES */
+    #scrollProgressBar {
+      position: fixed;
+      top: var(--nav-height); /* Positioned right below the navbar */
+      left: 0;
+      width: 100%;
+      height: 4px; /* Thickness of the bar */
+      background: var(--glass); /* Faint background */
+      z-index: 1030; /* Just above navbar (which is 1030) if navbar wasn't fixed, but needs to be below fixed navbar content if it overlaps. Let's set it high, but below toast. */
+      z-index: 997; /* Below quote card, toast, fab */
+    }
+    #scrollProgressIndicator {
+      height: 100%;
+      width: 0%; /* Starts at 0, grows with scroll */
+      background: var(--primary);
+      transition: width 0.1s ease-out, background 0.4s ease; /* Smooth width change */
+    }
+
+    /* HERO + PROFILE */
+    .hero{ max-width:var(--max-content-width); margin:18px auto; display:grid; grid-template-columns: 1fr 420px; gap:24px; align-items:start; padding:6px; }
+    .hero-card{ border-radius:18px; overflow:hidden; background:var(--card-bg); padding:20px; box-shadow:var(--shadow); }
+    /* PROFILE CARD (fixed under navbar) */
+    #profileCard{
+      width:100%; max-width: 980px; margin: 22px auto; border-radius: 16px;
+      padding: 18px; box-shadow: var(--accent-shadow);
+      background: linear-gradient(135deg, var(--profile-grad-from), var(--profile-grad-to));
+      color: #fff;
+      transition: background .4s ease, box-shadow .4s ease;
+    }
+    .profile-circle{ width:120px; height:120px; border-radius:50%; overflow:hidden; border:6px solid #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.18); }
+
+    /* blog grid */
+    .blog-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:18px; }
+    .blog-post-card{ 
+      border-radius:12px; 
+      overflow:hidden; 
+      background:var(--card-bg); 
+      box-shadow:var(--shadow); 
+      transition: all .25s ease; /* Changed to 'all' */
+      border: 2px solid transparent; /* Add transparent border */
+    }
+    .blog-post-card:hover{ 
+      transform: translateY(-6px); 
+      border-color: var(--primary); /* Add accent border on hover */
+      box-shadow: var(--accent-shadow); /* Use accent shadow on hover */
+    }
+    .blog-post-card img{ width:100%; height:160px; object-fit:cover; display:block; }
+    .card-body h6{ color:var(--primary); font-weight:700; }
+
+    /* centered section headings */
+    section h3, section h5 { text-align:center; color: var(--primary-700); margin-top: 24px; }
+
+    /* NEW: Blog post heading and button styles to match accent */
+    .blog-post-card h6 {
+        color: var(--primary-700); /* Accent color for blog post headings */
+        font-weight: 700;
+    }
+    .blog-post-card .btn-outline-primary {
+        border-color: var(--primary); /* Accent color for button border */
+        color: var(--primary); /* Accent color for button text */
+    }
+    .blog-post-card .btn-outline-primary:hover {
+        background-color: var(--primary); /* Accent color for button background on hover */
+        color: #fff; /* White text on hover */
+    }
+
+
+    /* responsive */
+    @media(max-width:991px){
+      .hero{ grid-template-columns: 1fr; }
+      .profile-circle{ width:96px; height:96px; }
+      #profileCard{ margin-top: 12px; padding: 14px; }
+    }
+    /* Add bottom padding for mobile quote bar */
+    @media(max-width: 768px) {
+      body {
+        padding-bottom: 70px; /* Space for the quote bar */
+      }
+    }
+
+
+    /* transitions (fade) */
+    .page-fade-out { opacity: 0; transition: opacity .35s ease; }
+    .animate-entrance { transform: translateY(12px); opacity: 0; }
+    .visible { transform: none; opacity: 1; transition: all .6s cubic-bezier(.16,.84,.44,1); }
+
+    /* floating action */
+    .fab{ position:fixed; bottom:28px; right:28px; width:64px; height:64px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:var(--primary); color:#fff; box-shadow:0 20px 40px rgba(0,0,0,0.18); cursor:pointer; z-index: 999; }
+    /* Adjust FAB position on mobile to avoid quote bar */
+      @media(max-width: 768px) {
+        .fab {
+          bottom: 80px; /* Raise FAB above quote bar */
         }
-        
+      }
+  
+    /* Footer Style (Reset to default) */
+    footer {
+      /* Reverted from blackhole style */
+      background: transparent; 
+      color: var(--muted);
+      padding: 40px 15px;
+      margin-top: 60px;
+    }
+    [data-theme="dark"] footer {
+      background: transparent;
+    }
+    footer h5 {
+      color: var(--primary); /* Use accent color for headings */
+    }
+    footer .form-control {
+      background: var(--card-bg);
+      border-color: var(--glass);
+      color: var(--muted);
+    }
+    footer .form-control::placeholder {
+      color: var(--muted);
+      opacity: 0.7;
+    }
 
+    /* --- New Hero Chip Styles --- */
+    .hero-chip-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 1.25rem;
+    }
+    .hero-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 50px; /* Pill shape */
+      background: var(--glass);
+      border: 1px solid rgba(128,128,128,0.1);
+      color: var(--muted);
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+    .hero-chip:hover {
+      background: var(--primary);
+      color: #fff;
+      transform: translateY(-3px);
+      box-shadow: var(--accent-shadow);
+      text-decoration: none;
+    }
+    .hero-chip i {
+      font-size: 0.9em;
+    }
 
-        /* Section Titles */
-        .section-title {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #000000;
-            margin-bottom: 1rem;
-            border-bottom: 4px solid #f9ec32;
-            display: inline-block;
-            padding-bottom: 5px;
-        }
-
-        /* Carousel Styling */
-        .carousel-item img {
-            height: 60vh;
-            object-fit: cover;
-            filter: brightness(0.8);
-        }
-        .carousel-caption {
-            bottom: 20px;
-            background: rgba(0, 0, 0, 0.5);
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 5px;
-        }
-
-        /* Blog Card Styling */
-        .blog-card {
-            border: none;
-            background: #ffffff;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .blog-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-        }
-
-        
-
-
-         /* Blog Card Styling */
-         #blog .blog-card {
-            display: flex;
-            flex-direction: column;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            background: #ffffff;
-            position: relative;
-            transform: scale(1);
-        }
-
-        #blog .blog-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Blog Image Section */
-        #blog .blog-image {
-            height: 250px;
-            background-size: cover;
-            background-position: center;
-            position: relative;
-            border-bottom: 2px solid #ddd;
-        }
-
-        /* Date Tag */
-        #blog .blog-date {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background-color: rgba(255, 255, 255, 0.8);
-            color: #333;
-            font-size: 0.8em;
-            font-weight: bold;
-            padding: 5px 10px;
-            border-radius: 12px;
-        }
-
-        /* Author Name */
-        #blog .blog-author {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: rgba(255, 255, 255, 0.8);
-            color: #333;
-            font-size: 0.8em;
-            font-weight: bold;
-            padding: 5px 10px;
-            border-radius: 12px;
-        }
-
-        /* Blog Content Section with Border */
-        #blog .blog-content {
-            border: 1px solid #ddd;
-            border-top: none;
-            padding: 20px;
-            text-align: left;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            background: #f9f9f9;
-        }
-
-        #blog .blog-title {
-            font-size: 1.25em;
-            font-weight: bold;
-            margin: 0 0 10px;
-            color: #333;
-        }
-
-        #blog .blog-excerpt {
-            font-size: 0.9em;
-            margin: 0 0 15px;
-            color: #666;
-        }
-
-        /* Read More Button */
-        #blog .read-more {
-            font-size: 0.9em;
-            color: #333;
-            font-weight: bold;
-            text-decoration: none;
-            border: 1px solid #333;
-            padding: 5px 10px;
-            border-radius: 5px;
-            transition: background-color 0.3s, color 0.3s;
-            display: inline-block;
-            align-self: flex-start;
-        }
-
-        #blog .read-more:hover {
-            background-color: #333;
-            color: #ffffff;
-        }
-
+    /* --- New Sidebar Promo Card Styles --- */
+    .sidebar-promo-grid {
+      display: grid;
+      grid-template-columns: 1fr; /* Stack vertically */
+      gap: 16px; /* Increased gap */
+    }
+    .sidebar-promo-card {
+      /* Removed flex properties, now a block */
+      padding: 20px;
+      background: var(--glass);
+      border-radius: var(--radius);
+      color: var(--muted);
+      transition: all 0.25s ease;
+      border: 1px solid var(--glass); /* Added subtle border */
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03); /* Softer shadow */
+    }
+    [data-theme="dark"] .sidebar-promo-card {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
     
-    </style>
+    .sidebar-promo-card:hover {
+      transform: scale(1.02); /* Subtler hover */
+      box-shadow: var(--shadow);
+      border-color: var(--primary); /* Highlight border on hover */
+    }
+
+    /* New styles for card internals */
+    .promo-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .promo-card-header i {
+      font-size: 1.6rem;
+      color: var(--primary);
+      width: 28px; 
+      text-align: center;
+    }
+    .promo-card-header strong {
+      font-size: 1.1rem; 
+      color: var(--primary-700); 
+    }
+    [data-theme="dark"] .promo-card-header strong {
+      color: var(--primary);
+    }
+
+    .promo-card-content {
+      font-size: 0.9rem;
+      line-height: 1.5;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--glass);
+      margin-bottom: 12px;
+    }
+    .promo-card-content p {
+      margin-bottom: 8px;
+    }
+    .promo-card-content .journal { /* Specific style for publication */
+      font-style: italic;
+      font-size: 0.85rem;
+      opacity: 0.8;
+    }
+    .promo-card-footer {
+      text-align: right;
+    }
 
 
+    /* Gemini Widget Styles */
+    #liveWidget {
+      position: relative;
+      padding: 14px;
+      background: var(--glass);
+      border-radius: 8px;
+      min-height: 100px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    #tipContent {
+      color: var(--muted);
+      font-size: 0.95rem;
+      transition: opacity 0.3s ease;
+      line-height: 1.5;
+    }
+    #tipLoading {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: var(--card-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      opacity: 0.85;
+      border-radius: 8px;
+      display: none; /* Hidden by default */
+      transition: opacity 0.3s ease;
+    }
 
+    /* Toast Notification */
+    #toastNotification {
+      position: fixed;
+      bottom: -100px; /* Start off-screen */
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--primary-700);
+      color: #fff;
+      padding: 14px 22px;
+      border-radius: 8px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      transition: bottom 0.5s cubic-bezier(.17,.67,.26,1.24);
+      z-index: 1000;
+      font-weight: 600;
+    }
+    #toastNotification.show {
+      bottom: 20px; /* Slide in */
+    }
+    #toastNotification.error {
+      background: #e74c3c; /* Use red accent for errors */
+    }
+
+    /* Unified Share Button */
+    .share-btn {
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 50%;
+      display: flex; /* To center icon */
+      align-items: center;
+      justify-content: center;
+      width: 30px; /* Set fixed size */
+      height: 30px;
+      transition: all 0.2s ease;
+    }
+    .share-btn:hover {
+      color: var(--primary);
+      background: var(--glass);
+    }
+
+    /* Quote Card */
+    #quoteCard {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      max-width: 280px;
+      background: var(--glass);
+      backdrop-filter: blur(8px);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow);
+      z-index: 998; /* Below toast and FAB */
+      transition: all 0.4s ease;
+      opacity: 0.95;
+    }
+    #quoteCard p {
+      margin-bottom: 0.25rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+      font-weight: 500;
+      transition: opacity 0.5s ease;
+    }
+    #quoteCard small {
+      font-size: 0.8rem;
+      color: var(--primary);
+      font-weight: 700;
+      display: block;
+      text-align: right;
+      transition: opacity 0.5s ease;
+    }
+    
+    /* Quote Card on Mobile */
+    @media(max-width: 768px) {
+      #quoteCard {
+        left: 0;
+        right: 0;
+        bottom: 0;
+        max-width: 100%;
+        border-radius: 12px 12px 0 0;
+        padding: 12px 16px;
+        text-align: center;
+      }
+      #quoteCard small {
+        text-align: center;
+      }
+        /* Adjust toast position on mobile */
+      #toastNotification.show {
+        bottom: 70px; /* Raise toast above quote bar */
+      }
+    }
+
+    /* 5. 180-DEGREE UNIQUE INSPIRE LIFE SECTION STYLES */
+    #inspireOverlayGrid {
+      display: grid;
+      /* CHANGE: Adjust grid for 6 items - 3 per row on large, 2 on med */
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Larger min size */
+      gap: 20px;
+    }
+    @media (min-width: 992px) { /* Larger screens get 3 columns */
+      #inspireOverlayGrid {
+         grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+
+    .inspire-overlay-card {
+      position: relative;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      transition: all .25s ease;
+      overflow: hidden; /* Important */
+      height: 280px; /* Taller card */
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end; /* Align content to bottom */
+      border: 2px solid transparent;
+      text-decoration: none; /* In case we wrap in <a> */
+      /* NEW DYNAMIC FEATURES */
+      transform-style: preserve-3d; /* Feature 1: 3D Tilt */
+      cursor: pointer; /* Feature 2: Custom Cursor */
+    }
+    .inspire-overlay-card:hover {
+      /* transform: translateY(-6px) scale(1.02); */ /* JS handles transform now */
+      border-color: var(--primary);
+      box-shadow: var(--accent-shadow);
+    }
+    
+    /* The gradient overlay */
+    .inspire-overlay-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      /* Match parent's border radius */
+      border-radius: calc(var(--radius) - 2px); 
+      background: linear-gradient(180deg, 
+        rgba(0,0,0,0) 40%, 
+        rgba(0,0,0,0.8) 100%
+      );
+      transition: all 0.3s ease;
+    }
+    
+    /* Dark mode overlay is slightly stronger */
+    [data-theme="dark"] .inspire-overlay-card::before {
+       background: linear-gradient(180deg, 
+         rgba(0,0,0,0.2) 30%, 
+         rgba(0,0,0,0.9) 100%
+       );
+    }
+
+    /* Hover effect for the overlay */
+    .inspire-overlay-card:hover::before {
+      background: linear-gradient(180deg, 
+        rgba(0,0,0,0) 20%, 
+        rgba(0,0,0,0.9) 100%
+      );
+    }
+    
+    .inspire-overlay-content {
+      position: relative; /* Above the overlay */
+      z-index: 2;
+      padding: 16px;
+    }
+    .inspire-overlay-content h5 {
+      color: #ffffff; /* Always white for readability on overlay */
+      font-family: 'Inter', sans-serif; /* Bolder font */
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+      text-align: left;
+      margin-top: 0;
+    }
+    .inspire-overlay-content p {
+      color: rgba(255,255,255,0.9); /* Lighter text */
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin-bottom: 0;
+      text-align: left;
+      /* Fade out slightly, reveal on hover */
+      opacity: 0;
+      max-height: 0;
+      transition: all 0.3s ease;
+    }
+
+    .inspire-overlay-card:hover .inspire-overlay-content p {
+      opacity: 1;
+      max-height: 100px; /* Reveal paragraph */
+    }
+    /* --- End Inspire Life Styles --- */
+
+
+    /* --- NEW SECTION 1: MATERIALS IN MOTION STYLES --- */
+    #materialsGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .material-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--glass);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: all 0.25s ease;
+    }
+    .material-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--accent-shadow);
+    }
+    .material-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+    .material-icon svg {
+      width: 30px;
+      height: 30px;
+      fill: #fff;
+    }
+    .material-card h5 {
+      margin-top: 0;
+      color: var(--primary-700);
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+    .material-card p {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+    /* --- END SECTION 1 STYLES --- */
+
+
+    /* --- NEW SECTION 2: GLOBAL COMMUNITY CONNECT STYLES --- */
+    .community-connect-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      align-items: center;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 30px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--glass);
+      overflow: hidden; /* For pseudo-elements */
+    }
+    .community-visual {
+      position: relative;
+      text-align: center;
+    }
+    /* Simple SVG Globe */
+    .globe-svg {
+      width: 80%;
+      max-width: 250px;
+      height: auto;
+      fill: var(--primary); /* Use accent color */
+      opacity: 0.2; /* Make it subtle */
+      margin: auto;
+    }
+    [data-theme="dark"] .globe-svg {
+       opacity: 0.1; 
+    }
+    /* Animated connection points (pseudo-elements) */
+    .connection-point {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: var(--primary);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--primary), 0 0 20px var(--primary);
+      animation: pulse 2s infinite ease-in-out;
+    }
+    .connection-point:nth-child(1) { top: 20%; left: 30%; animation-delay: 0s; }
+    .connection-point:nth-child(2) { top: 50%; left: 70%; animation-delay: 0.5s; }
+    .connection-point:nth-child(3) { top: 75%; left: 40%; animation-delay: 1s; }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.7; }
+      50% { transform: scale(1.3); opacity: 1; }
+    }
+
+    .community-content h5 {
+      text-align: left;
+      margin-top: 0;
+      color: var(--primary-700);
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    .community-content p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.7;
+      font-family: 'Inter', sans-serif;
+    }
+    /* Responsive for Community Connect */
+    @media(max-width: 768px) {
+      .community-connect-container {
+        grid-template-columns: 1fr; /* Stack */
+        padding: 20px;
+      }
+      .community-content { order: -1; } /* Text first on mobile */
+      .community-content h5 { text-align: center; }
+      .community-content p { text-align: center; }
+      .globe-svg { width: 60%; margin-top: 20px;}
+    }
+    /* --- END SECTION 2 STYLES --- */
+
+  </style>
 </head>
+
 <body>
 
- <!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<!-- Navbar --> 
-<nav class="navbar navbar-expand-lg fixed-top" style="background: linear-gradient(135deg, #163142, #1f4e5a); padding: 10px 15px;">
-    <a class="navbar-brand d-flex align-items-center" href="index.html" style="font-family: 'Arial Black', sans-serif; text-decoration: none;">
-        
-        <div style="display: inline-block; overflow: hidden;">
-            <img 
-                src="images/logo.png" 
-                alt="Logo" 
-                style="width: 50px; height: auto; transition: transform 0.3s ease; border: 2px solid #41b3a3; border-radius: 50%;" 
-                onmouseover="this.style.transform='scale(1.5)'" 
-                onmouseout="this.style.transform='scale(1)'" 
-                onclick="scaleOnMobile(this)"
-            >
-        </div>
-        
-        
-        <script>
-            function scaleOnMobile(element) {
-                // Apply the scale effect when clicked on mobile
-                if (window.innerWidth <= 768) { // Mobile width threshold
-                    element.style.transform = 'scale(1.5)';
-                    setTimeout(() => {
-                        element.style.transform = 'scale(1)'; // Reset after some time
-                    }, 500); // Duration of scaling effect in milliseconds
-                }
-            }
-        </script>
-        
-
-
-
-     
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style="border: none; outline: none;">
-        <div class="toggler-icon" style="display: flex; flex-direction: column; justify-content: space-between; height: 18px; width: 25px;">
-            <span class="line" style="height: 2px; width: 100%; background-color: #41b3a3; transition: transform 0.3s, opacity 0.3s;"></span>
-            <span class="line" style="height: 2px; width: 100%; background-color: #41b3a3; transition: transform 0.3s;"></span>
-            <span class="line" style="height: 2px; width: 100%; background-color: #41b3a3; transition: transform 0.3s, opacity 0.3s;"></span>
-        </div>
-    </button>
-    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-        <ul class="navbar-nav" id="navUl" style="text-align: right;">
-            <li class="nav-item">
-                <a class="nav-link" href="index.html" style="color: #ffffff; font-weight: bold; padding: 5px 15px; border: 1px solid #41b3a3; border-radius: 5px; margin: 5px; text-decoration: none; transition: all 0.3s ease;" 
-                   onmouseover="this.style.backgroundColor='#41b3a3'; this.style.color='#163142';" 
-                   onmouseout="this.style.backgroundColor='transparent'; this.style.color='#ffffff';">Home</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="storytelling.html" style="color: #ffffff; font-weight: bold; padding: 5px 15px; border: 1px solid #41b3a3; border-radius: 5px; margin: 5px; text-decoration: none; transition: all 0.3s ease;" 
-                   onmouseover="this.style.backgroundColor='#41b3a3'; this.style.color='#163142';" 
-                   onmouseout="this.style.backgroundColor='transparent'; this.style.color='#ffffff';">Storytelling</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="athletic.html" style="color: #ffffff; font-weight: bold; padding: 5px 15px; border: 1px solid #41b3a3; border-radius: 5px; margin: 5px; text-decoration: none; transition: all 0.3s ease;" 
-                   onmouseover="this.style.backgroundColor='#41b3a3'; this.style.color='#163142';" 
-                   onmouseout="this.style.backgroundColor='transparent'; this.style.color='#ffffff';">Athletic</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="achievements.html" style="color: #ffffff; font-weight: bold; padding: 5px 15px; border: 1px solid #41b3a3; border-radius: 5px; margin: 5px; text-decoration: none; transition: all 0.3s ease;" 
-                   onmouseover="this.style.backgroundColor='#41b3a3'; this.style.color='#163142';" 
-                   onmouseout="this.style.backgroundColor='transparent'; this.style.color='#ffffff';">Achievements</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="projects.html" style="color: #ffffff; font-weight: bold; padding: 5px 15px; border: 1px solid #41b3a3; border-radius: 5px; margin: 5px; text-decoration: none; transition: all 0.3s ease;" 
-                   onmouseover="this.style.backgroundColor='#41b3a3'; this.style.color='#163142';" 
-                   onmouseout="this.style.backgroundColor='transparent'; this.style.color='#ffffff';">Projects</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="about.html" style="color: #ffffff; font-weight: bold; padding: 5px 15px; border: 1px solid #41b3a3; border-radius: 5px; margin: 5px; text-decoration: none; transition: all 0.3s ease;" 
-                   onmouseover="this.style.backgroundColor='#41b3a3'; this.style.color='#163142';" 
-                   onmouseout="this.style.backgroundColor='transparent'; this.style.color='#ffffff';">Resume</a>
-            </li>
-        </ul>
-    </div>
-</nav>
-
-<!-- jQuery and Bootstrap JS (required for Navbar toggle functionality) -->
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const navbarToggler = document.querySelector('.navbar-toggler');
-        const navbarMenu = document.querySelector('#navbarNav');
-        const lines = navbarToggler.querySelectorAll('.line');
-
-        // Toggle menu open/close
-        navbarToggler.addEventListener('click', function () {
-            const isExpanded = navbarMenu.classList.contains('show');
-
-            if (isExpanded) {
-                closeMenu();
-            } else {
-                openMenu();
-            }
-        });
-
-        // Close menu on outside click
-        document.addEventListener('click', function (event) {
-            if (!navbarToggler.contains(event.target) && !navbarMenu.contains(event.target)) {
-                if (navbarMenu.classList.contains('show')) {
-                    closeMenu();
-                }
-            }
-        });
-
-        // Open menu function
-        function openMenu() {
-            navbarMenu.classList.add('show');
-            lines[0].style.transform = 'rotate(45deg)';
-            lines[0].style.position = 'relative';
-            lines[0].style.top = '6px';
-
-            lines[1].style.opacity = '0';
-
-            lines[2].style.transform = 'rotate(-45deg)';
-            lines[2].style.position = 'relative';
-            lines[2].style.top = '-6px';
-        }
-
-        // Close menu function
-        function closeMenu() {
-            navbarMenu.classList.remove('show');
-            lines[0].style.transform = 'rotate(0)';
-            lines[0].style.position = 'relative';
-            lines[0].style.top = '0';
-
-            lines[1].style.opacity = '1';
-
-            lines[2].style.transform = 'rotate(0)';
-            lines[2].style.position = 'relative';
-            lines[2].style.top = '0';
-        }
-    });
-</script>
-
-
-
-
-<div id="carouselExampleIndicators" class="carousel slide mt-5 pt-4" data-ride="carousel">
-    <ol class="carousel-indicators">
-        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-    </ol>
-    <div class="carousel-inner">
-        <div class="carousel-item active">
-            <img src="images/slider1(1920 x 800 px).jpg" class="d-block w-100" alt="Cycling Image 1">
-            <div class="carousel-caption" style="position: absolute; bottom: 10px; left: 10px; text-align: left;">
-                <p class="typing-animation" style="font-size: 1.5rem; font-weight: bold; white-space: nowrap; overflow: hidden; border-right: 3px solid; animation: typing 3s steps(30) 1s infinite normal, blink 0.5s step-end infinite;">Run Marine Drive Road, Cox's Bazar</p>
-            </div>
-        </div>
-        <div class="carousel-item">
-            <img src="images/slider2(1920 x 800 px).jpg" class="d-block w-100" alt="Cycling Image 2">
-            <div class="carousel-caption" style="position: absolute; bottom: 10px; left: 10px; text-align: left;">
-                <p class="typing-animation" style="font-size: 1.5rem; font-weight: bold; white-space: nowrap; overflow: hidden; border-right: 3px solid; animation: typing 3s steps(30) 1s infinite normal, blink 0.5s step-end infinite;">Bay of Bengal, Saint Martin</p>
-            </div>
-        </div>
-        <div class="carousel-item">
-            <img src="images/slider3(1920 x 800 px).jpg" class="d-block w-100" alt="Cycling Image 3">
-            <div class="carousel-caption" style="position: absolute; bottom: 10px; left: 10px; text-align: left;">
-                <p class="typing-animation" style="font-size: 1.5rem; font-weight: bold; white-space: nowrap; overflow: hidden; border-right: 3px solid; animation: typing 3s steps(30) 1s infinite normal, blink 0.5s step-end infinite;">Bangla Channel Swimming</p>
-            </div>
-        </div>
-    </div>
-    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-    </a>
-    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-    </a>
-</div>
-
-
-  <!-- Profile Section -->
-  <div class="profile-container text-center my-4" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 45vh; text-align: center; background: #fff; padding: 0px;">
-    <div class="profile-picture mx-auto" style="position: relative; width: 250px; height: 250px; border-radius: 50%; overflow: hidden; margin-bottom: 0px;">
-        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 5px solid #000000; border-radius: 50%; box-sizing: border-box;"></div>
-        <img src="images/profile.jpg" alt="Profile Picture" class="rounded-circle" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
-    </div>
-    <h3 class="typing-animation mt-3" style="font-size: 1.5rem; color: #260150; white-space: nowrap; overflow: hidden; border-right: 3px solid; animation: typing 3s steps(30) 1s normal, blink 0.5s step-end infinite;">Welcome! Dive in Murad’s World</h3>
-</div>
-
-<!-- Embedded keyframes for animation directly within the HTML -->
-<style>
-    @keyframes typing {
-        from { width: 0; }
-        to { width: 100%; }
-    }
-
-    @keyframes blink {
-        from, to { border-color: transparent; }
-        50% { border-color: black; }
-    }
-
-    .typing-animation {
-        animation: typing 3s steps(30) 1s 1 normal, blink 0.5s step-end infinite;
-    }
-</style>
-
-
-
-<section id="mission" class="container my-5">
-    <div class="card mx-auto shadow-lg" style="max-width: 600px; border-radius: 10px; border: 2px solid #5f125b;">
-        <div class="card-body text-center">
-            <h2 class="card-title text-primary mb-3">
-                <i class="bi bi-life"></i> Life Update
-            </h2>
-            <p class="card-text text-muted">
-                Murad Hossain here, expert in balancing life between engineering and triathlon finish lines. With a knack for turning complex tech into simple solutions and a passion for pushing physical boundaries, I’m your go-to guy for both adventures and lifely endevours. Dive into my world where engineering meets endurance!
-            </p>
-        </div>
-        <div class="card-footer bg-light text-center">
-            <small class="text-muted"><i class="bi bi-heart-fill text-danger"></i> "TRIHARDMURAD"</small>
-        </div>
-    </div>
-</section>
-
-
- <!-- CV Link Section -->
- <div class="cv-link-container text-center my-4" style="display: flex; justify-content: center; align-items: center; text-align: center; margin: 0; padding: 20px 0; height: 10vh;">
-    <h2 class="bounce-animation" style="font-size: 1.5rem; color: rgb(255, 0, 0); font-weight: bold; margin: 0 0 10px; display: inline-block; animation: bounce 2s infinite;">
-        <a href="images/cvMurad_Hossain (1).pdf" download="cvMurad_Hossain (1).pdf" style="color: white; text-decoration: none; display: inline-block; background-color: rgb(60, 53, 122); padding: 10px 20px; border-radius: 5px; position: relative;">
-            <i class="fas fa-download" style="margin-right: 8px;"></i> (Click to Download CV)
-            <span style="position: absolute; bottom: -5px; left: 0; width: 100%; height: 2px; background-color: rgb(38, 0, 255); transition: transform 0.3s ease; transform: scaleX(0);"></span>
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg fixed-top navbar-custom">
+    <!-- ... existing navbar code ... -->
+    <div class="container-xl d-flex align-items-center justify-content-between">
+      <div class="d-flex align-items-center">
+        <!-- MODIFIED: Logo image linked to home -->
+        <a class="navbar-brand d-flex align-items-center" href="index.html">
+          <img src="images/logo.png" alt="Murad Logo" class="logo-img" 
+               onerror="this.onerror=null; this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
+          <!-- Fallback text if image fails -->
+          <div class="logo-text" id="logoFallback" style="display:none;">Murad</div>
         </a>
-        
-        <script>
-         const link = document.querySelector('a[download]');
-            link.addEventListener('mouseover', () => {
-                link.querySelector('span').style.transform = 'scaleX(1)';
-            });
-            link.addEventListener('mouseout', () => {
-                link.querySelector('span').style.transform = 'scaleX(0)';
-            });
-           
-        </script>
-        
-        
-    </h2>
-</div>
+        <small class="ml-3 dev-note d-none d-md-inline">Engineering • Research • Endurance</small>
+      </div>
 
-
-<!-- Blog Section -->
-
-<section id="blog" class="container my-5">
-    <h2 class="section-title text-center" style="
-    display: inline-block;
-    padding: 10px 30px;
-    background-color: #17476e; /* Hamburger-inspired color */
-    color: #fff; /* White text color */
-    font-size: 1.8em;
-    font-weight: bold;
-    border-radius: 25px; /* Capsule shape */
-    text-align: center;
-    margin: 20px auto;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
-    Athletics </h2>
-    <!-- Change the ID to match the one expected in the JavaScript -->
-    <div class="row" id="athletic-posts"></div>
-    <div class="text-center mt-4">
-        <a id="view-more-athletic-button" href="athletic.html" class="btn btn-outline-primary">See More Athletic</a>
-    </div>
-</section>
-
-
-
-<section id="blog" class="container my-5">
-    <h2 class="section-title text-center" style="
-    display: inline-block;
-    padding: 10px 30px;
-    background-color: #17476e; /* Hamburger-inspired color */
-    color: #fff; /* White text color */
-    font-size: 1.8em;
-    font-weight: bold;
-    border-radius: 25px; /* Capsule shape */
-    text-align: center;
-    margin: 20px auto;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
-    Storytelling</h2>
-    <div class="row" id="storytelling-posts"></div>
-    <div class="text-center mt-4">
-        <a href="storytelling.html" class="btn btn-outline-primary">See More Stories</a>
-    </div>  
-</section>
-
-
-
-<section id="blog" class="container my-5">
-    <h2 class="section-title text-center" style="
-    display: inline-block;
-    padding: 10px 30px;
-    background-color: #17476e; /* Hamburger-inspired color */
-    color: #fff; /* White text color */
-    font-size: 1.8em;
-    font-weight: bold;
-    border-radius: 25px; /* Capsule shape */
-    text-align: center;
-    margin: 20px auto;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
-    Projects
-</h2>
-
-    <div class="row" id="projects-posts"></div>
-    <div class="text-center mt-4">
-        <a href="projects.html" class="btn btn-outline-primary">See More Projects</a>
-    </div> 
-</section>
-
-
-
-<section id="blog" class="container my-5">
-    <h2 class="section-title text-center" style="
-    display: inline-block;
-    padding: 10px 30px;
-    background-color: #17476e; /* Hamburger-inspired color */
-    color: #fff; /* White text color */
-    font-size: 1.8em;
-    font-weight: bold;
-    border-radius: 25px; /* Capsule shape */
-    text-align: center;
-    margin: 20px auto;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);">
-    Achievements</h2>
-    <div class="row" id="achievements-posts"></div>
-    <div class="text-center mt-4">
-        <a href="achievements.html" class="btn btn-outline-primary">See More Achievements</a>
-    </div> 
-</section>
-
-<!-- Inspiring Lives Section -->
-<section id="inspiring-lives-section" class="container my-5" style="max-width: 1200px; margin: auto; text-align: center; position: relative;">
-    <div style="margin-bottom: 30px;">
-
-        <!-- "Let's" -->
-        <p style="
-            font-size: 2.4em; 
-            font-weight: 600; 
-            color: #41b3a3; 
-            text-transform: capitalize; 
-            letter-spacing: 0.04em; 
-            font-family: 'Arial', sans-serif; 
-            margin: 0; 
-            animation: fadeIn 1.5s ease;">
-            Let's
-        </p>
-
-        <!-- "Inspiring Lives" -->
-        <h1 style="
-            font-size: 3.2em; 
-            font-weight: bold; 
-            margin: 0.3em 0; 
-            background: linear-gradient(90deg, #41b3a3, #a2d5d9); 
-            -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent; 
-            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2); 
-            animation: slideIn 1.5s ease;">
-            Inspire Lives
-        </h1>
-
-        <!-- Decorative Line -->
-        <div style="
-            width: 120px; 
-            height: 4px; 
-            background: #41b3a3; 
-            margin: 20px auto 0; 
-            border-radius: 2px; 
-            animation: growLine 1.5s ease;">
+      <div class="d-flex align-items-center">
+        <!-- Traffic-light switcher (Green, Yellow, Red) -->
+        <div class="accent-palette mr-3" role="tablist" aria-label="Accent color">
+          <div class="accent-dot" data-accent="green" title="Green" style="background:#20c997" aria-checked="true"></div>
+          <div class="accent-dot" data-accent="yellow" title="Yellow" style="background:#f1c40f"></div>
+          <div class="accent-dot" data-accent="red" title="Red" style="background:#e74c3c"></div>
         </div>
 
-        <!-- Animations -->
-        <style>
-            @keyframes fadeIn {
-                from { opacity: 0; transform: translateY(-10px); }
-                to { opacity: 1; transform: translateY(0); }
-            }
-            @keyframes slideIn {
-                from { opacity: 0; transform: translateX(-10px); }
-                to { opacity: 1; transform: translateX(0); }
-            }
-            @keyframes growLine {
-                from { width: 0; opacity: 0; }
-                to { width: 120px; opacity: 1; }
-            }
-        </style>
-    </div>
-</section>
-
-
-<!-- Zigzag Gallery Layout -->
-<div style="display: flex; flex-wrap: wrap; gap: 30px;">
-
-    <!-- Item 1: Blood Donation -->
-    <div style="display: flex; flex-direction: row; align-items: center; width: 100%;">
-        <img src="images/Blood Donate.jpg" alt="Blood Donation" style="width: 50%; border-radius: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-        <div style="width: 50%; padding-left: 20px; text-align: left;">
-            <h4 style="font-size: 1.5em; font-weight: bold; color: #333;">Giving the Gift of Life</h4>
-            <p style="color: #666; font-size: 1em;">Participating in blood donation drives to save lives and inspire others to contribute to humanity, one drop at a time.</p>
+        <!-- Day/Night toggle -->
+        <div class="d-flex align-items-center mr-2">
+          <i id="toggleIcon" class="fas fa-sun mr-2" style="color:var(--primary)"></i>
+          <label style="display:inline-block;cursor:pointer">
+            <input id="themeSwitch" type="checkbox" style="display:none" aria-label="Toggle dark mode">
+            <div id="switchVisual" style="width:44px;height:24px;background:rgba(0,0,0,0.06);border-radius:14px;position:relative;">
+              <div id="switchDot" style="width:18px;height:18px;border-radius:50%;background:#fff;position:absolute;left:3px;top:3px;box-shadow:0 4px 10px rgba(0,0,0,0.12);"></div>
+            </div>
+          </label>
         </div>
-    </div>
 
-    <!-- Item 2: Community Events -->
-    <div style="display: flex; flex-direction: row; align-items: center; width: 100%;">
-        <div style="width: 50%; padding-right: 20px; text-align: right;">
-            <h4 style="font-size: 1.5em; font-weight: bold; color: #333;">Bringing Communities Together</h4>
-            <p style="color: #666; font-size: 1em;">Organizing events and initiatives to create strong, inclusive, and compassionate communities.</p>
-        </div>
-        <img src="images/community.jpg" alt="Community Event" style="width: 50%; border-radius: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-    </div>
-
-    <!-- Item 3: Fitness and Health -->
-    <div style="display: flex; flex-direction: row; align-items: center; width: 100%;">
-        <img src="images/Promoting Healthy Life.jpg" alt="Fitness Training" style="width: 50%; border-radius: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-        <div style="width: 50%; padding-left: 20px; text-align: left;">
-            <h4 style="font-size: 1.5em; font-weight: bold; color: #333;">Promoting Healthy Lifestyles</h4>
-            <p style="color: #666; font-size: 1em;">Encouraging healthier lives through fitness training, wellness programs, and lifestyle changes.</p>
-        </div>
-    </div>
-
-    <!-- Item 4: Mentoring the Next Generation -->
-    <div style="display: flex; flex-direction: row; align-items: center; width: 100%;">
-        <div style="width: 50%; padding-right: 20px; text-align: right;">
-            <h4 style="font-size: 1.5em; font-weight: bold; color: #333;">Mentoring the Future</h4>
-            <p style="color: #666; font-size: 1em;">Empowering young minds through mentorship, guidance, and sharing valuable life lessons.</p>
-        </div>
-        <img src="images/Mentoring.jpeg" alt="Mentoring" style="width: 50%; border-radius: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-    </div>
-
-    <!-- Item 5: Celebrating Cultural Diversity -->
-    <div style="display: flex; flex-direction: row; align-items: center; width: 100%;">
-        <img src="images/Diversity.jpg" alt="Cultural Celebration" style="width: 50%; border-radius: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-        <div style="width: 50%; padding-left: 20px; text-align: left;">
-            <h4 style="font-size: 1.5em; font-weight: bold; color: #333;">Celebrating Diversity</h4>
-            <p style="color: #666; font-size: 1em;">Highlighting the beauty of diverse cultures, fostering mutual respect and understanding among all.</p>
-        </div>
-    </div>
-
-    <!-- Item 6: Personal Growth and Inspiration -->
-    <div style="display: flex; flex-direction: row; align-items: center; width: 100%;">
-        <div style="width: 50%; padding-right: 20px; text-align: right;">
-            <h4 style="font-size: 1.5em; font-weight: bold; color: #333;">Inspiring Personal Growth</h4>
-            <p style="color: #666; font-size: 1em;">Encouraging others to embrace continuous learning, self-reflection, and growth through real-life examples.</p>
-        </div>
-        <img src="images/Growth.jpg" alt="Personal Growth" style="width: 50%; border-radius: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-    </div>
-
-</div>
-
-
-
-<!-- Contact and Footer Section -->
-<section id="contact-footer" style="background: linear-gradient(135deg, #163142, #1f4e5a); padding: 40px 20px; border-radius: 8px; text-align: center; color: #f9ec32; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);">
-    <!-- Contact Us -->
-    <h2 style="font-size: 2em; font-weight: bold; margin-bottom: 20px; color: #fff;">Contact Us</h2>
-    <form action="https://formspree.io/f/mwpkvrvr" method="POST" style="max-width: 500px; margin: auto;">
-        <input type="text" name="name" placeholder="Your Name" required 
-               style="width: 100%; padding: 10px; border: 2px solid #a2d5d9; border-radius: 5px; margin-bottom: 10px; font-size: 1em; background-color: transparent; color: #fff;">
-        <input type="email" name="email" placeholder="Your Email" required 
-               style="width: 100%; padding: 10px; border: 2px solid #a2d5d9; border-radius: 5px; margin-bottom: 10px; font-size: 1em; background-color: transparent; color: #fff;">
-        <textarea name="message" rows="4" placeholder="Your Message" required 
-                  style="width: 100%; padding: 10px; border: 2px solid #a2d5d9; border-radius: 5px; margin-bottom: 15px; font-size: 1em; background-color: transparent; color: #fff;"></textarea>
-        <button type="submit" 
-                style="padding: 10px 20px; font-size: 1em; font-weight: bold; color: #163142; background-color: #f9ec32; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s;">
-            Send Message
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+          <span class="t-icon navbar-toggler-icon" id="hamburgerSvg"></span>
         </button>
-    </form>
+      </div>
 
-    <!-- Social Media Icons -->
-    <div style="margin: 30px 0;">
-        <a href="mailto:muradcu42@gmail.com" style="color: #41b3a3; text-decoration: none; margin: 0 10px; transition: transform 0.3s;">
-            <i class="bi bi-envelope" style="font-size: 1.8em;"></i>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav align-items-center">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="athletic.html">Athletics</a></li>
+          <li class="nav-item"><a class="nav-link" href="storytelling.html">Storytelling</a></li>
+          <li class="nav-item"><a class="nav-link" href="projects.html">Projects</a></li>
+          <li class="nav-item"><a class="nav-link" href="achievements.html">Achievements</a></li>
+          <li class="nav-item"><a class="nav-link" href="about.html">Resume</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 2. SCROLL PROGRESS BAR HTML -->
+  <div id="scrollProgressBar">
+    <div id="scrollProgressIndicator"></div>
+  </div>
+
+  <!-- PROFILE CARD (Permanently under navbar) -->
+  <section id="profileCard" aria-label="Profile card">
+    <!-- ... existing profile card code ... -->
+    <div style="display:flex;gap:18px;align-items:center;justify-content:center;flex-wrap:wrap;">
+      <div class="profile-circle">
+        <img src="images/profile.jpg" alt="Murad profile" style="width:100%;height:100%;object-fit:cover;display:block;">
+      </div>
+      <div style="text-align:center;">
+        <h4 style="margin:0 0 6px 0;">Murad Hossain</h4>
+        <div style="font-size:0.95rem;opacity:0.95;">Engineer • Researcher • Coach</div>
+        <div style="margin-top:10px;">
+          <a class="btn btn-sm btn-outline-light" href="images/cvMurad_Hossain (1).pdf" download>Download CV</a>
+          <a class="btn btn-sm btn-light" href="mailto:muradcu42@gmail.com">Contact</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HERO: left content + right quick cards -->
+  <main class="hero container-xl" aria-live="polite">
+    <!-- ... existing hero content ... -->
+    <section class="hero-card animate-entrance" id="leftHero">
+      <h2 style="margin:0 0 8px 0;">Design. Explore. Endure.</h2>
+      <p class="dev-note">A showcase of my lifely endevours, my passion for endurance coaching, and my journey in community building.</p>
+
+      <!-- New Hero Chips -->
+      <div class="hero-chip-grid">
+        <a href="coaching.html" class="hero-chip">
+          <i class="fas fa-running"></i>
+          <span>Coaching</span>
         </a>
-        <a href="https://www.facebook.com/murad4231" target="_blank" style="color: #41b3a3; text-decoration: none; margin: 0 10px; transition: transform 0.3s;">
-            <i class="bi bi-facebook" style="font-size: 1.8em;"></i>
+        <a href="research.html" class="hero-chip">
+          <i class="fas fa-atom"></i>
+          <span>Research</span>
         </a>
-        <a href="https://www.linkedin.com/in/muradhossain42" target="_blank" style="color: #41b3a3; text-decoration: none; margin: 0 10px; transition: transform 0.3s;">
-            <i class="bi bi-linkedin" style="font-size: 1.8em;"></i>
+        <a href="community.html" class="hero-chip">
+          <i class="fas fa-lightbulb"></i>
+          <span>Community</span>
         </a>
-        <a href="https://www.youtube.com/@muradhossain5116" target="_blank" style="color: #41b3a3; text-decoration: none; margin: 0 10px; transition: transform 0.3s;">
-            <i class="bi bi-youtube" style="font-size: 1.8em;"></i>
-        </a>
-        <a href="https://www.strava.com" target="_blank" style="color: #41b3a3; text-decoration: none; margin: 0 10px; transition: transform 0.3s;">
-            <i class="bi bi-strava" style="font-size: 1.8em;"></i>
-        </a>
+      </div>
+
+      <!-- REMOVED: App Demo and Subscribe Buttons -->
+      <div class="mt-4">
+        <h5 style="text-align:center;margin-top:18px;">Latest Posts</h5>
+        <div id="miniFeed" class="blog-grid" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <aside class="hero-card animate-entrance" id="rightHero">
+      <!-- ... existing aside content ... -->
+      <div style="display:flex;gap:16px;align-items:center;">
+        <div style="width:64px;height:64px;border-radius:8px;overflow:hidden;background:var(--card-bg);display:flex;align-items:center;justify-content:center;">
+          <i class="fas fa-heart" style="color:var(--primary)"></i>
+        </div>
+
+        <div>
+          <h6 style="margin:0">Quick Links</h6>
+          <div style="margin-top:8px;">
+            <a href="athletic.html" class="d-block">Athletics</a>
+            <a href="projects.html" class="d-block">Projects</a>
+            <a href="storytelling.html" class="d-block">Storytelling</a>
+          </div>
+        </div>
+      </div>
+
+      <hr>
+
+      <div>
+        <h6>✨ Live Coaching Tip</h6>
+        <div id="liveWidget" class="mt-2">
+          <p id="tipContent">Click the button for a new tip!</p>
+          <div id="tipLoading">Loading...</div>
+        </div>
+        <button class="btn btn-sm btn-primary mt-2 w-100" id="getTipBtn">✨ Get New Tip</button>
+      </div>
+
+      <!-- New Vertical Sidebar Cards -->
+      <div class="sidebar-promo-grid mt-3">
+        
+        <!-- Redesigned Publication Card -->
+        <div class="sidebar-promo-card">
+          <div class="promo-card-header">
+            <i class="fas fa-book-open"></i>
+            <strong>Publications</strong>
+          </div>
+          <div class="promo-card-content">
+            <p>Synergistic Enhancement of Magnetic and Dielectric Properties in Mn-Nb
+Co-doped BMT Perovskite Ceramics..."</p>
+            <span class="journal">Journal of Alloys and Compounds (2025)</span>
+          </div>
+          <div class="promo-card-footer">
+            <a href="research.html" class="btn btn-sm btn-outline-primary">View All Research</a>
+          </div>
+        </div>
+
+        <!-- Redesigned Coaching Card -->
+        <div class="sidebar-promo-card">
+          <div class="promo-card-header">
+            <i class="fas fa-clipboard-list"></i>
+            <strong>Coaching Plans</strong>
+          </div>
+          <div class="promo-card-content">
+            <p><strong>Ironman 12-Week Prep:</strong> A balanced plan focusing on building endurance and race-day strategy.</p>
+          </div>
+          <div class="promo-card-footer">
+            <a href="coaching.html" class="btn btn-sm btn-outline-primary">See All Plans</a>
+          </div>
+        </div>
+
+      </div>
+    </aside>
+  </main>
+
+  <!-- Sections -->
+  <section class="container-xl mt-4">
+    <h3>Athletics</h3>
+    <div id="athleticPosts" class="blog-grid mt-3"></div>
+    <div class="text-right mt-3 mb-4"><a href="athletic.html" class="btn btn-outline-primary">See All Athletics</a></div>
+  </section>
+
+  <section class="container-xl mt-4">
+    <h3>Storytelling</h3>
+    <div id="storyPosts" class="blog-grid mt-3"></div>
+    <div class="text-right mt-3 mb-4"><a href="storytelling.html" class="btn btn-outline-primary">See Stories</a></div>
+  </section>
+
+  <section class="container-xl mt-4">
+    <h3>Projects</h3>
+    <div id="projectsPosts" class="blog-grid mt-3"></div>
+    <div class="text-right mt-3 mb-4"><a href="projects.html" class="btn btn-outline-primary">See Projects</a></div>
+  </section>
+
+  <section class="container-xl mt-4">
+    <h3>Achievements</h3>
+    <div id="achievePosts" class="blog-grid mt-3"></div>
+    <div class="text-right mt-3 mb-4"><a href="achievements.html" class="btn btn-outline-primary">See Achievements</a></div>
+  </section>
+
+<!-- 5. 🌿 6-CARD UNIQUE "INSPIRE LIFE" SECTION -->
+<section class="container-xl mt-4">
+  <h3 id="inspireLifeTitle">Inspire Life 🌿</h3>
+  <p style="text-align:center; font-size:1rem; color:var(--muted); max-width: 700px; margin: 0 auto 30px auto;">
+    Exploring the values that drive my work in research, endurance, and community.
+  </p>
+  
+  <div id="inspireOverlayGrid">
+    
+    <!-- Card 1 -->
+    <div class="inspire-overlay-card animate-entrance" style="background-image: url('images/Lifesaving.jpg');" 
+         onerror="this.style.backgroundImage='url(https://placehold.co/600x400/c0382b/ffffff?text=Give+Life)'">
+      <div class="inspire-overlay-content">
+        <h5>Giving the Gift of Life</h5>
+        <p>Inspiring others to contribute to humanity, one drop at a time.</p>
+      </div>
+    </div>
+    
+    <!-- Card 2 -->
+    <div class="inspire-overlay-card animate-entrance" style="background-image: url('images/Promoting Fitness.jpg');"
+         onerror="this.style.backgroundImage='url(https://placehold.co/600x400/179b77/ffffff?text=Endurance)'">
+      <div class="inspire-overlay-content">
+        <h5>The Endurance Mindset</h5>
+        <p>True victory isn't the finish line, but the discipline it took to get there.</p>
+      </div>
+    </div>
+    
+    <!-- Card 3 -->
+    <div class="inspire-overlay-card animate-entrance" style="background-image: url('images/community.jpg');"
+         onerror="this.style.backgroundImage='url(https://placehold.co/600x400/f1c40f/000000?text=Community)'">
+      <div class="inspire-overlay-content">
+        <h5>Building Community</h5>
+        <p>Creating strong, inclusive, and compassionate connections that lift us all.</p>
+      </div>
+    </div>
+    
+    <!-- Card 4 -->
+    <div class="inspire-overlay-card animate-entrance" style="background-image: url('images/Mentoring.jpg');"
+         onerror="this.style.backgroundImage='url(https://placehold.co/600x400/596a75/ffffff?text=Mentoring)'">
+      <div class="inspire-overlay-content">
+        <h5>Mentoring the Future</h5>
+        <p>Empowering young minds through guidance and shared experience.</p>
+      </div>
+    </div>
+    
+    <!-- Card 5 -->
+    <div class="inspire-overlay-card animate-entrance" style="background-image: url('images/Growth.jpg');"
+         onerror="this.style.backgroundImage='url(https://placehold.co/600x400/179b77/ffffff?text=Growth)'">
+      <div class="inspire-overlay-content">
+        <h5>Power of Storytelling</h5>
+        <p>Sharing journeys to connect, inspire, and motivate change.</p>
+      </div>
     </div>
 
-    <!-- Address -->
-    <p style="font-size: 0.9em; color: #a2d5d9; margin: 10px 0;">Address: Lakshmipur, Bangladesh</p>
+      <div class="inspire-overlay-card animate-entrance" style="background-image: url('images/Diversity.jpg');"
+         onerror="this.style.backgroundImage='url(https://placehold.co/600x400/f1c40f/000000?text=Culture)'">
+      <div class="inspire-overlay-content">
+        <h5>Celebrating Culture</h5>
+        <p>Highlighting the beauty of diverse cultures to foster mutual respect.</p>
+      </div>
+    </div>
 
-    <!-- Copyright -->
-    <p style="font-size: 0.8em; color: #a2d5d9; margin: 10px 0;">&copy; 2025 All Rights Reserved.</p>
-
-    <!-- Admin Link -->
-    <a href="admin.html" style="color: #161616; text-decoration: none; font-size: 0.9em; font-weight: bold;">Admin</a>
-</section>
-
-    <!-- Back to Top Button -->
-    <button id="backToTop" 
-            style="position: fixed; bottom: 40px; right: 40px; padding: 12px 18px; font-size: 1.5em; font-weight: bold; color: #fff; background: rgba(0, 0, 0, 0.2); border: none; border-radius: 50%; cursor: pointer; display: none; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); transition: all 0.3s ease;">
-        ↑
-    </button>
-</footer>
-
-
-<!-- Bootstrap Icons CDN -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
-
-<!-- JavaScript for Back to Top Functionality -->
-<script>
-// Show the button when scrolling down
-window.onscroll = function() {
-    const backToTopButton = document.getElementById("backToTop");
-    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-        backToTopButton.style.display = "block";
-    } else {
-        backToTopButton.style.display = "none";
-    }
-};
-
-// Smooth scroll to top when button is clicked
-document.getElementById("backToTop").onclick = function() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-};
-</script>
-
-
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
-
-
-const firebaseConfig = {
-            apiKey: "AIzaSyBnDhuKL60HNcX40JI9zQ6YIZDr1hbMZHc",
-        authDomain: "trihardmurad.firebaseapp.com",
-        projectId: "trihardmurad",
-        storageBucket: "trihardmurad.appspot.com",
-        messagingSenderId: "146538214416",
-        appId: "1:146538214416:web:0d7ad5834eb432c385c695",
-        measurementId: "G-GQNJV0VQQQ"
-          };
-  
-          const app = initializeApp(firebaseConfig);
-          const db = getFirestore(app);
-  
-
-
-          let storytellingPosts = [];
-let projectsPosts = [];
-let athleticPosts = [];
-let achievementsPosts = [];
-let displayedStorytellingPosts = 0;
-let displayedProjectsPosts = 0;
-let displayedAthleticPosts = 0;
-let displayedAchievementsPosts = 0;
-
-const loadPosts = async () => {
-    try {
-        // Fetch storytelling posts
-        const storytellingQuerySnapshot = await getDocs(collection(db, 'storytellingPosts'));
-        storytellingPosts = storytellingQuerySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        displayStorytellingPosts();
-
-        // Fetch projects posts
-        const projectsQuerySnapshot = await getDocs(collection(db, 'projectsPosts'));
-        projectsPosts = projectsQuerySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        displayProjectsPosts();
-
-        // Fetch athletic posts
-        const athleticQuerySnapshot = await getDocs(collection(db, 'athleticPosts'));
-        athleticPosts = athleticQuerySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        displayAthleticPosts();
-
-        // Fetch achievements posts
-        const achievementsQuerySnapshot = await getDocs(collection(db, 'achievementsPosts'));
-        achievementsPosts = achievementsQuerySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        displayAchievementsPosts();
-    } catch (error) {
-        console.error("Error loading posts: ", error);
-    }
-};
-
-const createPostElement = (post, page) => {
-    const postElement = document.createElement('div');
-    postElement.classList.add('col-md-4', 'mb-3', 'blog-card');
-    postElement.innerHTML = `
-        <div class="card h-100" style="
-            position: relative; 
-            overflow: hidden; 
-            border-radius: 12px; 
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-            transition: transform 0.3s;">
-            
-            <!-- Image -->
-            <img src="${post.imageUrl}" alt="${post.title}" style="
-                width: 100%; 
-                height: 120px; 
-                object-fit: cover; 
-                border-top-left-radius: 12px; 
-                border-top-right-radius: 12px;">
-            
-            <!-- Content -->
-            <div class="card-body" style="
-                padding: 12px; 
-                font-size: 0.9em; 
-                color: #333;">
-                <h6 style="font-weight: bold; margin-bottom: 8px;">${post.title}</h6>
-                <p style="color: #555; font-size: 0.85em; margin-bottom: 8px;">${post.content.substring(0, 60)}...</p>
-                <small style="color: #888; font-size: 0.75em;">
-                    ${new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                </small>
-            </div>
-            
-            <!-- Share and Read More -->
-            <div style="
-                display: flex; 
-                justify-content: space-between; 
-                align-items: center; 
-                padding: 10px 12px; 
-                background: #f9f9f9; 
-                border-bottom-left-radius: 12px; 
-                border-bottom-right-radius: 12px;">
-                <div style="display: flex; gap: 8px;">
-                    <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${window.location.origin}/${page}-fullpost.html?id=${post.id}`)}" 
-                       target="_blank" style="color: #4267B2; font-size: 1.2em;">
-                        <i class="fab fa-facebook"></i>
-                    </a>
-                    <a href="https://api.whatsapp.com/send?text=${encodeURIComponent(`${post.title}: ${window.location.origin}/${page}-fullpost.html?id=${post.id}`)}" 
-                       target="_blank" style="color: #25D366; font-size: 1.2em;">
-                        <i class="fab fa-whatsapp"></i>
-                    </a>
-                    <a href="https://t.me/share/url?url=${encodeURIComponent(`${window.location.origin}/${page}-fullpost.html?id=${post.id}`)}&text=${encodeURIComponent(post.title)}" 
-                       target="_blank" style="color: #0088CC; font-size: 1.2em;">
-                        <i class="fab fa-telegram"></i>
-                    </a>
-
-
-                <a href="${page}-fullpost.html?id=${post.id}" 
-   class="btn btn-outline-primary" 
-   style="
-       color: #41b3a3; 
-       font-weight: bold; 
-       font-size: 0.85em; 
-       text-decoration: none; 
-       padding: 8px 16px; 
-       border: 2px solid #41b3a3; 
-       border-radius: 25px; 
-       display: inline-block; 
-       position: absolute; 
-       bottom: 10px; 
-       right: 10px; 
-       transition: all 0.3s ease;">
-   Read More...
-</a>
-
-
-        </div>
-    `;
-
-    // Hover Effects
-    postElement.querySelector('.card').addEventListener('mouseover', () => {
-        postElement.querySelector('.card').style.transform = 'scale(1.02)';
-    });
-    postElement.querySelector('.card').addEventListener('mouseout', () => {
-        postElement.querySelector('.card').style.transform = 'scale(1)';
-    });
-
-    return postElement;
-};
-
-
-const displayPosts = (posts, containerId, displayedPostsCount, viewMoreButtonId, page) => {
-    const container = document.getElementById(containerId);
-    const postsToShow = posts.slice(displayedPostsCount, displayedPostsCount + 3);
-    postsToShow.forEach(post => container.appendChild(createPostElement(post, page)));
-    displayedPostsCount += 3;
-    if (displayedPostsCount >= posts.length) {
-        const button = document.getElementById(viewMoreButtonId);
-        if (button) button.style.display = 'none';
-    }
-    return displayedPostsCount;
-};
-
-// Functions to display posts for each category
-const displayStorytellingPosts = () => {
-    displayedStorytellingPosts = displayPosts(storytellingPosts, 'storytelling-posts', displayedStorytellingPosts, 'view-more-storytelling-button', 'storytelling');
-};
-
-const displayProjectsPosts = () => {
-    displayedProjectsPosts = displayPosts(projectsPosts, 'projects-posts', displayedProjectsPosts, 'view-more-projects-button', 'projects');
-};
-
-const displayAthleticPosts = () => {
-    displayedAthleticPosts = displayPosts(athleticPosts, 'athletic-posts', displayedAthleticPosts, 'view-more-athletic-button', 'athletic');
-};
-
-const displayAchievementsPosts = () => {
-    displayedAchievementsPosts = displayPosts(achievementsPosts, 'achievements-posts', displayedAchievementsPosts, 'view-more-achievements-button', 'achievements');
-};
-
-// Load posts on DOMContentLoaded event
-window.addEventListener('DOMContentLoaded', () => {
-    loadPosts();
-
-    const storytellingButton = document.getElementById('view-more-storytelling-button');
-    if (storytellingButton) storytellingButton.addEventListener('click', displayStorytellingPosts);
-
-    const projectsButton = document.getElementById('view-more-projects-button');
-    if (projectsButton) projectsButton.addEventListener('click', displayProjectsPosts);
-
-    const athleticButton = document.getElementById('view-more-athletic-button');
-    if (athleticButton) athleticButton.addEventListener('click', displayAthleticPosts);
-
-    const achievementsButton = document.getElementById('view-more-achievements-button');
-    if (achievementsButton) achievementsButton.addEventListener('click', displayAchievementsPosts);
-});
-
-         
     
+    <!-- REMOVED Cards 7-10 -->
 
-      </script>
-  
-  </body>
-  
-  </html>
-  
+  </div>
+</section>
+<!-- --- End Inspire Life Section --- -->
+
+
+<!-- --- NEW SECTION 1: MATERIALS IN MOTION --- -->
+<section class="container-xl mt-4">
+  <h3 id="materialsTitle">Materials in Motion</h3>
+  <p style="text-align:center; font-size:1rem; color:var(--muted); max-width: 700px; margin: 0 auto 30px auto;">
+    Where materials science meets athletic performance – exploring the tech that pushes limits.
+  </p>
+
+  <div id="materialsGrid">
+    <!-- REPLACED Textiles with Wearables -->
+    <div class="material-card animate-entrance">
+      <div class="material-icon">
+        <!-- SVG for Smartwatch/Wearable -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg> 
+      </div>
+      <h5>Electronic Wearables</h5>
+      <p>Applying research in electronic & magnetic materials to develop next-gen sensors for smartwatches and apparel, enhancing biomechanic feedback and performance tracking.</p>
+    </div>
+    <div class="material-card animate-entrance">
+      <div class="material-icon">
+        <!-- SVG for Bike/Carbon Fiber -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.5 5.5c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-5 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm5.8 6H8.7l-1.9 4H18l-2.7-4zM6.3 18c-.7 0-1.3-.6-1.3-1.3 0-.7.6-1.3 1.3-1.3s1.3.6 1.3 1.3c0 .7-.6 1.3-1.3 1.3zm11.4 0c-.7 0-1.3-.6-1.3-1.3 0-.7.6-1.3 1.3-1.3s1.3.6 1.3 1.3c0 .7-.6 1.3-1.3 1.3zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+      </div>
+      <h5>Composite Structures</h5>
+      <!-- UPDATED Text -->
+      <p>Leveraging hands-on experience as a Bike Development Engineer at Meghna, developing alloy & carbon frames/components for global suppliers like Bilka, Halfords, and Raleigh to maximize power transfer and reduce weight.</p>
+    </div>
+    <div class="material-card animate-entrance">
+      <div class="material-icon">
+         <!-- SVG for Shoe Sole/Polymers -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.41 11.58l-8-8c-.38-.38-.89-.58-1.41-.58H4c-1.1 0-2 .9-2 2v8c0 .53.21 1.04.59 1.41l8 8c.39.39.9.59 1.41.59s1.02-.2 1.41-.59l7-7c.38-.38.59-.89.59-1.41s-.21-1.03-.59-1.42zM13 20.99l-8-8V5h7.99l8 8-7.99 7.99zM7.5 8C6.67 8 6 7.33 6 6.5S6.67 5 7.5 5 9 5.67 9 6.5 8.33 8 7.5 8z"/></svg>
+      </div>
+      <h5>Polymer Engineering</h5>
+      <p>Innovating foams and elastomers for running shoe midsoles that provide superior energy return, cushioning, and longevity.</p>
+    </div>
+  </div>
+  <div class="text-center mt-3 mb-4"><a href="research.html" class="btn btn-outline-primary">Explore Research Details</a></div>
+</section>
+<!-- --- END SECTION 1 --- -->
+
+
+<!-- --- NEW SECTION 2: GLOBAL COMMUNITY CONNECT --- -->
+<section class="container-xl mt-4">
+  <h3 id="communityTitle">Global Community Connect</h3>
+  <p style="text-align:center; font-size:1rem; color:var(--muted); max-width: 700px; margin: 0 auto 30px auto;">
+    Connecting minds and spirits across borders through shared passions for science, sport, and storytelling.
+  </p>
+
+  <div class="community-connect-container animate-entrance">
+    <div class="community-content">
+      <h5><i class="fas fa-globe-americas" style="margin-right: 8px;"></i> Bridging Distances</h5>
+      <p>From collaborating on international research projects to coaching athletes worldwide and sharing stories that resonate globally, my work aims to build bridges. It's about fostering understanding, sharing knowledge, and inspiring collective growth, no matter the geography.</p>
+      <p>Technology allows us to connect instantly, creating a vibrant network of learners, athletes, and storytellers united by common goals and mutual respect.</p>
+    </div>
+    <div class="community-visual">
+       <!-- Simple SVG Globe Path -->
+       <svg class="globe-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+         <circle cx="50" cy="50" r="48" stroke="currentColor" stroke-width="1" fill="none"/>
+         <!-- Simplified latitude/longitude lines -->
+         <path d="M50,2 A48,48 0 0,1 50,98 A48,48 0 0,1 50,2" stroke="currentColor" stroke-width="0.5" fill="none" />
+         <ellipse cx="50" cy="50" rx="24" ry="48" stroke="currentColor" stroke-width="0.5" fill="none" transform="rotate(30 50 50)"/>
+         <ellipse cx="50" cy="50" rx="40" ry="48" stroke="currentColor" stroke-width="0.5" fill="none" transform="rotate(60 50 50)"/>
+         <ellipse cx="50" cy="50" rx="48" ry="40" stroke="currentColor" stroke-width="0.5" fill="none" />
+          <ellipse cx="50" cy="50" rx="48" ry="20" stroke="currentColor" stroke-width="0.5" fill="none" />
+       </svg>
+       <!-- Animated connection points -->
+       <div class="connection-point"></div>
+       <div class="connection-point"></div>
+       <div class="connection-point"></div>
+    </div>
+  </div>
+  <!-- UPDATED Button Text -->
+  <div class="text-center mt-3 mb-4"><a href="community.html" class="btn btn-primary">Join the Conversation</a></div>
+</section>
+<!-- --- END SECTION 2 --- -->
+
+
+  <!-- Footer -->
+  <footer>
+    <!-- ... existing footer code ... -->
+ <div class="container-xl">
+  <div class="row">
+    <div class="col-md-6">
+      <h5>Contact</h5>
+      <form action="https://formspree.io/f/mwpkvrvr" method="POST" id="mainContact" style="max-width: 500px; margin: auto;">
+        <input class="form-control mb-2" name="name" id="cname" placeholder="Name" required>
+        <input class="form-control mb-2" name="email" id="cemail" placeholder="Email" type="email" required>
+        <textarea class="form-control mb-2" name="message" id="cmsg" rows="3" placeholder="Message" required></textarea>
+        <button class="btn btn-primary" type="submit">Send</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+        <div class="col-md-6 text-right d-none d-md-block">
+          <h5>Social</h5>
+          <div style="font-size:1.2rem;gap:10px;display:inline-flex;align-items:center;">
+            <a href="https://www.facebook.com/murad4231" target="_blank" class="text-decoration-none text-muted"><i class="bi bi-facebook"></i></a>
+            <a href="https://www.linkedin.com/in/muradhossain42" target="_blank" class="text-decoration-none text-muted"><i class="bi bi-linkedin"></i></a>
+            <a href="mailto:muradcu42@gmail.com" class="text-decoration-none text-muted"><i class="bi bi-envelope"></i></a>
+          </div>
+          <p class="mt-3 dev-note">Address: Lakshmipur, Bangladesh</p>
+        </div>
+      </div>
+
+      <div class="text-center mt-4 dev-note">
+        <!-- MODIFIED: Smart admin link added -->
+        <a href="admin.html" style="text-decoration: none; color: inherit;" title="Admin Section">&copy; 2025</a>
+        Murad Hossain — Built with passion.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Motivational Quote Card -->
+  <div id="quoteCard">
+    <p id="quoteText">Loading quote...</p>
+    <small id="quoteAuthor"></small>
+  </div>
+
+  <!-- Toast Notification HTML -->
+  <div id="toastNotification"></div>
+
+  <!-- FAB -->
+  <div class="fab" id="scrollTopFab" title="Scroll to top" style="display: none; transition: opacity 0.3s ease;">
+    <i class="fas fa-arrow-up"></i>
+  </div>
+
+  <!-- Firebase + App Logic -->
+  <script type="module">
+    // FIX 1: Reverted to original Firebase setup.
+    // Removed auth imports.
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js';
+    import {
+      getFirestore, collection, getDocs, addDoc, query, orderBy, limit, setLogLevel
+    } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js';
+
+    // --- Config based on instructions ---
+    
+    // Removed appId variable
+    
+    // Use user-provided config directly
+    const firebaseConfig = {
+          apiKey: "AIzaSyBnDhuKL60HNcX40JI9zQ6YIZDr1hbMZHc",
+          authDomain: "trihardmurad.firebaseapp.com",
+          projectId: "trihardmurad",
+          storageBucket: "trihardmurad.appspot.com",
+          messagingSenderId: "146538214416",
+          appId: "1:146538214416:web:0d7ad5834eb432c385c695",
+          measurementId: "G-GQNJV0VQQQ"
+        };
+    
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    // Removed auth variable and isAuthReady flag
+    // setLogLevel('debug'); // Uncomment for Firestore debugging
+
+    // map collection => page prefix
+    const COLLECTION_MAP = {
+      athleticPosts: 'athletic',
+      storytellingPosts: 'storytelling',
+      projectsPosts: 'projects',
+      achievementsPosts: 'achievements'
+    };
+
+    // --- Authentication (REMOVED) ---
+    // Removed initializeAuth function
+
+    // fetch helper
+    async function fetchPosts(collectionName, limitCount = 3) {
+      // Removed isAuthReady check
+      try {
+        // FIX 1: Reverted to simple collection name
+        const collectionPath = collectionName;
+        const q = query(collection(db, collectionPath), orderBy('date', 'desc'), limit(limitCount));
+        const snap = await getDocs(q);
+        
+        // annotate source collection and page name
+        return snap.docs.map(d => {
+          const data = d.data();
+          return { id: d.id, source: collectionName, sourcePage: COLLECTION_MAP[collectionName] || collectionName.replace(/Posts$/,''), ...data };
+        });
+      } catch (err) {
+        console.error('fetchPosts error for', collectionName, err);
+        return [];
+      }
+    }
+
+    // intersection observer for reveal animations
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('visible');
+      });
+    }, { threshold: 0.12 });
+
+    // Observe all elements with .animate-entrance
+    // This will now also pick up the new .inspire-overlay-card elements
+    document.querySelectorAll('.animate-entrance').forEach(el => io.observe(el));
+
+    // Feature 5: Staggered Animation for Inspire Cards
+    document.querySelectorAll('#inspireOverlayGrid .inspire-overlay-card').forEach((card, index) => {
+      card.style.transitionDelay = `${index * 80}ms`; // 80ms delay between cards
+    });
+
+    // Staggered Animation for new Material Cards
+    document.querySelectorAll('#materialsGrid .material-card').forEach((card, index) => {
+      card.style.transitionDelay = `${index * 100}ms`; 
+    });
+
+
+    // render cards with correct Read More links (uses sourcePage)
+    function renderCards(containerId, posts) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      container.innerHTML = '';
+
+      posts.forEach(post => {
+        // ensure safe fallback values
+        const title = post.title || 'Untitled';
+        const excerpt = (post.content || '').slice(0, 100);
+        const image = post.imageUrl || `https://placehold.co/800x400/eee/999?text=${encodeURIComponent(title)}`;
+        const dateStr = post.date ? new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+
+        // determine the page prefix for fullpost link
+        const pagePrefix = post.sourcePage || (post.source ? COLLECTION_MAP[post.source] : 'athletic');
+        const fullpostUrl = `${pagePrefix}-fullpost.html?id=${encodeURIComponent(post.id)}`;
+
+        const article = document.createElement('article');
+        // Add animate-entrance for fade-in
+        article.className = 'blog-post-card small-on-wide animate-entrance'; 
+        article.innerHTML = `
+          <img loading="lazy" src="${image}" alt="${title}" onerror="this.src='https://placehold.co/800x400/eee/999?text=Image+Error'">
+          <div class="p-3">
+            <h6>${title}</h6>
+            <p style="color:var(--muted)">${excerpt}...</p>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;">
+              <small style="color:var(--muted)">${dateStr}</small>
+              <div style="display:flex;align-items:center;gap:10px;">
+                <button class="share-btn" data-url="${fullpostUrl}" data-title="${title.replace(/"/g, '&quot;')}" data-text="${(excerpt || '').replace(/"/g, '&quot;')}" title="Share post">
+                  <i class="fas fa-share-alt"></i>
+                </button>
+                <a class="btn btn-sm btn-outline-primary" href="${fullpostUrl}" style="margin-left:8px;">Read More...</a>
+              </div>
+            </div>
+          </div>
+        `;
+        container.appendChild(article);
+        // observe newly added card for entrance animation
+        io.observe(article);
+      });
+    }
+
+    // load all sections and build miniFeed from all posts
+    async function loadAll() {
+      // 4. FETCH 3 POSTS PER CATEGORY
+      const [athletic, storytelling, projects, achievements] = await Promise.all([
+        fetchPosts('athleticPosts', 3),
+        fetchPosts('storytellingPosts', 3),
+        fetchPosts('projectsPosts', 3),
+        fetchPosts('achievementsPosts', 3)
+      ]);
+
+      // render each section (with 3 posts each)
+      renderCards('athleticPosts', athletic);
+      renderCards('storyPosts', storytelling);
+      renderCards('projectsPosts', projects);
+      renderCards('achievePosts', achievements);
+
+      // combine into miniFeed (interleave by date)
+      const all = [...athletic, ...storytelling, ...projects, ...achievements];
+      // sort by date descending (safely)
+      all.sort((a,b)=>{
+        const da = a.date ? new Date(a.date).getTime() : 0;
+        const db = b.date ? new Date(b.date).getTime() : 0;
+        return db - da;
+      });
+
+      // MiniFeed remains 4 posts, as requested
+      const mini = all.slice(0, 4);
+      renderCards('miniFeed', mini);
+
+
+
+
+
+
+
+
+
+
+
+
+
+      // adjust profile gradient to current accent (initial)
+      updateProfileGradient();
+    }
+
+    // theme & accent handlers
+    const accentDots = document.querySelectorAll('.accent-dot');
+    function setAccent(accentKey) {
+      document.documentElement.setAttribute('data-accent', accentKey);
+      localStorage.setItem('site-accent', accentKey);
+      // set css vars for profile gradient
+      updateProfileGradient();
+      // mark aria-checked
+      accentDots.forEach(d => d.setAttribute('aria-checked', d.dataset.accent === accentKey ? 'true' : 'false'));
+      // redraw hamburger icon color
+      drawHamburger();
+      // Update logo border color
+      const logoImg = document.querySelector('.logo-img');
+      if (logoImg) {
+        logoImg.style.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
+      }
+      // 2. Update scroll bar color
+      const scrollIndicator = document.getElementById('scrollProgressIndicator');
+      if (scrollIndicator) {
+        scrollIndicator.style.background = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
+      }
+    }
+
+    function updateProfileGradient(){
+      // compute profile gradient from computed primary colors
+      const computed = getComputedStyle(document.documentElement);
+      const p = computed.getPropertyValue('--primary').trim();
+      const p2 = computed.getPropertyValue('--primary-700').trim();
+      document.documentElement.style.setProperty('--profile-grad-from', p || 'var(--primary)');
+      document.documentElement.style.setProperty('--profile-grad-to', p2 || 'var(--primary-700)');
+      // apply to profile card
+      const profileCard = document.getElementById('profileCard');
+      if (profileCard) profileCard.style.background = `linear-gradient(135deg, ${p}, ${p2})`;
+    }
+
+    // attach event listeners to accent dots
+    accentDots.forEach(dot => {
+      dot.addEventListener('click', () => {
+        setAccent(dot.dataset.accent);
+      });
+    });
+
+    // day/night toggle
+    const themeSwitch = document.getElementById('themeSwitch');
+    const switchVisual = document.getElementById('switchVisual');
+    const switchDot = document.getElementById('switchDot');
+    const toggleIcon = document.getElementById('toggleIcon');
+
+    function setTheme(t) {
+      document.documentElement.setAttribute('data-theme', t);
+      localStorage.setItem('site-theme', t);
+      if (t === 'dark') {
+        switchDot.style.left = '23px';
+        toggleIcon.className = 'fas fa-moon mr-2';
+      } else {
+        switchDot.style.left = '3px';
+        toggleIcon.className = 'fas fa-sun mr-2';
+      }
+    }
+
+    // initial load of stored choices
+    const storedTheme = localStorage.getItem('site-theme') || 'light';
+    setTheme(storedTheme);
+    const storedAccent = localStorage.getItem('site-accent') || 'green';
+    setAccent(storedAccent);
+
+    // clicking switchVisual toggles theme
+    switchVisual.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme') || 'light';
+      setTheme(current === 'dark' ? 'light' : 'dark');
+    });
+
+    // Service Worker registration (simple)
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(err => console.warn('SW failed', err));
+    }
+
+    // draw hamburger svg colored by accent
+    function drawHamburger(){
+      const accent = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim() || '#20c997';
+      const svg = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath stroke='${encodeURIComponent(accent)}' stroke-width='2' d='M3 6h18M3 12h18M3 18h18' stroke-linecap='round'/%3E%3C/svg%3E`;
+      const el = document.getElementById('hamburgerSvg');
+      if (el) {
+        el.style.backgroundImage = `url("${svg}")`;
+        el.style.backgroundSize = '20px 20px';
+      }
+    }
+    drawHamburger();
+    window.addEventListener('resize', drawHamburger);
+
+    // Indexed simple cache (localStorage)
+    // Renamed to avoid confusion with IndexedDB
+    const localCache = {
+      async get(k){ return localStorage.getItem(k) ? JSON.parse(localStorage.getItem(k)) : null; },
+      async set(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
+    };
+
+    // --- Toast Notification Logic ---
+    const toastEl = document.getElementById('toastNotification');
+    let toastTimeout;
+
+    function showToast(message, isError = false) {
+      clearTimeout(toastTimeout);
+      toastEl.textContent = message;
+      if (isError) {
+        toastEl.classList.add('error');
+      } else {
+        toastEl.classList.remove('error');
+      }
+      
+      toastEl.classList.add('show');
+
+      toastTimeout = setTimeout(() => {
+        toastEl.classList.remove('show');
+      }, 3000); // Hide after 3 seconds
+    }
+
+    // --- Unified Share Logic ---
+    document.addEventListener('click', async (e) => {
+      const shareButton = e.target.closest('.share-btn');
+      if (!shareButton) return; // Not a share button click
+
+      // Use full URL for sharing
+      const fullUrl = new URL(shareButton.dataset.url, window.location.origin).href;
+      const title = shareButton.dataset.title;
+      const text = shareButton.dataset.text;
+
+      if (navigator.share) {
+        // --- Web Share API (Mobile / Supported) ---
+        try {
+          await navigator.share({
+            title: title,
+            text: text,
+            url: fullUrl,
+          });
+          // console.log('Post shared successfully');
+        } catch (err) {
+          // User cancelled share, ignore error
+          // console.warn('Share was cancelled or failed', err);
+        }
+      } else {
+        // --- Fallback: Copy to Clipboard (Desktop / Unsupported) ---
+        try {
+          // Create a temporary textarea to copy from
+          const tempText = document.createElement('textarea');
+          tempText.value = fullUrl;
+          // Make it invisible
+          tempText.style.position = 'absolute';
+          tempText.style.left = '-9999px';
+          document.body.appendChild(tempText);
+          tempText.select();
+          document.execCommand('copy'); // Use execCommand as per instructions
+          document.body.removeChild(tempText);
+          
+          showToast('Link copied to clipboard!');
+        } catch (err) {
+          console.error('Failed to copy link', err);
+          showToast('Failed to copy link.', true);
+        }
+      }
+    });
+
+
+    // contact form handler using addDoc (Firestore)
+    window.handleContact = async function(e){
+      e.preventDefault();
+      // Removed auth check
+      const name = document.getElementById('cname').value;
+      const email = document.getElementById('cemail').value;
+      const msg = document.getElementById('cmsg').value;
+      
+      const sendButton = e.target.querySelector('button');
+      sendButton.disabled = true;
+      sendButton.textContent = 'Sending...';
+
+      try {
+        // FIX 1: Reverted to simple collection name
+        const collectionPath = 'contacts';
+        await addDoc(collection(db, collectionPath), { name, email, message: msg, createdAt: new Date().toISOString() });
+        showToast('Thanks! Message sent.');
+        e.target.reset();
+      } catch (err) {
+        console.error('contact error', err);
+        showToast('Failed to send. Please try later.', true);
+      } finally {
+        sendButton.disabled = false;
+        sendButton.textContent = 'Send';
+      }
+    };
+
+    // Scroll-to-top FAB logic
+    const scrollTopFab = document.getElementById('scrollTopFab');
+    if (scrollTopFab) {
+      window.addEventListener('scroll', () => {
+        if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+          scrollTopFab.style.display = 'flex';
+          scrollTopFab.style.opacity = '1';
+        } else {
+          scrollTopFab.style.opacity = '0';
+          // Wait for transition to finish before hiding
+          setTimeout(() => {
+             if (!(document.body.scrollTop > 100 || document.documentElement.scrollTop > 100)) {
+               scrollTopFab.style.display = 'none';
+             }
+          }, 300);
+        }
+      });
+
+      scrollTopFab.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+
+    // 2. SCROLL PROGRESS BAR LOGIC
+    const scrollProgressIndicator = document.getElementById('scrollProgressIndicator');
+    window.addEventListener('scroll', () => {
+      const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+      // Ensure we don't divide by zero if content is small
+      const height = scrollHeight - clientHeight;
+      const scrollPercent = (scrollTop / height) * 100;
+      
+      if (scrollProgressIndicator) {
+        scrollProgressIndicator.style.width = `${scrollPercent}%`;
+      }
+    });
+
+
+    // --- Gemini API Logic ---
+
+    // 1. API Configuration
+    const geminiApiKey = "AIzaSyBnDhuKL60HNcX40JI9zQ6YIZDr1hbMZHc"; // Leave empty, as per instructions
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${geminiApiKey}`;
+    const systemPrompt = "You are Murad, an expert materials researcher and endurance coach. You are positive, motivating, and knowledgeable. Provide a concise, actionable training tip (for running, swimming, or triathlons) in 1-2 sentences. Do not use markdown or greetings.";
+
+    // 3. GEMINI PROMPT VARIETY
+    const geminiPrompts = [
+      "Give me a new, concise training tip for endurance athletes.",
+      "What's a quick tip for improving running form?",
+      "Share a short piece of advice for triathlon recovery.",
+      "What's one thing an endurance runner can do to prevent injury?",
+      "A brief motivational tip for a long-distance swimmer.",
+      "What's a simple nutrition tip for a triathlete?",
+      "How can an endurance athlete improve mental toughness?",
+      "Give me a concise tip about pacing for a marathon."
+    ];
+
+    // 2. Fetch with Retry (Exponential Backoff)
+    async function fetchWithRetry(url, options, retries = 3, delay = 1000) {
+      for (let i = 0; i < retries; i++) {
+        try {
+          const response = await fetch(url, options);
+          if (response.ok) {
+            return response.json();
+          }
+          // Do not retry on client errors (4xx)
+          if (response.status >= 400 && response.status < 500) {
+            const errorBody = await response.json();
+            console.error("Client error:", errorBody);
+            throw new Error(`Client error: ${response.status}`);
+          }
+          // Retry on server errors (5xx)
+        } catch (error) {
+          if (i === retries - 1) throw error; // Re-throw last error
+        }
+        // Wait before retrying
+        await new Promise(resolve => setTimeout(resolve, delay));
+        delay *= 2; // Exponential backoff
+      }
+      throw new Error('Failed to fetch from API after several retries.');
+    }
+
+    // 3. Call Gemini API
+    async function callGeminiApi(userPrompt) {
+      const payload = {
+        contents: [{ parts: [{ text: userPrompt }] }],
+        systemInstruction: {
+          parts: [{ text: systemPrompt }]
+        },
+      };
+
+      const options = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      };
+
+      const result = await fetchWithRetry(apiUrl, options);
+      const candidate = result.candidates?.[0];
+
+      if (candidate && candidate.content?.parts?.[0]?.text) {
+        return candidate.content.parts[0].text;
+      } else {
+        console.warn("Invalid response structure from API:", result);
+        throw new Error('Invalid response structure from API.');
+      }
+    }
+
+    // 4. UI Handler for the Widget
+    const tipContentEl = document.getElementById('tipContent');
+    const tipLoadingEl = document.getElementById('tipLoading');
+    const getTipBtn = document.getElementById('getTipBtn');
+
+    async function handleGetTip() {
+      if (!tipContentEl || !tipLoadingEl || !getTipBtn) return;
+
+      getTipBtn.disabled = true;
+      tipLoadingEl.style.display = 'flex';
+      tipContentEl.style.opacity = '0.3';
+
+      try {
+        // 3. PICK A RANDOM PROMPT
+        const userQuery = geminiPrompts[Math.floor(Math.random() * geminiPrompts.length)];
+        const tip = await callGeminiApi(userQuery);
+        tipContentEl.textContent = tip.trim();
+      } catch (err) {
+        console.error('Gemini API Error:', err);
+        tipContentEl.textContent = 'Could not load a tip right now. Please try again!';
+      } finally {
+        getTipBtn.disabled = false;
+        tipLoadingEl.style.display = 'none';
+        tipContentEl.style.opacity = '1';
+      }
+    }
+
+    // Add event listener
+    if (getTipBtn) {
+      getTipBtn.addEventListener('click', handleGetTip);
+    }
+    
+    // --- End Gemini API Logic ---
+
+
+    // --- Motivational Quote Logic ---
+    const quotes = [
+      { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+      { text: "Success is not final, failure is not fatal: it is the courage to continue that counts.", author: "Winston Churchill" },
+      { text: "Believe you can and you're halfway there.", author: "Theodore Roosevelt" },
+      { text: "Endurance is not just the ability to bear a hard thing, but to turn it into glory.", author: "William Barclay" },
+      { text: "It does not matter how slowly you go as long as you do not stop.", author: "Confucius" }
+    ];
+    const quoteTextEl = document.getElementById('quoteText');
+    const quoteAuthorEl = document.getElementById('quoteAuthor');
+    let quoteIndex = 0;
+
+    function updateQuote() {
+      if (!quoteTextEl || !quoteAuthorEl) return;
+
+      // Fade out
+      quoteTextEl.style.opacity = '0';
+      quoteAuthorEl.style.opacity = '0';
+
+      setTimeout(() => {
+        // Get a new random index, ensuring it's different from the current one
+        let newIndex = quoteIndex;
+        while (newIndex === quoteIndex) {
+            newIndex = Math.floor(Math.random() * quotes.length);
+        }
+        quoteIndex = newIndex;
+
+        const quote = quotes[quoteIndex];
+        quoteTextEl.textContent = `"${quote.text}"`;
+        quoteAuthorEl.textContent = `— ${quote.author}`;
+        
+        // Fade in
+        quoteTextEl.style.opacity = '1';
+        quoteAuthorEl.style.opacity = '1';
+      }, 500); // Wait for fade out
+    }
+
+    // Initial quote
+    updateQuote();
+    // Rotate every 8 seconds
+    setInterval(updateQuote, 8000);
+
+    // --- End Quote Logic ---
+
+    // --- Features 1, 3, 4: Dynamic Card Hover Effects ---
+    const inspireCards = document.querySelectorAll('.inspire-overlay-card');
+
+    inspireCards.forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        card.style.transition = 'all 0.05s ease-out'; // Fast reaction
+        card.style.willChange = 'transform, background-position';
+      });
+
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        // Calculate mouse position relative to card center
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+
+        // Define intensity
+        const tiltIntensity = 0.1;
+        const magnetIntensity = 0.2;
+        const parallaxIntensity = 0.03;
+
+        // 1. 3D Tilt
+        const rotateX = -y * tiltIntensity;
+        const rotateY = x * tiltIntensity;
+
+        // 3. Magnetic Follow
+        const translateX = x * magnetIntensity;
+        const translateY = y * magnetIntensity;
+
+        // 4. Background Parallax
+        const bgPosX = -x * parallaxIntensity;
+        const bgPosY = -y * parallaxIntensity;
+
+        // Apply combined transforms
+        card.style.transform = `
+          perspective(1000px) 
+          rotateX(${rotateX}deg) 
+          rotateY(${rotateY}deg) 
+          translateX(${translateX}px) 
+          translateY(${translateY}px) 
+          scale(1.03)
+        `;
+        
+        card.style.backgroundPosition = `calc(50% + ${bgPosX}px) calc(50% + ${bgPosY}px)`;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transition = 'all 0.4s cubic-bezier(.17,.67,.26,1.24)'; // Spring back
+        card.style.willChange = 'auto';
+        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateX(0px) translateY(0px) scale(1)';
+        card.style.backgroundPosition = 'center';
+      });
+    });
+    // --- End Dynamic Card Hover Effects ---
+
+
+    // smooth page transitions (fade-out on nav click)
+    document.querySelectorAll('a.nav-link, a[href$=".html"]').forEach(a=>{
+      a.addEventListener('click', (ev)=>{
+        const href = a.getAttribute('href');
+        // only intercept same-origin html navigations
+        if (!href || href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('#')) return;
+        ev.preventDefault();
+        document.documentElement.classList.add('page-fade-out');
+        setTimeout(()=> { location.href = href; }, 320);
+      });
+    });
+
+    // --- Main App Initialization ---
+    (async ()=>{
+      // 1. Authenticate with Firebase (REMOVED)
+      // await initializeAuth(); // No longer needed
+
+      // 2. Load cached feed first (if any)
+      const cached = await localCache.get('miniFeed_v1');
+      if (cached && cached.length) {
+        renderCards('miniFeed', cached);
+      }
+      
+      // 3. Load all dynamic content from Firestore
+      await loadAll(); // Now runs without waiting for auth
+
+      // 4. Cache the newly loaded feed
+      // (This logic is now inside loadAll, but we'll re-cache the mini-feed)
+      const [ath, story, proj, ach] = await Promise.all([
+        fetchPosts('athleticPosts', 3), // Fetch 3
+        fetchPosts('storytellingPosts', 3), // Fetch 3
+        fetchPosts('projectsPosts', 3), // Fetch 3
+        fetchPosts('achievementsPosts', 3) // Fetch 3
+      ]);
+      const all = [...ath, ...story, ...proj, ...ach].sort((a,b)=> (b.date?new Date(b.date).getTime():0) - (a.date?new Date(a.date).getTime():0));
+      // Cache only the top 4 for the mini-feed
+      await localCache.set('miniFeed_v1', all.slice(0,4));
+
+      // 5. Load initial Gemini tip
+      handleGetTip();
+      
+      // 6. Observe new inspire cards (REMOVED - handled by global observer)
+      // document.querySelectorAll('#inspireLife .inspire-card').forEach(el => io.observe(el));
+    })();
+
+  </script>
+
+  <!-- Accessibility: Skip to content -->
+  <a href="#leftHero" style="position:absolute;left:-9999px;top:auto;">Skip to content</a>
+
+  <!-- Bootstrap JS (for hamburger menu) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
+

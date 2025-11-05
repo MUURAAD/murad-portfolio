@@ -1,676 +1,1767 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light" data-accent="green">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Athletics - Murad</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Athletics - Murad</title>
 
-        /* Global Styling */
-        body {
-            font-family: 'Comfortaa', sans-serif;
-            background-color: #fef9e7;
-            color: #333;
-            margin: 0;
-            padding: 0;
-        }
-        /* Custom styles for cards and hover effects */
-        .card img {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-        }
+  <!-- Bootstrap + Icons + Fonts -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;700&display=swap" rel="stylesheet">
 
-        .card-body {
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            flex-grow: 1;
-        }
+  <style>
+    /* ----------------- THEME & ACCENT VARIABLES ----------------- */
+    :root{
+      --bg: #f4f7fb; --card-bg: #ffffff; --muted: #596a75;
+      --primary: #20c997; --primary-700:#179b77;
+      --glass: rgba(255,255,255,0.6); --shadow: 0 10px 30px rgba(16,24,40,0.08);
+      --radius: 14px; --accent-shadow: 0 12px 30px rgba(32,201,151,0.14);
+      --nav-height: 64px; --max-content-width: 1180px;
+      --profile-grad-from: var(--primary); --profile-grad-to: var(--primary-700);
+    }
 
-        .card:hover,
-        .card.touch-hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
+    [data-theme="dark"]{
+      --bg: #0b1220; --card-bg: #0f1b28; --muted: #b6cad6;
+      --primary: #43d9b2; --primary-700:#2fbf9a;
+      --glass: rgba(255,255,255,0.03); --shadow: 0 12px 40px rgba(0,0,0,0.7);
+      --accent-shadow: 0 12px 30px rgba(67,217,178,0.08);
+    }
 
-        /* Responsive styling for cards */
-        .blog-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
+    /* Traffic-light accents */
+    [data-accent="green"] { --primary: #20c997; --primary-700: #179b77; --accent-shadow: 0 12px 30px rgba(32,201,151,0.14); }
+    [data-accent="yellow"] { --primary: #f1c40f; --primary-700: #d4a70b; --accent-shadow: 0 12px 30px rgba(241,196,15,0.12); }
+    [data-accent="red"] { --primary: #e74c3c; --primary-700: #c0382b; --accent-shadow: 0 12px 30px rgba(231,76,60,0.12); }
 
-        /* Share icon styles */
-        .share-icons {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 50px;
-            cursor: pointer;
-            background-color: transparent;
-            border-radius: 25px;
-            width: 50px;
-            overflow: hidden;
-            transition: width 0.5s ease, border-radius 0.5s ease;
-            margin: 0 auto;
-        }
+    html,body{height:100%;}
+    body{
+      margin:0; font-family:'Comfortaa',sans-serif;
+      background:var(--bg); color:var(--muted);
+      transition: background .35s ease, color .35s ease;
+      padding-top: var(--nav-height);
+      padding-bottom: 60px; /* For mobile quote bar */
+    }
 
-        .share-icons__item {
-            opacity: 0;
-            transform: scale(0.5);
-            transition: opacity 0.3s ease, transform 0.3s ease;
-            padding: 0 10px;
-        }
+    /* layout utilities */
+    .container-xl{ max-width: var(--max-content-width); }
+    .shadow-soft{ box-shadow: var(--shadow); }
+    .glass{ background: var(--glass); border-radius: 10px; }
 
-        .share-icons:hover .share-icons__item,
-        .share-icons.touch-hover .share-icons__item {
-            opacity: 1;
-            transform: scale(1);
-        }
+    /* NAVBAR (Copied from index.html) */
+    .navbar-custom{
+      height: var(--nav-height);
+      background: linear-gradient(90deg, rgba(0,0,0,0.04), rgba(255,255,255,0.02));
+      backdrop-filter: blur(6px);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+    }
+    .logo-img {
+      height: 40px; width: auto; object-fit: contain;
+      border-radius: 50%; border: 2px solid var(--primary);
+      transition: border-color 0.3s ease;
+    }
+    .logo-text{ font-weight:800; color:var(--primary-700); font-size:1.35rem; }
+    .nav-link{ color:var(--muted) !important; padding:8px 14px; border-radius:8px; font-weight:600; }
+    .nav-link:hover{ background: rgba(0,0,0,0.04); color:var(--primary) !important; transform: translateY(-3px); }
 
-        .share-icon-main {
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            right: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10;
-            transition: opacity 0.3s ease;
-        }
+    .accent-palette { display:flex; gap:8px; align-items:center; }
+    .accent-dot {
+      width:18px; height:18px; border-radius:50%;
+      cursor:pointer; border:2px solid rgba(255,255,255,0.9);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+    }
+    .accent-dot[aria-checked="true"] { transform: scale(1.15); box-shadow: 0 6px 18px rgba(0,0,0,0.15); }
 
-        
-       
-        /* Styling for secondary nav and filters */
-        .secondary-nav {
-            background-color: #00ad5c;
-            padding: 10px 20px;
-        }
+    @media (max-width: 991.98px) {
+      .navbar-collapse.show {
+        background: var(--card-bg);
+        padding: 16px; border-radius: var(--radius);
+        margin-top: 8px; box-shadow: var(--shadow); display: block;
+      }
+      .navbar-collapse.show .navbar-nav .nav-link { padding: 10px 12px; }
+    }
 
-        .btn-primary {
-            background-color: #5f125b;
-            color: white;
-        }
-    </style>
-    
+    /* Page-specific Filter Bar Style */
+    .filter-bar {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+    }
+    .filter-bar .dropdown-menu {
+      background: var(--card-bg);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--glass);
+      backdrop-filter: blur(5px);
+    }
+    .filter-bar .dropdown-item {
+      color: var(--muted);
+      background: transparent;
+      cursor: pointer;
+    }
+    .filter-bar .dropdown-item:hover {
+      background: var(--glass);
+      color: var(--primary);
+    }
+    .filter-bar .dropdown-item input {
+      margin-right: 10px;
+    }
+    .filter-bar .form-control {
+      background: var(--glass);
+      border-color: transparent;
+      color: var(--muted);
+    }
+    .filter-bar .form-control::placeholder {
+      color: var(--muted);
+      opacity: 0.7;
+    }
+    .btn-outline-secondary {
+      color: var(--muted);
+      border-color: var(--glass);
+    }
+    .btn-outline-secondary:hover {
+      background: var(--glass);
+      color: var(--primary);
+    }
+    .btn-primary {
+      background-color: var(--primary);
+      border-color: var(--primary);
+      transition: all 0.3s ease;
+    }
+    .btn-primary:hover {
+      background-color: var(--primary-700);
+      border-color: var(--primary-700);
+    }
+
+    /* --- NEW: V2 Blog Grid & Card Styles --- */
+    .blog-grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Larger base size */
+      gap: 24px; /* Increased gap */
+    }
+
+    .blog-card-v2 {
+      display: flex;
+      flex-direction: column;
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--glass);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(.17,.67,.26,1.24);
+    }
+    .blog-card-v2:hover {
+      transform: perspective(1000px) translateY(-8px) rotateX(3deg);
+      box-shadow: var(--accent-shadow);
+      border-color: var(--primary);
+    }
+
+    .blog-card-v2-image {
+      height: 180px;
+      position: relative;
+      background-size: cover;
+      background-position: center;
+      overflow: hidden;
+    }
+    .blog-card-v2-tag {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: var(--glass);
+      backdrop-filter: blur(5px);
+      color: var(--muted);
+      padding: 4px 10px;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border: 1px solid var(--glass);
+    }
+    .blog-card-v2-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: var(--primary);
+      color: #fff;
+      padding: 4px 10px;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    .blog-card-v2-new-badge {
+      animation: pulse 1.5s infinite;
+    }
+    /* Special badge for top post */
+    .blog-card-v2-top-badge {
+      background: linear-gradient(45deg, #f1c40f, #e67e22);
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(var(--primary), 0.7); }
+      70% { transform: scale(1.05); box-shadow: 0 0 10px 15px rgba(var(--primary), 0); }
+      100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(var(--primary), 0); }
+    }
+
+    .blog-card-v2-content {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1; /* This makes the content fill the space */
+    }
+    .blog-card-v2-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .blog-card-v2-title {
+      font-size: 1.15rem;
+      color: var(--primary-700);
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    [data-theme="dark"] .blog-card-v2-title {
+      color: var(--primary);
+    }
+    .blog-card-v2-excerpt {
+      font-size: 0.9rem;
+      flex-grow: 1; /* This pushes the footer down */
+      margin-bottom: 12px;
+    }
+    .blog-card-v2-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--glass);
+      padding-top: 12px;
+    }
+
+    /* Use theme colors for buttons */
+    .btn-outline-primary {
+        border-color: var(--primary);
+        color: var(--primary);
+    }
+    .btn-outline-primary:hover {
+        background-color: var(--primary);
+        color: #fff;
+    }
+
+    /* --- NEW: Like Button Style --- */
+    .like-btn {
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.9rem;
+      padding: 4px;
+      transition: color 0.2s ease;
+    }
+    .like-btn:hover {
+      color: var(--primary);
+    }
+    .like-btn .fa-heart {
+      font-size: 1.1rem;
+    }
+    .like-btn.liked {
+      color: var(--primary); /* Accent color when liked */
+    }
+
+
+    /* Skeleton V2 */
+    .skeleton-card {
+      background: var(--glass);
+      border-radius: var(--radius);
+      overflow: hidden;
+      padding: 16px;
+    }
+    .skeleton-image {
+      height: 164px; /* Image height - padding */
+      background: var(--glass);
+      border-radius: 8px;
+      margin-bottom: 12px;
+    }
+    .skeleton-line {
+      background: var(--glass);
+      height: 16px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+
+    /* --- NEW: Featured Post Style --- */
+    #featuredPostContainer {
+      margin-bottom: 24px;
+    }
+    .featured-card {
+      display: flex;
+      flex-direction: column;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 2px solid var(--primary);
+      overflow: hidden;
+      height: 300px;
+      position: relative;
+    }
+    .featured-card-image {
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      position: absolute;
+      top: 0; left: 0;
+      transition: transform 0.4s ease;
+    }
+    .featured-card:hover .featured-card-image {
+      transform: scale(1.05);
+    }
+    .featured-card-content {
+      position: relative;
+      z-index: 2;
+      padding: 24px;
+      margin-top: auto;
+      background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0));
+      color: #fff;
+    }
+    .featured-card-content h3 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #fff !important;
+      margin-bottom: 8px;
+    }
+    .featured-card-content p {
+      color: #eee;
+      margin-bottom: 12px;
+    }
+    .featured-card-badge {
+      position: absolute;
+      top: 16px; left: 16px; z-index: 3;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 50px;
+    }
+
+    @media (min-width: 768px) {
+      .featured-card {
+        flex-direction: row;
+        height: 300px;
+      }
+      .featured-card-image {
+        width: 55%;
+        height: 100%;
+        position: relative;
+      }
+      .featured-card-content {
+        width: 45%;
+        margin-top: 0;
+        background: var(--card-bg);
+        color: var(--muted);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .featured-card-content h3 {
+        color: var(--primary-700) !important;
+      }
+      .featured-card-content p {
+        color: var(--muted);
+      }
+      [data-theme="dark"] .featured-card-content {
+        color: var(--muted);
+      }
+      [data-theme="dark"] .featured-card-content h3 {
+        color: var(--primary) !important;
+      }
+      [data-theme="dark"] .featured-card-content p {
+        color: var(--muted);
+      }
+    }
+
+    /* --- NEW: Trending Tags Style -> REPLACED BY Tag Cloud --- */
+    /* .trending-tags-container { ... } */
+    /* .tag-chip { ... } */
+
+    /* --- NEW: Tag Cloud Style --- */
+    #tagCloudContainer {
+        background: var(--card-bg);
+        padding: 16px;
+        border-radius: var(--radius);
+        margin-top: -12px; /* Pull up slightly */
+        margin-bottom: 24px;
+        box-shadow: var(--shadow);
+    }
+    .tag-cloud {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+        justify-content: center; /* Center tags */
+    }
+    .tag-cloud span {
+        cursor: pointer;
+        padding: 3px 8px;
+        border-radius: 4px;
+        transition: all 0.2s ease;
+        color: var(--muted);
+    }
+    .tag-cloud span:hover {
+        background: var(--primary);
+        color: #fff;
+    }
+    .tag-cloud span.active {
+       background: var(--primary-700);
+       color: #fff;
+       font-weight: 700;
+    }
+
+    /* --- NEW: Coach's Corner (Gemini Card) --- */
+    .coach-card {
+      background: linear-gradient(135deg, var(--primary-700), var(--primary));
+      color: #fff;
+      padding: 20px;
+      border-radius: var(--radius);
+      box-shadow: var(--accent-shadow);
+      display: flex;
+      flex-direction: column;
+      /* grid-column: 1 / -1; Make it span full width in grid (Optional: Decide based on layout) */
+    }
+    .coach-card h5 {
+      color: #fff !important;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .coach-card p {
+      font-size: 0.95rem;
+      flex-grow: 1;
+      opacity: 0.9;
+    }
+    .coach-card button {
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.4);
+      color: #fff;
+    }
+    .coach-card button:hover {
+      background: rgba(255,255,255,0.3);
+    }
+    .coach-card #coachTipLoading {
+      display: none;
+      font-weight: 600;
+    }
+
+    /* --- REFORMED: Training Goal Tracker --- */
+    .goal-tracker {
+        background: var(--card-bg);
+        border-radius: var(--radius);
+        padding: 16px;
+        margin-bottom: 24px;
+        box-shadow: var(--shadow);
+    }
+    .goal-tracker h5 {
+        color: var(--primary-700) !important;
+        margin-bottom: 8px;
+    }
+    .progress-container {
+        background: var(--glass);
+        border-radius: 50px;
+        height: 10px;
+        overflow: hidden;
+        margin-bottom: 4px;
+    }
+    .progress-bar-fill {
+        background: var(--primary);
+        height: 100%;
+        border-radius: 50px;
+        transition: width 0.5s ease-out;
+    }
+    .goal-tracker .goal-text {
+        font-size: 0.8rem;
+        text-align: right;
+    }
+
+    /* --- REFORMED: Upcoming Event Card --- */
+    .event-card {
+        background: linear-gradient(135deg, #6c5ce7, #a29bfe); /* Example gradient */
+        color: #fff;
+        text-align: center;
+        /* grid-column: 1 / -1; Span full width */
+    }
+    .event-card h5 { color: #fff !important; }
+    .event-card p { opacity: 0.9; margin-bottom: 8px; }
+    .event-card .status { font-size: 1.2rem; font-weight: 700; } /* Changed from countdown */
+
+    /* --- NEW: Strava Highlight Card --- */
+    .strava-card {
+        background: #fc4c02; /* Strava orange */
+        color: #fff;
+    }
+    .strava-card .map-placeholder {
+        height: 100px;
+        background: #e14302; /* Darker orange */
+        border-radius: 8px;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+        opacity: 0.8;
+    }
+    .strava-card .stats { display: flex; justify-content: space-around; font-size: 0.9rem; }
+    .strava-card .stat strong { display: block; font-size: 1.1rem; }
+    .strava-card a { color: #fff; font-weight: 600; }
+
+    /* --- NEW: Video Card --- */
+    .video-card {
+        padding: 0; /* Remove padding for iframe */
+    }
+    .video-card iframe {
+        display: block;
+        width: 100%;
+        height: 180px; /* Match image height */
+        border: none;
+        border-radius: var(--radius) var(--radius) 0 0;
+    }
+    .video-card .video-title {
+      padding: 12px 16px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--primary-700);
+    }
+    [data-theme="dark"] .video-card .video-title { color: var(--primary); }
+
+
+    /* --- NEW: Weather Card --- */
+    .weather-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 16px;
+        font-size: 0.9rem;
+    }
+    .weather-card .temp { font-size: 1.8rem; font-weight: 700; color: var(--primary); }
+    .weather-card .condition { font-weight: 600; }
+    .weather-card i { font-size: 2rem; opacity: 0.8; }
+
+    /* --- NEW: Throwback Card --- */
+    .throwback-card {
+        border-left: 4px solid var(--primary);
+    }
+    .throwback-card h6 {
+        color: var(--primary-700) !important;
+        font-size: 0.9rem;
+        margin-bottom: 4px;
+    }
+
+    /* --- NEW: Zone Calculator Card --- */
+    .zone-calculator-card {
+        padding: 16px;
+    }
+    .zone-calculator-card h6 { margin-bottom: 12px; color: var(--primary-700) !important; }
+    .zone-calculator-card label { font-size: 0.85rem; margin-bottom: 4px; display: block; }
+    .zone-calculator-card input {
+        width: 100%; padding: 6px 10px; border-radius: 6px;
+        border: 1px solid var(--glass); background: var(--glass);
+        margin-bottom: 10px; color: var(--muted);
+    }
+    .zone-results div { font-size: 0.85rem; margin-bottom: 4px; }
+    .zone-results span { font-weight: 600; color: var(--primary); }
+
+    /* --- NEW: PB Showcase Card --- */
+    .pb-showcase-card {
+        text-align: center;
+        padding: 20px 16px;
+    }
+    .pb-showcase-card i { font-size: 2rem; color: var(--primary); margin-bottom: 8px; }
+    .pb-showcase-card .pb-title { font-weight: 600; margin-bottom: 2px; }
+    .pb-showcase-card .pb-time { font-size: 1.4rem; font-weight: 700; color: var(--primary-700); }
+    [data-theme="dark"] .pb-showcase-card .pb-time { color: var(--primary); }
+
+
+    /* --- NEW: Gear Snippet Card --- */
+    .gear-snippet-card {
+        display: flex; align-items: center; gap: 12px;
+        padding: 16px;
+    }
+    .gear-snippet-card i { font-size: 2.5rem; color: var(--primary); opacity: 0.8; }
+    .gear-snippet-card h6 { font-size: 0.9rem; margin-bottom: 2px; color: var(--primary-700) !important; }
+    .gear-snippet-card p { font-size: 0.8rem; margin-bottom: 0; }
+
+
+    /* Grid placement for new cards (Example) */
+    /* Adjust as needed for desired layout flow */
+    .blog-grid > .event-card,
+    .blog-grid > .strava-card,
+    .blog-grid > .video-card,
+    .blog-grid > .weather-card,
+    .blog-grid > .coach-card,
+    .blog-grid > .throwback-card,
+    .blog-grid > .zone-calculator-card,
+    .blog-grid > .pb-showcase-card,
+    .blog-grid > .gear-snippet-card {
+      /* Keep standard grid flow by default */
+    }
+
+
+    /* transitions (fade) */
+    .page-fade-out { opacity: 0; transition: opacity .35s ease; }
+
+    /* floating action (Copied from index.html) */
+    .fab{ position:fixed; bottom:28px; right:28px; width:64px; height:64px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:var(--primary); color:#fff; box-shadow:0 20px 40px rgba(0,0,0,0.18); cursor:pointer; z-index: 999; }
+     @media(max-width: 768px) {
+       .fab { bottom: 80px; }
+     }
+
+    /* Footer Style (Copied from index.html) */
+    footer {
+      background: transparent;
+      color: var(--muted);
+      padding: 40px 15px;
+      margin-top: 60px;
+    }
+    footer h5 { color: var(--primary); }
+    footer .form-control {
+      background: var(--card-bg);
+      border-color: var(--glass);
+      color: var(--muted);
+    }
+    footer .form-control::placeholder { color: var(--muted); opacity: 0.7; }
+
+    /* Toast Notification (Copied from index.html) */
+    #toastNotification {
+      position: fixed; bottom: -100px; left: 50%;
+      transform: translateX(-50%);
+      background: var(--primary-700); color: #fff;
+      padding: 14px 22px; border-radius: 8px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      transition: bottom 0.5s cubic-bezier(.17,.67,.26,1.24);
+      z-index: 1000; font-weight: 600;
+    }
+    #toastNotification.show { bottom: 20px; }
+    #toastNotification.error { background: #e74c3c; }
+
+    /* Unified Share Button (Copied from index.html) */
+    .share-btn {
+      background: none; border: none; color: var(--muted);
+      cursor: pointer; padding: 4px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      width: 30px; height: 30px;
+      transition: all 0.2s ease;
+    }
+    .share-btn:hover { color: var(--primary); background: var(--glass); }
+
+    /* Quote Card (Copied from index.html, with new quotes) */
+    #quoteCard {
+      position: fixed; bottom: 20px; right: 20px;
+      max-width: 280px; background: var(--glass);
+      backdrop-filter: blur(8px); border-radius: var(--radius);
+      padding: 16px; box-shadow: var(--shadow);
+      z-index: 998; transition: all 0.4s ease; opacity: 0.95;
+    }
+    #quoteCard p {
+      margin-bottom: 0.25rem; font-size: 0.9rem;
+      color: var(--muted); font-weight: 500;
+      transition: opacity 0.5s ease;
+    }
+    #quoteCard small {
+      font-size: 0.8rem; color: var(--primary);
+      font-weight: 700; display: block;
+      text-align: right; transition: opacity 0.5s ease;
+    }
+
+    @media(max-width: 768px) {
+      #quoteCard {
+        left: 0; right: 0; bottom: 0;
+        max-width: 100%; border-radius: 12px 12px 0 0;
+        padding: 12px 16px; text-align: center;
+      }
+      #quoteCard small { text-align: center; }
+      #toastNotification.show { bottom: 70px; }
+    }
+  </style>
 </head>
+
 <body>
- 
 
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<!-- Navbar --> 
-<nav class="navbar navbar-expand-lg fixed-top" style="background: linear-gradient(135deg, #163142, #1f4e5a); padding: 10px 15px;">
-    <a class="navbar-brand d-flex align-items-center" href="index.html" style="font-family: 'Arial Black', sans-serif; text-decoration: none;">
-        
+  <!-- NAVBAR (Copied from index.html) -->
+  <nav class="navbar navbar-expand-lg fixed-top navbar-custom">
+    <div class="container-xl d-flex align-items-center justify-content-between">
+      <div class="d-flex align-items-center">
+        <a class="navbar-brand d-flex align-items-center" href="index.html">
+          <img src="images/logo.png" alt="Murad Logo" class="logo-img"
+               onerror="this.onerror=null; this.style.display='none'; document.getElementById('logoFallback').style.display='block';">
+          <div class="logo-text" id="logoFallback" style="display:none;">Murad</div>
+        </a>
+        <small class="ml-3 dev-note d-none d-md-inline">Endurance</small>
+      </div>
 
-        <div style="display: inline-block; overflow: hidden;">
-            <img 
-                src="images/logo.png" 
-                alt="Logo" 
-                style="width: 50px; height: auto; transition: transform 0.3s ease; border: 2px solid #41b3a3; border-radius: 50%;" 
-                onmouseover="this.style.transform='scale(1.5)'" 
-                onmouseout="this.style.transform='scale(1)'" 
-                onclick="scaleOnMobile(this)"
-            >
+      <div class="d-flex align-items-center">
+        <div class="accent-palette mr-3" role="tablist" aria-label="Accent color">
+          <div class="accent-dot" data-accent="green" title="Green" style="background:#20c997" aria-checked="true"></div>
+          <div class="accent-dot" data-accent="yellow" title="Yellow" style="background:#f1c40f"></div>
+          <div class="accent-dot" data-accent="red" title="Red" style="background:#e74c3c"></div>
         </div>
-        
-        
-        <script>
-            function scaleOnMobile(element) {
-                // Apply the scale effect when clicked on mobile
-                if (window.innerWidth <= 768) { // Mobile width threshold
-                    element.style.transform = 'scale(1.5)';
-                    setTimeout(() => {
-                        element.style.transform = 'scale(1)'; // Reset after some time
-                    }, 500); // Duration of scaling effect in milliseconds
-                }
-            }
-        </script>
-        
-
-
-
-     
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style="border: none; outline: none;">
-        <div class="toggler-icon" style="display: flex; flex-direction: column; justify-content: space-between; height: 18px; width: 25px;">
-            <span class="line" style="height: 2px; width: 100%; background-color: #41b3a3; transition: transform 0.3s, opacity 0.3s;"></span>
-            <span class="line" style="height: 2px; width: 100%; background-color: #41b3a3; transition: transform 0.3s;"></span>
-            <span class="line" style="height: 2px; width: 100%; background-color: #41b3a3; transition: transform 0.3s, opacity 0.3s;"></span>
+        <div class="d-flex align-items-center mr-2">
+          <i id="toggleIcon" class="fas fa-sun mr-2" style="color:var(--primary)"></i>
+          <label style="display:inline-block;cursor:pointer">
+            <input id="themeSwitch" type="checkbox" style="display:none" aria-label="Toggle dark mode">
+            <div id="switchVisual" style="width:44px;height:24px;background:rgba(0,0,0,0.06);border-radius:14px;position:relative;">
+              <div id="switchDot" style="width:18px;height:18px;border-radius:50%;background:#fff;position:absolute;left:3px;top:3px;box-shadow:0 4px 10px rgba(0,0,0,0.12);"></div>
+            </div>
+          </label>
         </div>
-    </button>
-    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-        <ul class="navbar-nav" id="navUl" style="text-align: right;">
-            <li class="nav-item">
-                <a class="nav-link" href="index.html" style="color: #ffffff; font-weight: bold; padding: 5px 15px; border: 1px solid #41b3a3; border-radius: 5px; margin: 5px; text-decoration: none; transition: all 0.3s ease;" 
-                   onmouseover="this.style.backgroundColor='#41b3a3'; this.style.color='#163142';" 
-                   onmouseout="this.style.backgroundColor='transparent'; this.style.color='#ffffff';">Home</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="storytelling.html" style="color: #ffffff; font-weight: bold; padding: 5px 15px; border: 1px solid #41b3a3; border-radius: 5px; margin: 5px; text-decoration: none; transition: all 0.3s ease;" 
-                   onmouseover="this.style.backgroundColor='#41b3a3'; this.style.color='#163142';" 
-                   onmouseout="this.style.backgroundColor='transparent'; this.style.color='#ffffff';">Storytelling</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="athletic.html" style="color: #ffffff; font-weight: bold; padding: 5px 15px; border: 1px solid #41b3a3; border-radius: 5px; margin: 5px; text-decoration: none; transition: all 0.3s ease;" 
-                   onmouseover="this.style.backgroundColor='#41b3a3'; this.style.color='#163142';" 
-                   onmouseout="this.style.backgroundColor='transparent'; this.style.color='#ffffff';">Athletic</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="achievements.html" style="color: #ffffff; font-weight: bold; padding: 5px 15px; border: 1px solid #41b3a3; border-radius: 5px; margin: 5px; text-decoration: none; transition: all 0.3s ease;" 
-                   onmouseover="this.style.backgroundColor='#41b3a3'; this.style.color='#163142';" 
-                   onmouseout="this.style.backgroundColor='transparent'; this.style.color='#ffffff';">Achievements</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="projects.html" style="color: #ffffff; font-weight: bold; padding: 5px 15px; border: 1px solid #41b3a3; border-radius: 5px; margin: 5px; text-decoration: none; transition: all 0.3s ease;" 
-                   onmouseover="this.style.backgroundColor='#41b3a3'; this.style.color='#163142';" 
-                   onmouseout="this.style.backgroundColor='transparent'; this.style.color='#ffffff';">Projects</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="about.html" style="color: #ffffff; font-weight: bold; padding: 5px 15px; border: 1px solid #41b3a3; border-radius: 5px; margin: 5px; text-decoration: none; transition: all 0.3s ease;" 
-                   onmouseover="this.style.backgroundColor='#41b3a3'; this.style.color='#163142';" 
-                   onmouseout="this.style.backgroundColor='transparent'; this.style.color='#ffffff';">Resume</a>
-            </li>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+          <span class="t-icon navbar-toggler-icon" id="hamburgerSvg"></span>
+        </button>
+      </div>
+
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav align-items-center">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="athletic.html">Athletics</a></li>
+          <li class="nav-item"><a class="nav-link" href="storytelling.html">Storytelling</a></li>
+          <li class="nav-item"><a class="nav-link" href="projects.html">Projects</a></li>
+          <li class="nav-item"><a class="nav-link" href="achievements.html">Achievements</a></li>
+          <li class="nav-item"><a class="nav-link" href="about.html">Resume</a></li>
         </ul>
+      </div>
     </div>
-</nav>
+  </nav>
 
-<!-- jQuery and Bootstrap JS (required for Navbar toggle functionality) -->
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const navbarToggler = document.querySelector('.navbar-toggler');
-        const navbarMenu = document.querySelector('#navbarNav');
-        const lines = navbarToggler.querySelectorAll('.line');
-
-        // Toggle menu open/close
-        navbarToggler.addEventListener('click', function () {
-            const isExpanded = navbarMenu.classList.contains('show');
-
-            if (isExpanded) {
-                closeMenu();
-            } else {
-                openMenu();
-            }
-        });
-
-        // Close menu on outside click
-        document.addEventListener('click', function (event) {
-            if (!navbarToggler.contains(event.target) && !navbarMenu.contains(event.target)) {
-                if (navbarMenu.classList.contains('show')) {
-                    closeMenu();
-                }
-            }
-        });
-
-        // Open menu function
-        function openMenu() {
-            navbarMenu.classList.add('show');
-            lines[0].style.transform = 'rotate(45deg)';
-            lines[0].style.position = 'relative';
-            lines[0].style.top = '6px';
-
-            lines[1].style.opacity = '0';
-
-            lines[2].style.transform = 'rotate(-45deg)';
-            lines[2].style.position = 'relative';
-            lines[2].style.top = '-6px';
-        }
-
-        // Close menu function
-        function closeMenu() {
-            navbarMenu.classList.remove('show');
-            lines[0].style.transform = 'rotate(0)';
-            lines[0].style.position = 'relative';
-            lines[0].style.top = '0';
-
-            lines[1].style.opacity = '1';
-
-            lines[2].style.transform = 'rotate(0)';
-            lines[2].style.position = 'relative';
-            lines[2].style.top = '0';
-        }
-    });
-</script>
-
-
-  <!-- Secondary Nav -->
-<div class="secondary-nav bg-light p-3" style="margin-top: 100px; background: linear-gradient(135deg, #1f4e5a, #163142);">
-    <div class="container d-flex flex-wrap justify-content-between align-items-center">
-        
-        <!-- Dropdown for filtering -->
-        <div class="dropdown" style="flex-grow: 1; max-width: 20%;">
-            <button class="btn btn-secondary dropdown-toggle filter-button" type="button" id="filterDropdown" aria-haspopup="true" aria-expanded="false" style="background-color: #1492e0; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease; width: 100%;">
-                Filter
-            </button>
-            <div class="dropdown-menu filter-dropdown-content" aria-labelledby="filterDropdown" style="background-color: white; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 5px; padding: 10px; display: none; width: 100%;">
-                <label class="dropdown-item" style="display: flex; align-items: center; margin-bottom: 10px; width: 100%;"><input type="checkbox" value="Cycling" style="margin-right: 10px;"> Cycling</label>
-                <label class="dropdown-item" style="display: flex; align-items: center; margin-bottom: 10px; width: 100%;"><input type="checkbox" value="Running" style="margin-right: 10px;"> Running</label>
-                <label class="dropdown-item" style="display: flex; align-items: center; margin-bottom: 10px; width: 100%;"><input type="checkbox" value="Swimming" style="margin-right: 10px;"> Swimming</label>
-                <label class="dropdown-item" style="display: flex; align-items: center; margin-bottom: 10px; width: 100%;"><input type="checkbox" value="Triathlon" style="margin-right: 10px;"> Triathlon</label>
-                <label class="dropdown-item" style="display: flex; align-items: center; margin-bottom: 10px; width: 100%;"><input type="checkbox" value="others" style="margin-right: 10px;"> Others</label>
-            </div>
-        </div>
-        
-        <!-- Search input -->
-        <div class="input-group" style="flex-grow: 1; max-width: 70%; margin-left: auto;">
-            <input type="text" id="search-input" class="form-control" placeholder="Search..." style="padding: 10px; border: 2px solid #1f4e5a; border-radius: 5px 0 0 5px; width: calc(100% - 120px);">
-            <div class="input-group-append">
-                <button id="search-button" class="btn btn-primary" style="padding: 10px 20px; border: none; border-radius: 0 5px 5px 0; cursor: pointer; transition: background-color 0.3s ease; background-color: #1492e0; color: white;">Search</button>
-            </div>
-        </div>
+  <!-- REFORMED: Training Goal Tracker -->
+  <section class="container-xl mt-4">
+    <div class="goal-tracker">
+      <h5>Current Training Cycle Progress</h5>
+      <div class="progress-container">
+        <div id="goalProgressBar" class="progress-bar-fill" style="width: 75%;"></div> <!-- Example width -->
+      </div>
+      <div class="goal-text"><span id="goalProgressText">75%</span> Complete</div>
     </div>
-</div>
+  </section>
+
+  <!-- NEW: Featured Post Section -->
+  <section class="container-xl mt-4" id="featuredPostContainer" style="display: none;">
+    <!-- Featured Post will be injected here by JS -->
+  </section>
+
+  <!-- Filter Bar -->
+  <section class="container-xl mt-4">
+    <div class="filter-bar d-flex flex-wrap justify-content-between align-items-center">
+
+      <!-- Filter Controls Wrapper -->
+      <div class="d-flex flex-wrap">
+        <!-- Filter Dropdown -->
+        <div class="dropdown mb-2 mb-md-0 mr-2">
+          <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="filterDropdownBtn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-filter mr-1"></i> Filter by Tag
+          </button>
+          <div class="dropdown-menu" id="filterDropdownMenu" aria-labelledby="filterDropdownBtn">
+            <label class="dropdown-item mb-0"><input type="checkbox" value="Cycling" class="filter-check"> Cycling</label>
+            <label class="dropdown-item mb-0"><input type="checkbox" value="Running" class="filter-check"> Running</label>
+            <label class="dropdown-item mb-0"><input type="checkbox" value="Swimming" class="filter-check"> Swimming</label>
+            <label class="dropdown-item mb-0"><input type="checkbox" value="Triathlon" class="filter-check"> Triathlon</label>
+            <label class="dropdown-item mb-0"><input type="checkbox" value="others" class="filter-check"> Others</label>
+          </div>
+        </div>
+
+        <!-- Sort By Dropdown -->
+        <div class="dropdown mb-2 mb-md-0">
+          <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sortDropdownBtn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-sort-amount-down mr-1"></i> <span id="sortBtnText">Sort by Recent</span>
+          </button>
+          <div class="dropdown-menu" id="sortDropdownMenu" aria-labelledby="sortDropdownBtn">
+            <a class="dropdown-item sort-option" data-sort="date">Most Recent</a>
+            <a class="dropdown-item sort-option" data-sort="likeCount">Most Liked</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Search Input -->
+      <div class="input-group" style="max-width: 400px; flex: 1; min-width: 250px;">
+        <input type="text" id="mainSearchInput" class="form-control" placeholder="Search athletics posts...">
+        <div class="input-group-append">
+          <button class="btn btn-primary" type="button" style="padding: 0.375rem 0.75rem;"><i class="fas fa-search"></i></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEW: Tag Cloud Section -->
+  <section class="container-xl mt-3">
+    <div id="tagCloudContainer">
+      <div class="tag-cloud">
+        <strong class="mr-2" style="font-size: 0.9rem;">Popular Tags:</strong>
+        <!-- Tags will be injected here -->
+      </div>
+    </div>
+  </section>
 
 
-    <!-- Blog Posts Section -->
-<main class="container mt-3">
-    <h1 
-        class="text-center my-3" 
-        style="
-          
-            font-size: 2rem; 
-            font-weight: bold; 
-            color: white; 
-            background: linear-gradient(135deg, #1f4e5a, #163142); 
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); 
-            border-radius: 50px; 
-            display: flex;
-            align-items: center;
-            justify-content: center; 
-            padding: 7px 7px;">
-        Athletic Blogs
-    </h1>
-    <section id="blog-posts" class="row mt-4 blog-container">
+  <!-- Main Content Area -->
+  <main class="container-xl mt-4">
+    <h2 class="text-center mb-4" style="color: var(--primary-700); font-weight: 700;">
+      Athletic Journey <span id="postCount" style="font-size: 1.2rem; color: var(--muted);"></span>
+    </h2>
+    <div id="postsContainer" class="blog-grid" aria-live="polite">
+      <!-- Skeletons/Posts/New Cards will be rendered here -->
+    </div>
 
-    </section>
-</main>
+    <!-- Load More Button -->
+    <div id="loadMoreContainer" class="text-center mt-4" style="display: none;">
+      <button id="loadMoreBtn" class="btn btn-primary">Load More Posts</button>
+    </div>
 
- <!-- Footer Section -->
-<footer style="background: linear-gradient(135deg, #1f4e5a, #163142); color: #fff; padding: 60px 20px; text-align: center;">
-    <!-- Join Our Community Section -->
-    <div style="max-width: 700px; margin: auto; margin-bottom: 40px;">
-        <h2 style="font-size: 2.8em; font-weight: bold; color: #ffffff; margin-bottom: 20px; text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);">Be Part of Something Extraordinary</h2>
-        <p style="font-size: 1.4em; margin-bottom: 30px; color: #a2d5d9;">Stay connected with the latest updates, exclusive content, and inspiring stories!</p>
-        
-        <form action="https://formspree.io/f/xvoejldb" method="POST" style="display: flex; flex-direction: column; align-items: center; gap: 20px;">
-            <input type="email" name="email" placeholder="Enter your email" required 
-                   style="padding: 15px; width: 80%; max-width: 500px; border-radius: 25px; border: 2px solid #fff; background-color: transparent; font-size: 1.2em; color: #fff;">
-            <button type="submit" 
-                    style="padding: 12px 30px; font-size: 1.2em; font-weight: bold; color: #ffffff; background-color: #41b3a3; border: none; border-radius: 25px; cursor: pointer; transition: all 0.3s ease;">
-                Join Me
-            </button>
+    <!-- No Results Message -->
+    <div id="noResults" class="text-center mt-5 mb-5" style="display: none;">
+      <h5 style="color: var(--muted);">No posts found matching your criteria.</h5>
+    </div>
+  </main>
+
+
+
+  <!-- Footer -->
+<footer id="contact">
+  <div class="container-xl">
+    <div class="row">
+      <!-- Left: Contact Form -->
+      <div class="col-md-6">
+        <h5>Contact me</h5>
+        <form action="https://formspree.io/f/mwpkvrvr" method="POST" id="mainContact">
+          <input class="form-control mb-2" name="name" id="cname" placeholder="Name" required>
+          <input class="form-control mb-2" name="email" id="cemail" placeholder="Email" type="email" required>
+          <textarea class="form-control mb-2" name="message" id="cmsg" rows="3"
+            placeholder="Your message, story idea, or volunteer interest..." required></textarea>
+          <button class="btn btn-primary" type="submit">Send Message</button>
         </form>
+      </div>
+
+      <!-- Right: Social Links -->
+      <div class="col-md-6 text-right d-none d-md-block">
+        <h5>Connect Socially</h5>
+        <div style="font-size:1.2rem; gap:10px; display:inline-flex; align-items:center;">
+          <a href="https://www.facebook.com/murad4231" target="_blank" class="text-decoration-none text-muted">
+            <i class="bi bi-facebook"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/muradhossain42" target="_blank" class="text-decoration-none text-muted">
+            <i class="bi bi-linkedin"></i>
+          </a>
+          <a href="mailto:muradcu42@gmail.com" class="text-decoration-none text-muted">
+            <i class="bi bi-envelope"></i>
+          </a>
+        </div>
+        <p class="mt-3 dev-note">Address: Lakshmipur, Bangladesh</p>
+        <p class="mt-2 dev-note">#TrihardMurad</p>
+      </div>
     </div>
 
-    <!-- Social Media Icons -->
-    <div style="margin-top: 40px;">
-        <a href="mailto:muradcu42@gmail.com" style="color: #41b3a3; text-decoration: none; margin: 0 15px; transition: transform 0.3s;">
-            <i class="bi bi-envelope" style="font-size: 2em;"></i>
-        </a>
-        <a href="https://www.facebook.com/murad4231" target="_blank" style="color: #41b3a3; text-decoration: none; margin: 0 15px; transition: transform 0.3s;">
-            <i class="bi bi-facebook" style="font-size: 2em;"></i>
-        </a>
-        <a href="https://www.linkedin.com/in/muradhossain42" target="_blank" style="color: #41b3a3; text-decoration: none; margin: 0 15px; transition: transform 0.3s;">
-            <i class="bi bi-linkedin" style="font-size: 2em;"></i>
-        </a>
-        <a href="https://www.youtube.com/@muradhossain5116" target="_blank" style="color: #41b3a3; text-decoration: none; margin: 0 15px; transition: transform 0.3s;">
-            <i class="bi bi-youtube" style="font-size: 2em;"></i>
-        </a>
-        <a href="https://www.strava.com" target="_blank" style="color: #41b3a3; text-decoration: none; margin: 0 15px; transition: transform 0.3s;">
-            <i class="bi bi-strava" style="font-size: 2em;"></i>
-        </a>
+    <!-- Footer bottom -->
+    <div class="text-center mt-4 dev-note">
+      <a href="admin.html" style="text-decoration: none; color: inherit;" title="Admin Section">&copy; 2025</a>
+      Murad Hossain — Built with Energy.
     </div>
-
-    <!-- Address -->
-    <p style="margin-top: 30px; font-size: 1.2em; color: #a2d5d9;">Address: Lakshmipur, Bangladesh</p>
-
-    <!-- Copyright -->
-    <p style="margin-top: 20px; font-size: 1em; color: #a2d5d9;">&copy; 2025 Murad. All Rights Reserved.</p>
-
-    <!-- Back to Top Button -->
-    <button id="backToTop" 
-            style="position: fixed; bottom: 40px; right: 40px; padding: 12px 18px; font-size: 1.5em; font-weight: bold; color: #fff; background: rgba(0, 0, 0, 0.2); border: none; border-radius: 50%; cursor: pointer; display: none; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); transition: all 0.3s ease;">
-        ↑
-    </button>
+  </div>
 </footer>
 
 
-<!-- Bootstrap Icons CDN -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+  <!-- FLOATING ELEMENTS (Copied from index.html) -->
+  <div id="quoteCard">
+    <p id="quoteText">Loading quote...</p>
+    <small id="quoteAuthor"></small>
+  </div>
+  <div id="toastNotification"></div>
+  <div class="fab" id="scrollTopFab" title="Scroll to top" style="display: none; transition: opacity 0.3s ease;">
+    <i class="fas fa-arrow-up"></i>
+  </div>
 
-<!-- JavaScript for Back to Top Functionality -->
-<script>
-    // Show the button when scrolling down
-    window.onscroll = function() {
-        const backToTopButton = document.getElementById("backToTop");
-        if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-            backToTopButton.style.display = "block";
-        } else {
-            backToTopButton.style.display = "none";
-        }
-    };
-
-    // Smooth scroll to top when button is clicked
-    document.getElementById("backToTop").onclick = function() {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
-</script>
-
-
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script type="module">
+  <!-- Firebase + App Logic -->
+  <script type="module">
+    // Firebase (ES modules)
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
     import {
-        initializeApp
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import {
-        getFirestore,
-        collection,
-        getDocs
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+      getFirestore, collection, getDocs, addDoc, query, orderBy, limit,
+      doc, updateDoc, increment, getDoc, startAfter
+    } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 
+    // Firebase config
     const firebaseConfig = {
-                    apiKey: "AIzaSyBnDhuKL60HNcX40JI9zQ6YIZDr1hbMZHc",
-            authDomain: "trihardmurad.firebaseapp.com",
-            projectId: "trihardmurad",
-            storageBucket: "trihardmurad.appspot.com",
-            messagingSenderId: "146538214416",
-            appId: "1:146538214416:web:0d7ad5834eb432c385c695",
-            measurementId: "G-GQNJV0VQQQ"
-                 };
+      apiKey: "AIzaSyBnDhuKL60HNcX40JI9zQ6YIZDr1hbMZHc",
+      authDomain: "trihardmurad.firebaseapp.com",
+      projectId: "trihardmurad",
+      storageBucket: "trihardmurad.appspot.com",
+      messagingSenderId: "146538214416",
+      appId: "1:146538214416:web:0d7ad5834eb432c385c695",
+      measurementId: "G-GQNJV0VQQQ"
+    };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+    // --- Global State ---
+    let allPosts = []; // Holds all posts fetched from Firebase
+    let topPostId = null; // ID of the most-liked post
+    let currentSortBy = 'date'; // 'date' or 'likeCount'
+    let renderedPostCount = 0; // For pagination
+    const POSTS_PER_PAGE = 9; // Posts per page for pagination
 
-document.addEventListener("DOMContentLoaded", async () => {
-    const blogPostsRef = collection(db, "athleticPosts");
-    const blogPostsSnap = await getDocs(blogPostsRef);
+    // DOM Elements
+    const postsContainer = document.getElementById('postsContainer');
+    const noResultsEl = document.getElementById('noResults');
+    const loadMoreContainer = document.getElementById('loadMoreContainer');
+    const loadMoreBtn = document.getElementById('loadMoreBtn');
+    const sortBtnText = document.getElementById('sortBtnText');
+    const featuredPostContainer = document.getElementById('featuredPostContainer');
+    // const trendingTagsContainer = document.getElementById('trendingTagsContainer'); // Replaced by tag cloud
+    const tagCloudContainer = document.querySelector('#tagCloudContainer .tag-cloud'); // NEW
+    const postCountSpan = document.getElementById('postCount');
+    const mainSearchInput = document.getElementById('mainSearchInput');
+    const filterCheckboxes = document.querySelectorAll('.filter-check');
+    const goalProgressBar = document.getElementById('goalProgressBar'); // Reformed
+    const goalProgressText = document.getElementById('goalProgressText'); // Reformed
 
-    // Sort posts by date in descending order (newest posts first)
-    const blogPosts = blogPostsSnap.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-    })).sort((a, b) => new Date(b.date) - new Date(a.date));
 
-    const blogPostsContainer = document.getElementById('blog-posts');
-    if (!blogPostsContainer) {
-        console.error('blogPostsContainer element not found');
-        return;
+    // map collection => page prefix
+    const COLLECTION_MAP = {
+      athleticPosts: 'athletic',
+      storytellingPosts: 'storytelling',
+      projectsPosts: 'projects',
+      achievementsPosts: 'achievements'
+    };
+
+    // --- Skeleton Loader ---
+    function renderSkeletons(count) {
+      postsContainer.innerHTML = '';
+      noResultsEl.style.display = 'none';
+      for (let i = 0; i < count; i++) {
+        const skeleton = document.createElement('div');
+        skeleton.className = 'blog-card-v2 skeleton-card'; // Use new classes
+        skeleton.innerHTML = `
+          <div class="skeleton-image"></div>
+          <div class="blog-card-v2-content">
+            <div class="skeleton-line" style="width: 60%;"></div>
+            <div class="skeleton-line" style="width: 90%;"></div>
+            <div class="skeleton-line" style="width: 100%; height: 40px; margin-top: 10px;"></div>
+            <div class="blog-card-v2-footer" style="border: none; padding-top: 10px;">
+              <div class="skeleton-line" style="width: 50px; height: 30px;"></div>
+              <div class="skeleton-line" style="width: 100px; height: 30px;"></div>
+            </div>
+          </div>
+        `;
+        postsContainer.appendChild(skeleton);
+      }
     }
 
-    blogPostsContainer.innerHTML = '';
+    // --- Fetch Helper (Fetches all posts) ---
+    async function fetchAllPosts() {
+      try {
+        const q = query(collection(db, "athleticPosts"));
+        const snap = await getDocs(q);
+        return snap.docs.map(d => {
+          const data = d.data();
+          return { id: d.id, source: "athleticPosts", sourcePage: 'athletic', ...data };
+        });
+      } catch (err) {
+        console.error('fetchAllPosts', err);
+        return [];
+      }
+    }
 
-    blogPosts.forEach(post => {
-        const postElement = document.createElement('div');
-        postElement.classList.add('col-md-4', 'mb-4', 'blog-card');
-        postElement.innerHTML = `
-            <div class="card h-100" style="
-                border-radius: 12px; 
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
-                overflow: hidden; 
-                transition: transform 0.3s ease;">
-                
-                <!-- Image Section -->
-                <div style="position: relative; height: 200px; overflow: hidden;">
-                    <img src="${post.imageUrl}" alt="${post.title}" style="
-                        width: 100%; 
-                        height: 100%; 
-                        object-fit: cover;">
-                </div>
+    // --- Render Posts (Appends posts to container) ---
+    function renderPosts(postsToRender) {
+      const likedPosts = JSON.parse(localStorage.getItem('athleticLikes')) || {};
 
-                <!-- Content Section -->
-                <div class="card-body" style="padding: 15px; background-color: #ffffff;">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <span class="badge" style="
-                            background: #41b3a3; 
-                            color: white; 
-                            font-size: 0.9em; 
-                            padding: 5px 10px; 
-                            border-radius: 10px;">
-                            #${post.tag}
-                        </span>
-                        <small style="color: #6c757d; font-size: 0.8em;">
-                            ${new Date(post.date).toLocaleDateString("en-US", {
-                                month: "short",
-                                day: "numeric",
-                                year: "numeric"
-                            })}
-                        </small>
+      postsToRender.forEach(post => {
+        // ... (rest of the post data extraction remains the same) ...
+        const title = post.title || 'Untitled';
+        const excerpt = (post.content || 'No content...').slice(0, 100);
+        const image = post.imageUrl || 'https://placehold.co/800x400/eee/aaa?text=No+Image';
+        // UPDATED Date Format
+        const dateStr = post.date ? new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+        const pagePrefix = post.sourcePage || 'athletic';
+        const fullpostUrl = `${pagePrefix}-fullpost.html?id=${encodeURIComponent(post.id)}`;
+        const tag = post.tag || 'Others';
+        const likeCount = post.likeCount || 0;
+
+        const postDate = new Date(post.date);
+        const sevenDaysAgo = new Date();
+        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+        const isNew = postDate > sevenDaysAgo;
+
+        let badgeHTML = '';
+        if (post.id === topPostId) {
+          badgeHTML = `<span class="blog-card-v2-badge blog-card-v2-top-badge">🏆 Top Post</span>`;
+        } else if (isNew) {
+          badgeHTML = `<span class="blog-card-v2-badge blog-card-v2-new-badge">NEW</span>`;
+        }
+
+        const wpm = 225;
+        const wordCount = (post.content || '').split(/\s+/).length;
+        const readTime = Math.ceil(wordCount / wpm);
+        const readTimeText = `${readTime} min read`;
+
+        const isLiked = likedPosts[post.id];
+        const heartIcon = isLiked ? 'fas' : 'far'; // solid vs regular
+
+        const article = document.createElement('article');
+        article.className = 'blog-card-v2';
+        article.innerHTML = `
+          <div class="blog-card-v2-image" style="background-image: url('${image}');"
+               onerror="this.style.backgroundImage='url(https://placehold.co/800x400/eee/aaa?text=Image+Error)'">
+            <span class="blog-card-v2-tag">#${tag}</span>
+            ${badgeHTML}
+          </div>
+          <div class="blog-card-v2-content">
+            <div class="blog-card-v2-meta">
+              <span>${dateStr}</span>
+              <span><i class="fas fa-clock" style="opacity: 0.7; margin-right: 4px;"></i>${readTimeText}</span>
+            </div>
+            <h6 class="blog-card-v2-title">${title}</h6>
+            <p class="blog-card-v2-excerpt">${excerpt}...</p>
+            <div class="blog-card-v2-footer">
+              <button class="like-btn ${isLiked ? 'liked' : ''}" data-id="${post.id}">
+                <i class="${heartIcon} fa-heart"></i>
+                <span class="like-count">${likeCount}</span>
+              </button>
+              <div class="d-flex align-items-center">
+                <button class="share-btn" data-url="${fullpostUrl}" data-title="${title.replace(/"/g, '&quot;')}" data-text="${excerpt.replace(/"/g, '&quot;')}..." title="Share post">
+                  <i class="fas fa-share-alt"></i>
+                </button>
+                <a class="btn btn-sm btn-outline-primary" href="${fullpostUrl}" style="margin-left: 8px;">Read More...</a>
+              </div>
+            </div>
+          </div>
+        `;
+        postsContainer.appendChild(article);
+      });
+    }
+
+    // --- Render Featured Post ---
+    function renderFeaturedPost(post) {
+       // ... (code remains the same) ...
+       if (!post) {
+        featuredPostContainer.style.display = 'none';
+        return;
+      }
+      featuredPostContainer.style.display = 'block';
+      const title = post.title || 'Untitled';
+      const excerpt = (post.content || 'No content...').slice(0, 120);
+      const image = post.imageUrl || 'https://placehold.co/1200x600/eee/aaa?text=Featured+Post';
+      const fullpostUrl = `athletic-fullpost.html?id=${encodeURIComponent(post.id)}`;
+
+      featuredPostContainer.innerHTML = `
+        <div class="featured-card">
+          <span class="featured-card-badge">🔥 Featured Post</span>
+          <div class="featured-card-image" style="background-image: url('${image}');"></div>
+          <div class="featured-card-content">
+            <h3>${title}</h3>
+            <p>${excerpt}...</p>
+            <a class="btn btn-primary" href="${fullpostUrl}">Read More...</a>
+          </div>
+        </div>
+      `;
+    }
+
+    // --- NEW: Render Tag Cloud ---
+    function renderTagCloud(posts) {
+        const tagCounts = {};
+        posts.forEach(post => {
+            const tag = post.tag || 'Others';
+            tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+        });
+
+        const sortedTags = Object.entries(tagCounts)
+            .sort(([, a], [, b]) => b - a); // Sort by count desc
+
+        const maxCount = sortedTags.length > 0 ? sortedTags[0][1] : 1;
+        const minCount = sortedTags.length > 0 ? sortedTags[sortedTags.length - 1][1] : 1;
+
+        // Clear existing tags except for the "Popular Tags:" label
+        tagCloudContainer.innerHTML = '<strong class="mr-2" style="font-size: 0.9rem;">Popular Tags:</strong>';
+
+        sortedTags.slice(0, 10).forEach(([tag, count]) => { // Show top 10
+            const tagEl = document.createElement('span');
+            // Calculate font size based on frequency (simple linear scaling)
+            const minFontSize = 0.8; // rem
+            const maxFontSize = 1.3; // rem
+            let fontSize = minFontSize;
+            if (maxCount > minCount) {
+               fontSize = minFontSize + (maxFontSize - minFontSize) * ((count - minCount) / (maxCount - minCount));
+            } else if (maxCount === minCount && maxCount > 0) {
+               fontSize = (minFontSize + maxFontSize) / 2; // Medium size if all counts are equal
+            }
+
+            tagEl.style.fontSize = `${fontSize}rem`;
+            tagEl.textContent = tag;
+            tagEl.dataset.tag = tag;
+
+            // Check if this tag is currently active in the filter checkboxes
+            const correspondingCheckbox = document.querySelector(`.filter-check[value="${tag}"]`);
+            if (correspondingCheckbox && correspondingCheckbox.checked) {
+                tagEl.classList.add('active');
+            }
+
+            tagCloudContainer.appendChild(tagEl);
+        });
+    }
+
+
+    // --- Render Coach's Corner ---
+    function renderCoachCorner() {
+      // Check if it already exists to avoid duplicates
+      if (document.getElementById('coachCard')) return;
+
+      const coachCard = document.createElement('div');
+      coachCard.id = 'coachCard'; // Add ID
+      coachCard.className = 'coach-card blog-card-v2'; // Add blog-card-v2 for grid compatibility
+      coachCard.innerHTML = `
+        <h5>✨ Coach's Corner</h5>
+        <p id="coachTipContent">Loading weekly training focus...</p>
+        <div id="coachTipLoading">Loading...</div>
+        <button id="getCoachTipBtn" class="btn btn-sm">Get New Focus</button>
+      `;
+
+      // Inject after the first row (e.g., after 3rd post if available)
+      if (postsContainer.children.length > 2) {
+        postsContainer.insertBefore(coachCard, postsContainer.children[2]);
+      } else {
+         postsContainer.appendChild(coachCard); // Append if less than 3 posts
+      }
+
+      const getTipBtn = document.getElementById('getCoachTipBtn');
+      getTipBtn.addEventListener('click', handleGetCoachTip);
+      handleGetCoachTip(); // Load one on init
+    }
+
+    // --- Render Special Cards (Reformed Event + 5 New) ---
+    function renderSpecialCards(posts) {
+        // Remove existing special cards first to prevent duplicates
+        document.querySelectorAll('.event-card, .strava-card, .video-card, .weather-card, .throwback-card, .zone-calculator-card, .pb-showcase-card, .gear-snippet-card').forEach(el => el.remove());
+
+        // Reformed Event Card
+        const eventCard = document.createElement('div');
+        eventCard.className = 'blog-card-v2 event-card';
+        eventCard.innerHTML = `
+            <h5>📅 Next Challenge</h5>
+            <p>Major Endurance Event</p>
+            <div class="status">Preparation Underway</div>
+            <a href="#" class="btn btn-sm btn-light mt-2">Training Log</a>
+        `;
+
+        // NEW: Throwback Card (Selects a random older post)
+        let throwbackCard = null;
+        if (posts.length > 5) { // Only show if there are enough posts
+            const olderPosts = posts.filter(p => (new Date() - new Date(p.date)) > (90 * 24 * 60 * 60 * 1000)); // Older than 3 months
+            if (olderPosts.length > 0) {
+                const randomPost = olderPosts[Math.floor(Math.random() * olderPosts.length)];
+                throwbackCard = document.createElement('div');
+                throwbackCard.className = 'blog-card-v2 throwback-card';
+                const tbDateStr = new Date(randomPost.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
+                throwbackCard.innerHTML = `
+                    <div class="blog-card-v2-content">
+                        <h6><i class="fas fa-history mr-1"></i> Throwback (${tbDateStr})</h6>
+                        <p class="blog-card-v2-excerpt">${(randomPost.title || '').substring(0, 80)}...</p>
+                        <a href="athletic-fullpost.html?id=${randomPost.id}" class="btn btn-sm btn-outline-primary align-self-end">Revisit</a>
                     </div>
-                    <h6 class="card-title" style="
-                        font-size: 1.2em; 
-                        font-weight: bold; 
-                        margin-bottom: 10px; 
-                        color: #333;">
-                        ${post.title}
-                    </h6>
-                    <p class="card-text" style="
-                        font-size: 0.9em; 
-                        color: #555; 
-                        margin-bottom: 15px;">
-                        ${post.content.substring(0, 100)}...
-                    </p>
-                </div>
+                `;
+            }
+        }
 
-                <!-- Share Section -->
-                <div class="card-footer" style="
-                    display: flex; 
-                    justify-content: space-between; 
-                    align-items: center; 
-                    padding: 10px 15px; 
-                    background: #f9f9f9;">
-                    <div style="display: flex; gap: 10px;">
-                        <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-                            `${window.location.origin}/athletic-fullpost.html?id=${post.id}`
-                        )}" target="_blank" style="color: #4267B2; font-size: 1.2em;" title="Share on Facebook">
-                            <i class="fab fa-facebook"></i>
-                        </a>
-                        <a href="https://api.whatsapp.com/send?text=${encodeURIComponent(
-                            `${post.title}: ${window.location.origin}/athletic-fullpost.html?id=${post.id}`
-                        )}" target="_blank" style="color: #25D366; font-size: 1.2em;" title="Share on WhatsApp">
-                            <i class="fab fa-whatsapp"></i>
-                        </a>
-                        <a href="https://t.me/share/url?url=${encodeURIComponent(
-                            `${window.location.origin}/athletic-fullpost.html?id=${post.id}`
-                        )}&text=${encodeURIComponent(post.title)}" target="_blank" style="color: #0088CC; font-size: 1.2em;" title="Share on Telegram">
-                            <i class="fab fa-telegram"></i>
-                        </a>
-                    </div>
-                    
-
-
-                     <a href="athletic-fullpost.html?id=${post.id}"
-   style="
-       color: #41b3a3; 
-       font-weight: bold; 
-       font-size: 0.85em; 
-       text-decoration: none; 
-       padding: 8px 16px; 
-       border: 2px solid #41b3a3; 
-       border-radius: 25px; 
-       display: inline-block; 
-       position: absolute; 
-       bottom: 10px; 
-       right: 10px; 
-       transition: all 0.3s ease;">
-   Read More...
-</a>
-
-                </div>
+        // NEW: Zone Calculator Card
+        const zoneCard = document.createElement('div');
+        zoneCard.className = 'blog-card-v2 zone-calculator-card';
+        zoneCard.innerHTML = `
+            <h6><i class="fas fa-heartbeat mr-1"></i> Training Zones</h6>
+            <label for="maxHrInput">Max Heart Rate (bpm):</label>
+            <input type="number" id="maxHrInput" placeholder="e.g., 185">
+            <button id="calculateZonesBtn" class="btn btn-sm btn-primary mb-2">Calculate</button>
+            <div class="zone-results" id="zoneResults">
+                <!-- Results here -->
             </div>
         `;
 
-        // Add hover effect
-        postElement.querySelector(".card").addEventListener("mouseover", () => {
-            postElement.querySelector(".card").style.transform = "scale(1.05)";
-        });
-        postElement.querySelector(".card").addEventListener("mouseout", () => {
-            postElement.querySelector(".card").style.transform = "scale(1)";
-        });
+        // NEW: PB Showcase Card
+        const pbCard = document.createElement('div');
+        pbCard.className = 'blog-card-v2 pb-showcase-card';
+        pbCard.innerHTML = `
+            <i class="fas fa-trophy"></i>
+            <div class="pb-title">10k Personal Best</div>
+            <div class="pb-time">45:15</div>
+        `;
 
-        // Append the card to the container
-        blogPostsContainer.appendChild(postElement);
-    });
+        // NEW: Gear Snippet Card
+        const gearCard = document.createElement('div');
+        gearCard.className = 'blog-card-v2 gear-snippet-card';
+        gearCard.innerHTML = `
+            <i class="fas fa-shoe-prints"></i>
+            <div>
+                <h6>Coach's Pick</h6>
+                <p>Lightweight neutral running shoes for speedwork.</p>
+            </div>
+        `;
 
-    blogPostsContainer.classList.add('row');
+        // Weather Card (remains the same)
+        const weatherCard = document.createElement('div');
+        weatherCard.className = 'blog-card-v2 weather-card';
+        weatherCard.innerHTML = `
+            <div>
+                <div class="temp">29°C</div>
+                <div class="condition">Partly Cloudy</div>
+                <div style="font-size: 0.8rem;">Lakshmipur, BD</div>
+            </div>
+            <i class="fas fa-cloud-sun"></i>
+        `;
 
-    // Adjust card heights to be uniform
-    const adjustCardHeights = () => {
-        const cards = document.querySelectorAll(".card.h-100");
-        let maxHeight = 0;
-
-        cards.forEach(card => {
-            card.style.height = "auto";
-        });
-
-        cards.forEach(card => {
-            if (card.offsetHeight > maxHeight) {
-                maxHeight = card.offsetHeight;
-            }
-        });
-
-        cards.forEach(card => {
-            card.style.height = `${maxHeight}px`;
-        });
-    };
-
-    adjustCardHeights();
-    window.addEventListener("resize", adjustCardHeights);
-});
-
-
-    // Adjust card heights to be uniform
-    const adjustCardHeights = () => {
-        const cards = document.querySelectorAll('.card.h-100');
-        let maxHeight = 0;
-
-        cards.forEach(card => {
-            card.style.height = 'auto';
-        });
-
-        cards.forEach(card => {
-            if (card.offsetHeight > maxHeight) {
-                maxHeight = card.offsetHeight;
-            }
-        });
-
-        cards.forEach(card => {
-            card.style.height = `${maxHeight}px`;
-        });
-    };
-
-    adjustCardHeights();
-    window.addEventListener('resize', adjustCardHeights);
-
-    // Filter dropdown functionality
-    const filterButton = document.querySelector('.filter-button');
-    const filterContent = document.querySelector('.filter-dropdown-content');
-
-    filterButton.addEventListener('click', () => {
-        filterContent.classList.toggle('show');
-        filterContent.style.display = filterContent.classList.contains('show') ? 'block' : 'none';
-    });
-
-    document.addEventListener('click', (event) => {
-        if (!filterContent.contains(event.target) && !filterButton.contains(event.target)) {
-            filterContent.classList.remove('show');
-            filterContent.style.display = 'none';
+        // Inject special cards at specific positions
+        const insertAfter = (newNode, referenceNode) => {
+             if (newNode && referenceNode && referenceNode.parentNode) {
+                 referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+             } else if (newNode && postsContainer.firstChild) {
+                 // Fallback: insert after first child if reference is invalid
+                 postsContainer.insertBefore(newNode, postsContainer.firstChild.nextSibling);
+             } else if (newNode) {
+                 // Fallback: append if container is empty or reference invalid
+                 postsContainer.appendChild(newNode);
+             }
         }
-    });
-
-    // Filter posts by tags
-    const filterCheckboxes = document.querySelectorAll('.filter-dropdown-content input[type="checkbox"]');
-    filterCheckboxes.forEach(checkbox => {
-        const label = checkbox.parentElement;
-        label.style.display = 'flex';
-        label.style.alignItems = 'center';
-        label.style.marginBottom = '10px';
-        checkbox.style.marginRight = '10px';
-
-        checkbox.addEventListener('change', () => {
-            const checkedValues = Array.from(filterCheckboxes)
-                .filter(cb => cb.checked)
-                .map(cb => cb.value.toLowerCase().trim());
-            const blogPosts = document.querySelectorAll('.blog-card');
-            blogPosts.forEach(post => {
-                const postTag = post.querySelector('.tag').innerText.replace('#', '').toLowerCase().trim();
-                post.style.display = checkedValues.length === 0 || checkedValues.includes(postTag) ? 'block' : 'none';
-            });
-        });
-    });
-
-    // Search functionality
-    const searchButton = document.getElementById('search-button');
-    const searchInput = document.getElementById('search-input');
-
-    searchButton.addEventListener('click', () => {
-        const searchText = searchInput.value.toLowerCase();
-        const blogPosts = document.querySelectorAll('.blog-card');
-        let foundMatch = false;
-
-        blogPosts.forEach(post => {
-            const postText = post.innerText.toLowerCase();
-            if (postText.includes(searchText)) {
-                post.style.display = 'block';
-                foundMatch = true;
-            } else {
-                post.style.display = 'none';
+        const insertBefore = (newNode, referenceNode) => {
+            if (newNode && referenceNode && referenceNode.parentNode) {
+                referenceNode.parentNode.insertBefore(newNode, referenceNode);
+            } else if (newNode) {
+                 postsContainer.appendChild(newNode); // Fallback append
             }
-        });
-
-        let noMatchMessage = document.getElementById('no-match-message');
-        if (!foundMatch) {
-            if (!noMatchMessage) {
-                noMatchMessage = document.createElement('p');
-                noMatchMessage.id = 'no-match-message';
-                noMatchMessage.innerText = 'No posts matched your search.';
-                noMatchMessage.style.color = '#ff0000';
-                noMatchMessage.style.fontWeight = 'bold';
-                noMatchMessage.style.marginTop = '20px';
-                blogPostsContainer.appendChild(noMatchMessage);
-            }
-        } else if (noMatchMessage) {
-            noMatchMessage.remove();
         }
-    });
 
-    // Scroll functionality for back-to-top button
-    window.addEventListener('scroll', () => {
-        const secondaryNav = document.querySelector('.secondary-nav');
-        const backToTopButton = document.getElementById('back-to-top');
 
-        if (window.scrollY > 300) {
-            secondaryNav.classList.add('hide');
-            backToTopButton.classList.add('show');
+        // Inject strategically - Adjust indices as needed
+        if (postsContainer.children.length > 0) insertAfter(weatherCard, postsContainer.children[0]);
+        if (throwbackCard && postsContainer.children.length > 3) insertAfter(throwbackCard, postsContainer.children[3]); // Throwback after 4th
+        if (postsContainer.children.length > 4) insertAfter(eventCard, postsContainer.children[4]); // Event after 5th
+        if (postsContainer.children.length > 5) insertBefore(zoneCard, postsContainer.children[5]); // Zone calc before 6th
+        if (postsContainer.children.length > 7) insertAfter(pbCard, postsContainer.children[7]); // PB after 8th
+        if (postsContainer.children.length > 8) insertAfter(gearCard, postsContainer.children[8]); // Gear after 9th
+
+
+        // Add event listener for zone calculator AFTER it's added to DOM
+        const calcBtn = document.getElementById('calculateZonesBtn');
+        if (calcBtn) {
+            calcBtn.addEventListener('click', handleZoneCalculation);
+        }
+    }
+
+
+    // --- Page Load Logic ---
+    async function loadAthleticsPage() {
+      renderSkeletons(POSTS_PER_PAGE); // Show 9 skeletons
+      try {
+        allPosts = await fetchAllPosts(); // Fetch ALL
+
+        if (allPosts.length > 0) {
+          const topPost = [...allPosts].sort((a,b) => (b.likeCount || 0) - (a.likeCount || 0))[0];
+          topPostId = topPost?.id; // Safely get top post ID
+          renderFeaturedPost(topPost);
+          renderTagCloud(allPosts); // Use Tag Cloud now
+          postCountSpan.textContent = `(${allPosts.length} Posts)`;
         } else {
-            secondaryNav.classList.remove('hide');
-            backToTopButton.classList.remove('show');
+          featuredPostContainer.style.display = 'none';
+          postCountSpan.textContent = '(0 Posts)';
+        }
+
+        sortAndRender(); // Initial sort and render
+
+      } catch (err) {
+        console.error('Failed to load posts:', err);
+        postsContainer.innerHTML = '<h5 class="text-center" style="color: var(--primary);">Could not load posts. Please try again later.</h5>';
+      }
+      updateProfileGradient();
+    }
+
+    // --- Sort and Render (Modified to include special cards) ---
+    function sortAndRender() {
+      allPosts.sort((a, b) => {
+        if (currentSortBy === 'likeCount') {
+          return (b.likeCount || 0) - (a.likeCount || 0);
+        }
+        return new Date(b.date) - new Date(a.date);
+      });
+
+      postsContainer.innerHTML = '';
+      renderedPostCount = 0;
+      noResultsEl.style.display = 'none';
+
+      const initialPosts = allPosts.slice(0, POSTS_PER_PAGE);
+      renderPosts(initialPosts); // Render normal posts first
+      renderedPostCount = initialPosts.length;
+
+      // Now render special cards into the grid
+      renderCoachCorner();
+      renderSpecialCards(allPosts); // Pass allPosts for throwback selection
+
+      // Show/hide "Load More" button
+      if (allPosts.length > renderedPostCount) {
+        loadMoreContainer.style.display = 'block';
+      } else {
+        loadMoreContainer.style.display = 'none';
+      }
+
+      if (allPosts.length === 0) {
+        noResultsEl.style.display = 'block';
+      }
+    }
+
+    // --- Load More Logic ---
+    function handleLoadMore() {
+      loadMoreBtn.disabled = true;
+      loadMoreBtn.textContent = 'Loading...';
+
+      const newPosts = allPosts.slice(renderedPostCount, renderedPostCount + POSTS_PER_PAGE);
+      renderPosts(newPosts); // Only render the new posts
+      renderedPostCount += newPosts.length;
+
+      loadMoreBtn.disabled = false;
+      loadMoreBtn.textContent = 'Load More Posts';
+
+      if (renderedPostCount >= allPosts.length) {
+        loadMoreContainer.style.display = 'none';
+      }
+    }
+    loadMoreBtn.addEventListener('click', handleLoadMore);
+
+
+    // --- Filter & Search Logic (MODIFIED) ---
+    function filterAndRender() {
+      const searchText = mainSearchInput.value.toLowerCase().trim();
+      const checkedTags = Array.from(filterCheckboxes)
+        .filter(i => i.checked)
+        .map(i => i.value.toLowerCase());
+
+      if (searchText === '' && checkedTags.length === 0) {
+        featuredPostContainer.style.display = 'block'; // Show featured
+        sortAndRender(); // Resets to paginated view with special cards
+        renderTagCloud(allPosts); // Update tag cloud based on all posts
+        return;
+      }
+
+      // When filtering, hide elements that don't make sense
+      featuredPostContainer.style.display = 'none';
+      loadMoreContainer.style.display = 'none';
+
+      let filteredPosts = allPosts.filter(post => { // Filter from all posts
+        const title = (post.title || '').toLowerCase();
+        const content = (post.content || '').toLowerCase();
+        const tag = (post.tag || 'others').toLowerCase();
+        const matchesSearch = title.includes(searchText) || content.includes(searchText);
+        const matchesTag = checkedTags.length === 0 || checkedTags.includes(tag);
+        return matchesSearch && matchesTag;
+      });
+
+      // Apply current sorting to filtered results
+      filteredPosts.sort((a, b) => {
+        if (currentSortBy === 'likeCount') {
+          return (b.likeCount || 0) - (a.likeCount || 0);
+        }
+        return new Date(b.date) - new Date(a.date);
+      });
+
+      postsContainer.innerHTML = ''; // Clear container for filtered view
+      if (filteredPosts.length === 0) {
+        noResultsEl.style.display = 'block';
+      } else {
+        noResultsEl.style.display = 'none';
+        renderPosts(filteredPosts); // Render only filtered posts
+        // Note: Special cards are NOT rendered in filtered view for simplicity
+      }
+       renderTagCloud(allPosts); // Update tag cloud based on all posts, even when filtered
+    }
+
+    // --- NEW: Tag Cloud Click Logic ---
+    tagCloudContainer.addEventListener('click', (e) => {
+        const chip = e.target.closest('span[data-tag]');
+        if (!chip) return;
+
+        const tag = chip.dataset.tag;
+        const checkbox = document.querySelector(`.filter-check[value="${tag}"]`);
+
+        if (checkbox) {
+            // Uncheck all other boxes first for single tag selection via cloud
+            filterCheckboxes.forEach(cb => {
+                 if(cb !== checkbox) cb.checked = false;
+            });
+            // Toggle the clicked tag's checkbox
+            checkbox.checked = !chip.classList.contains('active'); // Toggle based on visual state
+
+            filterAndRender(); // Re-run filter
+
+            // Visually update cloud chips based on checkbox state
+            document.querySelectorAll('.tag-cloud span').forEach(c => c.classList.remove('active'));
+            if (checkbox.checked) {
+                chip.classList.add('active');
+            }
         }
     });
 
-    document.getElementById('back-to-top').addEventListener('click', () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
+
+    // --- Sort By Logic ---
+    document.querySelectorAll('.sort-option').forEach(option => {
+      option.addEventListener('click', (e) => {
+        e.preventDefault();
+        const sortBy = e.target.dataset.sort;
+        currentSortBy = sortBy;
+        sortBtnText.textContent = e.target.textContent;
+        filterAndRender(); // Re-sort and re-render everything
+      });
     });
 
+    // --- Like Button Logic ---
+    const likedPostsStore = {
+       // ... (code remains the same) ...
+       key: 'athleticLikes',
+      getAll: () => JSON.parse(localStorage.getItem(likedPostsStore.key)) || {},
+      has: (id) => !!likedPostsStore.getAll()[id],
+      add: (id) => {
+        let likes = likedPostsStore.getAll();
+        likes[id] = true;
+        localStorage.setItem(likedPostsStore.key, JSON.stringify(likes));
+      },
+      remove: (id) => {
+         let likes = likedPostsStore.getAll();
+         delete likes[id];
+         localStorage.setItem(likedPostsStore.key, JSON.stringify(likes));
+      }
+    };
 
-</script>
+    async function handleLikeClick(e) {
+      // ... (code remains the same) ...
+      const button = e.target.closest('.like-btn');
+      if (!button) return;
+
+      const postId = button.dataset.id;
+      if (likedPostsStore.has(postId)) {
+        showToast("You've already liked this post!");
+        return;
+      }
+
+      likedPostsStore.add(postId);
+      button.classList.add('liked');
+      button.querySelector('.fa-heart').classList.replace('far', 'fas');
+      const countSpan = button.querySelector('.like-count');
+      const currentCount = parseInt(countSpan.textContent, 10);
+      countSpan.textContent = currentCount + 1;
+
+      const postInArray = allPosts.find(p => p.id === postId);
+      if (postInArray) {
+        postInArray.likeCount = (postInArray.likeCount || 0) + 1;
+      }
+
+      try {
+        const postRef = doc(db, 'athleticPosts', postId);
+        await updateDoc(postRef, {
+          likeCount: increment(1)
+        });
+      } catch (err) {
+        console.error("Failed to update like count:", err);
+        likedPostsStore.remove(postId);
+        button.classList.remove('liked');
+        button.querySelector('.fa-heart').classList.replace('fas', 'far');
+        countSpan.textContent = currentCount;
+        showToast("Couldn't save like. Please try again.", true);
+      }
+    }
+    postsContainer.addEventListener('click', handleLikeClick);
+
+    // --- Gemini API Logic for Coach's Corner ---
+    const geminiApiKey = ""; // Leave empty
+    const geminiApiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${geminiApiKey}`;
+    const geminiSystemPrompt = "You are Murad, an expert endurance coach. Provide a concise, actionable 'Weekly Training Focus' for athletes. Keep it to 1-2 sentences. Be motivating. Do not use greetings or markdown.";
+
+    async function fetchWithRetry(url, options, retries = 3, delay = 1000) {
+      // ... (code remains the same) ...
+      for (let i = 0; i < retries; i++) {
+        try {
+          const response = await fetch(url, options);
+          if (response.ok) return response.json();
+          if (response.status >= 400 && response.status < 500) throw new Error(`Client error: ${response.status}`);
+        } catch (error) { /* console.warn(...) */ }
+        await new Promise(resolve => setTimeout(resolve, delay));
+        delay *= 2;
+      }
+      throw new Error('Failed to fetch from API after several retries.');
+    }
+
+    async function callGeminiApi(userPrompt) {
+      // ... (code remains the same) ...
+      const payload = {
+        contents: [{ parts: [{ text: userPrompt }] }],
+        systemInstruction: { parts: [{ text: geminiSystemPrompt }] },
+      };
+      const options = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      };
+      const result = await fetchWithRetry(geminiApiUrl, options);
+      const candidate = result.candidates?.[0];
+      if (candidate && candidate.content?.parts?.[0]?.text) {
+        return candidate.content.parts[0].text;
+      } else {
+        throw new Error('Invalid response structure from API.');
+      }
+    }
+
+    async function handleGetCoachTip() {
+      // ... (code remains the same) ...
+      const tipContentEl = document.getElementById('coachTipContent');
+      const tipLoadingEl = document.getElementById('coachTipLoading');
+      const getTipBtn = document.getElementById('getCoachTipBtn');
+      if (!tipContentEl || !tipLoadingEl || !getTipBtn) return;
+
+      getTipBtn.disabled = true;
+      tipLoadingEl.style.display = 'block';
+      tipContentEl.style.display = 'none';
+
+      try {
+        const tip = await callGeminiApi("Give me a new weekly training focus.");
+        tipContentEl.textContent = tip.trim();
+      } catch (err) {
+        tipContentEl.textContent = 'Focus on consistency. Every session counts!';
+      } finally {
+        getTipBtn.disabled = false;
+        tipLoadingEl.style.display = 'none';
+        tipContentEl.style.display = 'block';
+      }
+    }
+
+     // --- NEW: Zone Calculation Logic ---
+     function handleZoneCalculation() {
+        const maxHrInput = document.getElementById('maxHrInput');
+        const resultsDiv = document.getElementById('zoneResults');
+        const maxHr = parseInt(maxHrInput.value, 10);
+
+        if (!maxHr || maxHr < 100 || maxHr > 250) {
+            resultsDiv.innerHTML = '<div style="color: var(--primary-700);">Please enter a valid Max HR (100-250).</div>';
+            return;
+        }
+
+        // Simple 5-zone model based on % Max HR
+        const z1 = Math.round(maxHr * 0.5) + '-' + Math.round(maxHr * 0.6);
+        const z2 = Math.round(maxHr * 0.6) + '-' + Math.round(maxHr * 0.7);
+        const z3 = Math.round(maxHr * 0.7) + '-' + Math.round(maxHr * 0.8);
+        const z4 = Math.round(maxHr * 0.8) + '-' + Math.round(maxHr * 0.9);
+        const z5 = Math.round(maxHr * 0.9) + '+';
+
+        resultsDiv.innerHTML = `
+            <div>Zone 1 (Easy): <span>${z1}</span> bpm</div>
+            <div>Zone 2 (Aerobic): <span>${z2}</span> bpm</div>
+            <div>Zone 3 (Tempo): <span>${z3}</span> bpm</div>
+            <div>Zone 4 (Threshold): <span>${z4}</span> bpm</div>
+            <div>Zone 5 (Max): <span>${z5}</span> bpm</div>
+        `;
+    }
+
+    // --- THEME & ACCENT LOGIC (Copied from index.html) ---
+    const accentDots = document.querySelectorAll('.accent-dot');
+    function setAccent(accentKey) {
+       // ... (code remains the same) ...
+       document.documentElement.setAttribute('data-accent', accentKey);
+      localStorage.setItem('site-accent', accentKey);
+      updateProfileGradient(); // This now updates all accent colors
+      accentDots.forEach(d => d.setAttribute('aria-checked', d.dataset.accent === accentKey ? 'true' : 'false'));
+      drawHamburger();
+      const logoImg = document.querySelector('.logo-img');
+      if (logoImg) {
+        logoImg.style.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
+      }
+    }
+
+    function updateProfileGradient(){
+      // ... (code remains the same) ...
+      const computed = getComputedStyle(document.documentElement);
+      const p = computed.getPropertyValue('--primary').trim();
+      const p2 = computed.getPropertyValue('--primary-700').trim();
+      document.documentElement.style.setProperty('--profile-grad-from', p || 'var(--primary)');
+      document.documentElement.style.setProperty('--profile-grad-to', p2 || 'var(--primary-7g00)');
+    }
+
+    accentDots.forEach(dot => {
+      dot.addEventListener('click', () => setAccent(dot.dataset.accent));
+    });
+
+    const themeSwitch = document.getElementById('themeSwitch');
+    const switchVisual = document.getElementById('switchVisual');
+    const switchDot = document.getElementById('switchDot');
+    const toggleIcon = document.getElementById('toggleIcon');
+
+    function setTheme(t) {
+       // ... (code remains the same) ...
+       document.documentElement.setAttribute('data-theme', t);
+      localStorage.setItem('site-theme', t);
+      if (t === 'dark') {
+        switchDot.style.left = '23px';
+        toggleIcon.className = 'fas fa-moon mr-2';
+      } else {
+        switchDot.style.left = '3px';
+        toggleIcon.className = 'fas fa-sun mr-2';
+      }
+    }
+
+    const storedTheme = localStorage.getItem('site-theme') || 'light';
+    setTheme(storedTheme);
+    const storedAccent = localStorage.getItem('site-accent') || 'green';
+    setAccent(storedAccent);
+
+    switchVisual.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme') || 'light';
+      setTheme(current === 'dark' ? 'light' : 'dark');
+    });
+
+    function drawHamburger(){
+       // ... (code remains the same, including the fix) ...
+       const accent = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim() || '#20c997';
+      const svg = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath stroke='${encodeURIComponent(accent)}' stroke-width='2' d='M3 6h18M3 12h18M3 18h18' stroke-linecap='round'/%3E%3C/svg%3E`;
+      const el = document.getElementById('hamburgerSvg');
+      if (el) {
+        el.style.backgroundImage = `url("${svg}")`;
+        el.style.backgroundSize = '20px 20px';
+      }
+    }
+    drawHamburger();
+    window.addEventListener('resize', drawHamburger);
+
+    // --- TOAST NOTIFICATION (Copied from index.html) ---
+    const toastEl = document.getElementById('toastNotification');
+    let toastTimeout;
+    function showToast(message, isError = false) {
+       // ... (code remains the same) ...
+       clearTimeout(toastTimeout);
+      toastEl.textContent = message;
+      isError ? toastEl.classList.add('error') : toastEl.classList.remove('error');
+      toastEl.classList.add('show');
+      toastTimeout = setTimeout(() => { toastEl.classList.remove('show'); }, 3000);
+    }
+
+    // --- UNIFIED SHARE (Copied from index.html) ---
+    document.addEventListener('click', async (e) => {
+      // ... (code remains the same) ...
+      const shareButton = e.target.closest('.share-btn');
+      if (!shareButton) return;
+      const url = location.origin + '/' + shareButton.dataset.url;
+      const title = shareButton.dataset.title;
+      const text = shareButton.dataset.text;
+      if (navigator.share) {
+        try {
+          await navigator.share({ title, text, url });
+        } catch (err) { /* User cancelled share */ }
+      } else {
+        try {
+          const tempText = document.createElement('textarea');
+          tempText.value = url;
+          tempText.style.position = 'absolute'; tempText.style.left = '-9999px';
+          document.body.appendChild(tempText);
+          tempText.select();
+          document.execCommand('copy');
+          document.body.removeChild(tempText);
+          showToast('Link copied to clipboard!');
+        } catch (err) {
+          showToast('Failed to copy link.', true);
+        }
+      }
+    });
+
+    // --- FOOTER CONTACT (Copied from index.html) ---
+    window.handleContact = async function(e){
+      // ... (code remains the same) ...
+      e.preventDefault();
+      const sendButton = e.target.querySelector('button');
+      sendButton.disabled = true; sendButton.textContent = 'Sending...';
+      try {
+        await addDoc(collection(db,'contacts'), {
+          name: document.getElementById('cname').value,
+          email: document.getElementById('cemail').value,
+          message: document.getElementById('cmsg').value,
+          createdAt: new Date().toISOString()
+        });
+        showToast('Thanks! Message sent.');
+        e.target.reset();
+      } catch (err) {
+        showToast('Failed to send. Please try later.', true);
+      } finally {
+        sendButton.disabled = false; sendButton.textContent = 'Send';
+      }
+    };
+
+    // --- SCROLL-TO-TOP FAB (Copied from index.html) ---
+    const scrollTopFab = document.getElementById('scrollTopFab');
+    if (scrollTopFab) {
+       // ... (code remains the same) ...
+       window.addEventListener('scroll', () => {
+        const isScrolled = document.body.scrollTop > 100 || document.documentElement.scrollTop > 100;
+        scrollTopFab.style.display = isScrolled ? 'flex' : 'none';
+        scrollTopFab.style.opacity = isScrolled ? '1' : '0';
+      });
+      scrollTopFab.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+
+    // --- MOTIVATIONAL QUOTE (UPDATED Quotes) ---
+    const quotes = [
+        { text: "Pain is temporary. Quitting lasts forever.", author: "Lance Armstrong" },
+        { text: "The miracle isn't that I finished. The miracle is that I had the courage to start.", author: "John Bingham" },
+        { text: "Run when you can, walk if you have to, crawl if you must; just never give up.", author: "Dean Karnazes" },
+        { text: "It's supposed to be hard. If it wasn't hard, everyone would do it.", author: "A League of Their Own" },
+        { text: "The body achieves what the mind believes.", author: "Napoleon Hill" }
+    ];
+    const quoteTextEl = document.getElementById('quoteText');
+    const quoteAuthorEl = document.getElementById('quoteAuthor');
+    let quoteIndex = 0;
+    function updateQuote() {
+       // ... (code remains the same) ...
+       if (!quoteTextEl || !quoteAuthorEl) return;
+      quoteTextEl.style.opacity = '0'; quoteAuthorEl.style.opacity = '0';
+      setTimeout(() => {
+        let newIndex = quoteIndex;
+        while (newIndex === quoteIndex) { newIndex = Math.floor(Math.random() * quotes.length); }
+        quoteIndex = newIndex;
+        quoteTextEl.textContent = `"${quotes[quoteIndex].text}"`;
+        quoteAuthorEl.textContent = `— ${quotes[quoteIndex].author}`;
+        quoteTextEl.style.opacity = '1'; quoteAuthorEl.style.opacity = '1';
+      }, 500);
+    }
+    updateQuote();
+    setInterval(updateQuote, 8000);
+
+    // --- PAGE TRANSITIONS (Copied from index.html) ---
+    document.querySelectorAll('a.nav-link, a[href$=".html"]').forEach(a=>{
+      // ... (code remains the same) ...
+      a.addEventListener('click', (ev)=>{
+        const href = a.getAttribute('href');
+        if (!href || href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('#') || a.getAttribute('target') === '_blank') return;
+        ev.preventDefault();
+        document.documentElement.classList.add('page-fade-out');
+        setTimeout(()=> { location.href = href; }, 320);
+      });
+    });
+
+    // --- INITIALIZE PAGE ---
+    (async () => {
+      await loadAthleticsPage();
+
+      // Attach listeners for filter bar
+      mainSearchInput.addEventListener('input', filterAndRender);
+      filterCheckboxes.forEach(check => check.addEventListener('change', filterAndRender));
+
+      // Prevent dropdown from closing on click inside
+      document.getElementById('filterDropdownMenu').addEventListener('click', (e) => {
+        e.stopPropagation();
+      });
+    })();
+
+  </script>
+
+  <!-- Bootstrap JS (for hamburger menu) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
+
